@@ -7,7 +7,7 @@ It provides a set of ready-made easy-to-modifiy elements to build any solution t
 * CommercioAccount
 * CommercioID
 * CommercioDocs
-* CommercioSignature
+* CommercioSign
 * CommercioMint
 * CommercioMembership
 
