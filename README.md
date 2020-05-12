@@ -1,5 +1,5 @@
 # Amadeo
-Amadeo is a starter/example Flutter project to let anyone create any app on Commercio.network
+Amadeo is a starter/example Flutter project to let anyone create a Signature app on Commercio.network
 
 
 It provides a set of ready-made easy-to-modifiy elements to build any solution to any Document problem.
