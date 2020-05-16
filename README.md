@@ -1,15 +1,23 @@
 # Amadeo
-Amadeo is a starter/example Flutter project to let anyone create a Signature app on Commercio.network
+Amadeo is a starter/cookbook Flutter project to let anyone create on Commercio.network a:
 
-
-It provides a set of ready-made easy-to-modifiy elements to build any solution to any Document problem.
-
+* Auth app
+* eID app
+* eDelivery app
+* eSignature app
+* Token App
+* KYC app
+  
+How?  Commercio provides a set of ready-made easy-to-modifiy visual elements to build any solution to any document problem.  
+   
 * CommercioAccount
 * CommercioID
 * CommercioDocs
 * CommercioSign
 * CommercioMint
 * CommercioMembership
+   
+Amadeo in not a production ready app. You need to fork it and create your own vision...   
 
 ## Screenshots
 
