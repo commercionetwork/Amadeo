@@ -11,7 +11,8 @@ class HomeScreen extends StatelessWidget {
     SectionPage(
         sectionPageWidget: CommercioAccountPage(),
         title: 'Commercio Account',
-        description: 'Create sign and send a Blockchain transaction'),
+        description:
+            'Electronically Sign any PDF e XML digital document so no-one can deny having digitally signed the document'),
     SectionPage(
       sectionPageWidget: CommercioIdPage(),
       title: 'Commercio Id',
@@ -27,10 +28,14 @@ class HomeScreen extends StatelessWidget {
     SectionPage(
       sectionPageWidget: CommercioMintPage(),
       title: 'Commercio Mint',
+      description:
+          'Mint and Burn 1€ a stable coin called Commercio Cash Credit CCC that can be used to pay trasaction fees',
     ),
     SectionPage(
       sectionPageWidget: CommercioMembershipPage(),
       title: 'Commercio Membership',
+      description:
+          'Create a network of trusted organizations by inviting companies to perform KYC and earn ABR token rewards ',
     ),
   ];
 
