@@ -72,7 +72,7 @@ class GenerateWalletWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: GenerateWalletCommercioAccountTextField(
+            child: GenerateWalletTextField(
               loadingTextCallback: () => 'Loading...',
               textCallback: (state) => state.commercioAccount.walletAddress,
             ),
@@ -109,7 +109,7 @@ class RestoreWalletWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: RestoreWalletCommercioAccountTextField(
+            child: RestoreWalletTextField(
                 readOnly: true,
                 loadingTextCallback: () => 'Loading...',
                 textCallback: (state) => state.commercioAccount.walletAddress),
@@ -146,7 +146,7 @@ class RequestFreeTokensWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: RequestFreeTokensCommercioAccountTextField(
+            child: RequestFreeTokensTextField(
               loadingTextCallback: () => 'Loading...',
               textCallback: (state) => state.accountRequestResponse.isSuccess
                   ? 'Success! Hash: ${state.accountRequestResponse.message}'
@@ -185,7 +185,7 @@ class CheckAccountBalanceWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: CheckBalanceCommercioAccountTextField(
+            child: CheckBalanceTextField(
                 loadingTextCallback: () => 'Checking...',
                 textCallback: (state) => state.balance.fold(
                     '',
@@ -224,7 +224,7 @@ class SendTokensWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: SendTokensCommercioAccountTextField(
+            child: SendTokensTextField(
               loadingTextCallback: () => 'Sending...',
               textCallback: (state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
@@ -304,7 +304,7 @@ class GeneratePairwiseWalletWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: GeneratePairwiseWalletCommercioAccountTextField(
+            child: GeneratePairwiseWalletTextField(
                 readOnly: true,
                 loadingTextCallback: () => 'Loading...',
                 textCallback: (state) => state.wallet.bech32Address),
