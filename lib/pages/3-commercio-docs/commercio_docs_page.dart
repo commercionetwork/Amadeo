@@ -18,11 +18,16 @@ class CommercioDocsPage extends SectionPageWidget {
   Widget build(BuildContext context) {
     final commercioAccountBloc = BlocProvider.of<CommercioAccountBloc>(context);
 
-    return BlocProvider<CommercioDocsBloc>(
-      create: (_) => CommercioDocsBloc(
-          commercioAccount: commercioAccountBloc.commercioAccount),
-      child: BaseScaffoldWidget(bodyWidget: CommercioDocsBody()),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider<CommercioDocsEncDataBloc>(
+        create: (_) => CommercioDocsEncDataBloc(),
+      ),
+      BlocProvider<CommercioDocsBloc>(
+        create: (_) => CommercioDocsBloc(
+          commercioAccount: commercioAccountBloc.commercioAccount,
+        ),
+      ),
+    ], child: BaseScaffoldWidget(bodyWidget: CommercioDocsBody()));
   }
 }
 
@@ -104,11 +109,6 @@ class ShareDocWidget extends StatelessWidget {
 class ShareEncDocWidget extends StatelessWidget {
   final sdk.CommercioDocMetadata metadata;
   final List<String> recipients;
-  final List<sdk.EncryptedData> encryptedData = [
-    sdk.EncryptedData.CONTENT_URI,
-    sdk.EncryptedData.METADATA_CONTENT_URI,
-    sdk.EncryptedData.METADATA_SCHEMA_URI
-  ];
 
   ShareEncDocWidget()
       : metadata = sdk.CommercioDocMetadata(
@@ -129,6 +129,9 @@ class ShareEncDocWidget extends StatelessWidget {
             'Press the button to derive and share an encrypted Did document with a random AES key.',
             padding: EdgeInsets.all(5.0),
           ),
+          ShareDocumentEncryptedDataSwitchListTiles(
+            activeColor: Theme.of(context).primaryColor,
+          ),
           FutureBuilder<sdk.Key>(
               future: sdk.KeysHelper.generateAesKey(),
               builder: (context, snap) {
@@ -140,21 +143,29 @@ class ShareEncDocWidget extends StatelessWidget {
                           style: TextStyle(color: Colors.white)));
                 }
 
-                return ShareEncryptedDocumentFlatButton(
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColorDark,
-                  loadingChild: () => const Text(
-                    'Deriving & sharing...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  contentUri: 'https://example.com/document',
-                  metadata: metadata,
-                  recipients: recipients,
-                  aesKey: snap.data,
-                  child: () => const Text(
-                    'Derive & Share Did document',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                return Column(
+                  children: [
+                    Text('AES Key: ${snap.data.base64}'),
+                    ShareEncryptedDocumentFlatButton(
+                      color: Theme.of(context).primaryColor,
+                      disabledColor: Theme.of(context).primaryColorDark,
+                      loadingChild: () => const Text(
+                        'Deriving & sharing...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      contentUri: 'https://example.com/document',
+                      metadata: metadata,
+                      recipients: recipients,
+                      aesKey: snap.data,
+                      encryptedData: () =>
+                          BlocProvider.of<CommercioDocsEncDataBloc>(context)
+                              .encryptedDataList,
+                      child: () => const Text(
+                        'Derive & Share Did document',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 );
               }),
           Padding(
