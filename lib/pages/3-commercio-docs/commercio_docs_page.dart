@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:amadeo_flutter/pages/section_page.dart';
-import 'package:amadeo_flutter/routing/router.gr.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commercio_ui/ui/docs/export.dart';
 import 'package:commerciosdk/entities/docs/commercio_doc.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
@@ -14,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommercioDocsPage extends SectionPageWidget {
   const CommercioDocsPage({Key key})
-      : super(Routes.commercioDocsPage, 'CommercioDocsPage', key: key);
+      : super('/3-docs', 'CommercioDocsPage', key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +151,6 @@ class ShareEncDocWidget extends StatelessWidget {
                   metadata: metadata,
                   recipients: recipients,
                   aesKey: snap.data,
-                  encryptedData: encryptedData,
                   child: () => const Text(
                     'Derive & Share Did document',
                     style: TextStyle(color: Colors.white),

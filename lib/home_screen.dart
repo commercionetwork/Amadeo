@@ -7,6 +7,8 @@ import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/section_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen();
+
   final List<SectionPage> sections = const [
     SectionPage(
         sectionPageWidget: CommercioAccountPage(),

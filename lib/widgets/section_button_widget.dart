@@ -1,5 +1,4 @@
 import 'package:amadeo_flutter/entities/section_page.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 class SectionButtonWidget extends StatelessWidget {
@@ -16,8 +15,8 @@ class SectionButtonWidget extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: FlatButton(
         onPressed: sectionPage.enabled
-            ? () => ExtendedNavigator.rootNavigator
-                .pushNamed(sectionPage.sectionPageWidget.routeName)
+            ? () => Navigator.pushNamed(
+                context, sectionPage.sectionPageWidget.routeName)
             : null,
         color: Theme.of(context).primaryColor,
         textColor: Colors.white,

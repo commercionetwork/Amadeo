@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:amadeo_flutter/pages/section_page.dart';
-import 'package:amadeo_flutter/routing/router.gr.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -12,7 +11,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class CommercioAccountPage extends SectionPageWidget {
   const CommercioAccountPage({Key key})
-      : super(Routes.commercioAccountPage, 'CommercioAccountPage', key: key);
+      : super('/1-account', 'CommercioAccountPage', key: key);
 
   @override
   Widget build(BuildContext context) {

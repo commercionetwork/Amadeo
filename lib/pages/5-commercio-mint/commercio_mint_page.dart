@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:amadeo_flutter/pages/export.dart';
-import 'package:amadeo_flutter/routing/router.gr.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -12,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommercioMintPage extends SectionPageWidget {
   const CommercioMintPage({Key key})
-      : super(Routes.commercioMintPage, 'CommercioMintPage', key: key);
+      : super('/5-mint', 'CommercioMintPage', key: key);
 
   @override
   Widget build(BuildContext context) {
