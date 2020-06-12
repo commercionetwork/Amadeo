@@ -1,4 +1,8 @@
 # Amadeo
+
+[![Build Status](https://travis-ci.com/commercionetwork/Amadeo.svg?branch=development)](https://travis-ci.com/commercionetwork/Amadeo)
+[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+
 Amadeo is a starter/cookbook Flutter project to let anyone create on Commercio.network a:
 
 * Auth app
