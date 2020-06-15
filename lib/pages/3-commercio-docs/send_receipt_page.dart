@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:amadeo_flutter/pages/section_page.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
+import 'package:amadeo_flutter/widgets/recipient_address_text_field_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -52,11 +53,8 @@ class SendReceiptWidget extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(
-                hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
-                labelText: 'Recipient address'),
-            controller: recipientTextController,
+          RecipientAddressTextFieldWidget(
+            recipientTextController: recipientTextController,
           ),
           TextField(
             decoration: const InputDecoration(

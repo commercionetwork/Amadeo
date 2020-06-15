@@ -4,6 +4,7 @@ import 'package:amadeo_flutter/pages/section_page.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/doc_metadata_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
+import 'package:amadeo_flutter/widgets/recipient_address_text_field_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class ShareDocPageBody extends StatelessWidget {
 }
 
 class ShareDocWidget extends StatelessWidget {
-  final TextEditingController recipientsController = TextEditingController();
+  final TextEditingController recipientTextController = TextEditingController();
   final TextEditingController contentUriController = TextEditingController();
   final TextEditingController metadataSchemaUriController =
       TextEditingController();
@@ -61,11 +62,8 @@ class ShareDocWidget extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(
-                hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau,',
-                labelText: 'Recipient addresses (comma separated)'),
-            controller: recipientsController,
+          RecipientAddressTextFieldWidget(
+            recipientTextController: recipientTextController,
           ),
           DocMetadataWidget(
             contentUriController: contentUriController,
@@ -94,7 +92,7 @@ class ShareDocWidget extends StatelessWidget {
               ),
               schemaType: metadataSchemaTypeController.text,
             ),
-            recipients: recipientsController.text
+            recipients: recipientTextController.text
                 .split(',')
                 .map((e) => e.trim())
                 .toList(),
@@ -117,7 +115,7 @@ class ShareDocWidget extends StatelessWidget {
 }
 
 class ShareEncDocWidget extends StatelessWidget {
-  final TextEditingController recipientsController = TextEditingController();
+  final TextEditingController recipientTextController = TextEditingController();
   final TextEditingController contentUriController = TextEditingController();
   final TextEditingController metadataSchemaUriController =
       TextEditingController();
@@ -133,11 +131,8 @@ class ShareEncDocWidget extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          TextField(
-            decoration: const InputDecoration(
-                hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau,',
-                labelText: 'Recipient addresses (comma separated)'),
-            controller: recipientsController,
+          RecipientAddressTextFieldWidget(
+            recipientTextController: recipientTextController,
           ),
           DocMetadataWidget(
             contentUriController: contentUriController,
@@ -169,7 +164,7 @@ class ShareEncDocWidget extends StatelessWidget {
               ),
               schemaType: metadataSchemaTypeController.text,
             ),
-            recipients: recipientsController.text
+            recipients: recipientTextController.text
                 .split(',')
                 .map((e) => e.trim())
                 .toList(),
