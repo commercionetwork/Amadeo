@@ -71,6 +71,8 @@ class MyApp extends StatelessWidget {
         '/3-docs/receipt-list': (_) => const ReceiptListPage(),
         '/4-sign': (_) => const CommercioSignPage(),
         '/5-mint': (_) => const CommercioMintPage(),
+        '/5-mint/open-cdp': (_) => const OpenCdpPage(),
+        '/5-mint/close-cdp': (_) => const CloseCdpPage(),
         '/6-membership': (_) => const CommercioMembershipPage(),
       },
     );
