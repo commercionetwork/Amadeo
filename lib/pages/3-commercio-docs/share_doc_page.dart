@@ -77,25 +77,27 @@ class ShareDocWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           ShareDocumentFlatButton(
+            accountEventCallback: () => CommercioDocsShareDocumentEvent(
+              recipients: recipientTextController.text
+                  .split(',')
+                  .map((e) => e.trim())
+                  .toList(),
+              contentUri: contentUriController.text,
+              metadata: sdk.CommercioDocMetadata(
+                contentUri: metadataContentUriController.text,
+                schema: sdk.CommercioDocMetadataSchema(
+                  uri: metadataSchemaUriController.text,
+                  version: metadataSchemaVersionController.text,
+                ),
+                schemaType: metadataSchemaTypeController.text,
+              ),
+            ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
               'Deriving & sharing...',
               style: TextStyle(color: Colors.white),
             ),
-            contentUri: contentUriController.text,
-            metadata: sdk.CommercioDocMetadata(
-              contentUri: metadataContentUriController.text,
-              schema: sdk.CommercioDocMetadataSchema(
-                uri: metadataContentUriController.text,
-                version: metadataSchemaVersionController.text,
-              ),
-              schemaType: metadataSchemaTypeController.text,
-            ),
-            recipients: recipientTextController.text
-                .split(',')
-                .map((e) => e.trim())
-                .toList(),
             child: () => const Text(
               'Derive & Share Did document',
               style: TextStyle(color: Colors.white),
@@ -104,9 +106,12 @@ class ShareDocWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: ShareDocumentTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Deriving & sharing...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Deriving & sharing...',
+              textCallback: (state) => state.transactionResult.success
+                  ? 'Success! Hash: ${state.transactionResult.hash}'
+                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            ),
           ),
         ],
       ),
@@ -149,28 +154,30 @@ class ShareEncDocWidget extends StatelessWidget {
             activeColor: Theme.of(context).primaryColor,
           ),
           ShareEncryptedDocumentFlatButton(
+            accountEventCallback: () =>
+                CommercioDocsShareEncryptedDocumentEvent(
+              recipients: recipientTextController.text
+                  .split(',')
+                  .map((e) => e.trim())
+                  .toList(),
+              contentUri: contentUriController.text,
+              metadata: sdk.CommercioDocMetadata(
+                contentUri: metadataContentUriController.text,
+                schema: sdk.CommercioDocMetadataSchema(
+                  uri: metadataSchemaUriController.text,
+                  version: metadataSchemaVersionController.text,
+                ),
+                schemaType: metadataSchemaTypeController.text,
+              ),
+              encryptedData: BlocProvider.of<CommercioDocsEncDataBloc>(context)
+                  .encryptedDataList,
+            ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
               'Deriving & sharing...',
               style: TextStyle(color: Colors.white),
             ),
-            contentUri: contentUriController.text,
-            metadata: sdk.CommercioDocMetadata(
-              contentUri: metadataContentUriController.text,
-              schema: sdk.CommercioDocMetadataSchema(
-                uri: metadataContentUriController.text,
-                version: metadataSchemaVersionController.text,
-              ),
-              schemaType: metadataSchemaTypeController.text,
-            ),
-            recipients: recipientTextController.text
-                .split(',')
-                .map((e) => e.trim())
-                .toList(),
-            encryptedData: () =>
-                BlocProvider.of<CommercioDocsEncDataBloc>(context)
-                    .encryptedDataList,
             child: () => const Text(
               'Derive & Share Did document',
               style: TextStyle(color: Colors.white),
@@ -179,9 +186,12 @@ class ShareEncDocWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: ShareEncryptedDocumentTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Deriving & sharing...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Deriving & sharing...',
+              textCallback: (state) => state.transactionResult.success
+                  ? 'Success! Hash: ${state.transactionResult.hash}'
+                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            ),
           ),
         ],
       ),

@@ -29,7 +29,7 @@ class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 RestoreWalletFromMnemonicWidget(),
               ],
             ),
@@ -40,16 +40,9 @@ class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
   }
 }
 
-class RestoreWalletFromMnemonicWidget extends StatefulWidget {
-  const RestoreWalletFromMnemonicWidget();
+class RestoreWalletFromMnemonicWidget extends StatelessWidget {
+  RestoreWalletFromMnemonicWidget();
 
-  @override
-  _RestoreWalletFromMnemonicWidgetState createState() =>
-      _RestoreWalletFromMnemonicWidgetState();
-}
-
-class _RestoreWalletFromMnemonicWidgetState
-    extends State<RestoreWalletFromMnemonicWidget> {
   final TextEditingController mnemonicTextController =
       TextEditingController(text: '');
 

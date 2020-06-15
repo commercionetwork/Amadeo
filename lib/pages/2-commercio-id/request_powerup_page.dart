@@ -54,13 +54,15 @@ class RechargeGovernmentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RechargeGovernmentFlatButton(
+            accountEventCallback: () =>
+                const CommercioIdRechargeGovernmentEvent(
+                    rechargeAmount: [CommercioCoin(amount: '1000')]),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
               'Recharging...',
               style: TextStyle(color: Colors.white),
             ),
-            rechargeAmount: const [CommercioCoin(amount: '1000')],
             child: () => const Text(
               'Send tokens to Tumbler',
               style: TextStyle(color: Colors.white),
@@ -92,14 +94,17 @@ class RequestDidPowerUpWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RequestDidPowerUpFlatButton(
+            accountEventCallback: () => const CommercioIdRequestDidPowerUpEvent(
+              amount: [CommercioCoin(amount: '1000')],
+              pairwiseAddress:
+                  'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+            ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
               'Powering up...',
               style: TextStyle(color: Colors.white),
             ),
-            amount: const [CommercioCoin(amount: '1000')],
-            pairwiseAddress: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
             child: () => const Text(
               'Request Did PowerUp',
               style: TextStyle(color: Colors.white),

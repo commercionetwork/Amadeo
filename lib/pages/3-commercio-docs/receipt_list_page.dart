@@ -53,6 +53,8 @@ class ReceivedDocumentsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           ReceivedDocumentsFlatButton(
+            accountEventCallback: () =>
+                const CommercioDocsReceivedDocumentsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(

@@ -27,7 +27,7 @@ class GenerateNewWalletPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 GenerateWalletWidget(),
               ],
             ),
@@ -38,14 +38,9 @@ class GenerateNewWalletPageBody extends StatelessWidget {
   }
 }
 
-class GenerateWalletWidget extends StatefulWidget {
-  const GenerateWalletWidget();
+class GenerateWalletWidget extends StatelessWidget {
+  GenerateWalletWidget();
 
-  @override
-  _GenerateWalletWidgetState createState() => _GenerateWalletWidgetState();
-}
-
-class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
   final TextEditingController mnemonicTextController =
       TextEditingController(text: '');
 
@@ -59,6 +54,8 @@ class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
             padding: EdgeInsets.all(5.0),
           ),
           GenerateWalletFlatButton(
+            accountEventCallback: () =>
+                const CommercioAccountGenerateNewWalletEvent(),
             loadingChild: () => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
@@ -81,6 +78,7 @@ class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
             }
 
             return TextField(
+              readOnly: true,
               controller: mnemonicTextController,
             );
           }),

@@ -53,6 +53,7 @@ class SentDocumentsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SentDocumentsFlatButton(
+            accountEventCallback: () => const CommercioDocsSentDocumentsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(

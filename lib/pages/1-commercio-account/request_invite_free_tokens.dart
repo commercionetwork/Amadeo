@@ -31,6 +31,7 @@ class RequestInviteFreeTokensPageBody extends StatelessWidget {
             child: Column(
               children: const [
                 RequestFaucetInviteWidget(),
+                RequestFreeTokensWidget(),
               ],
             ),
           ),
@@ -53,6 +54,8 @@ class RequestFaucetInviteWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RequestFaucetInviteFlatButton(
+            accountEventCallback: () =>
+                const CommercioMembershipRequestFaucetInviteEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -70,6 +73,47 @@ class RequestFaucetInviteWidget extends StatelessWidget {
                 readOnly: true,
                 loadingTextCallback: () => 'Requesting...',
                 textCallback: (state) => state.result),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RequestFreeTokensWidget extends StatelessWidget {
+  const RequestFreeTokensWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          const ParagraphWidget(
+            'Request free tokens from the faucet.',
+            padding: EdgeInsets.all(5.0),
+          ),
+          RequestFreeTokensFlatButton(
+            accountEventCallback: () =>
+                const CommercioAccountRequestFreeTokensEvent(),
+            color: Theme.of(context).primaryColor,
+            disabledColor: Theme.of(context).primaryColorDark,
+            loadingChild: () => const Text(
+              'Requesting...',
+              style: TextStyle(color: Colors.white),
+            ),
+            child: () => const Text(
+              'Request free tokens',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: RequestFreeTokensTextField(
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.accountRequestResponse.isSuccess
+                  ? 'Success! Hash: ${state.accountRequestResponse.message}'
+                  : 'Error: ${state.accountRequestResponse.message}',
+            ),
           ),
         ],
       ),

@@ -74,15 +74,17 @@ class SendReceiptWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SendReceiptFlatButton(
+            accountEventCallback: () => CommercioDocsSendReceiptEvent(
+              recipient: recipientTextController.text,
+              txHash: txHashController.text,
+              docId: docIdController.text,
+            ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
               'Sending...',
               style: TextStyle(color: Colors.white),
             ),
-            recipient: recipientTextController.text,
-            txHash: txHashController.text,
-            docId: docIdController.text,
             child: () => const Text(
               'Send receipt',
               style: TextStyle(color: Colors.white),
@@ -91,9 +93,12 @@ class SendReceiptWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: SendReceiptTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Sending...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Sending...',
+              textCallback: (state) => state.transactionResult.success
+                  ? 'Success! Hash: ${state.transactionResult.hash}'
+                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            ),
           ),
         ],
       ),

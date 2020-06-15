@@ -52,6 +52,8 @@ class CheckAccountBalanceWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           CheckBalanceFlatButton(
+            accountEventCallback: () =>
+                const CommercioAccountCheckBalanceEvent(),
             child: () => const Text(
               'Check balance',
               style: TextStyle(color: Colors.white),

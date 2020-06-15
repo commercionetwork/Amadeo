@@ -52,6 +52,8 @@ class RestoreWalletWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RestoreWalletFlatButton(
+            accountEventCallback: () =>
+                const CommercioAccountRestoreWalletEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(

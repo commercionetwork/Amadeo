@@ -81,18 +81,21 @@ class SendTokensWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SendTokensFlatButton(
+            accountEventCallback: () => CommercioAccountSendTokensEvent(
+              recipientAddress:
+                  recipientTextController.text.split(',')[0].trim(),
+              amount: [
+                sdk.StdCoin(
+                    denom: denomTextController.text,
+                    amount: amountTextController.text)
+              ],
+            ),
             child: () => const Text('Send tokens',
                 style: TextStyle(color: Colors.white)),
             loadingChild: () => const Text(
               'Sending...',
               style: TextStyle(color: Colors.white),
             ),
-            recipientAddress: recipientTextController.text.split(',')[0].trim(),
-            amount: [
-              sdk.StdCoin(
-                  denom: denomTextController.text,
-                  amount: amountTextController.text)
-            ],
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
           ),

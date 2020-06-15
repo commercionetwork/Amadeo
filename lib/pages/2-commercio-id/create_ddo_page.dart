@@ -55,6 +55,7 @@ class GenerateKeysWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           GenerateKeysFlatButton(
+            accountEventCallback: () => const CommercioIdGenerateKeysEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -93,6 +94,8 @@ class DeriveDidDocumentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           DeriveDidDocumentFlatButton(
+            accountEventCallback: () =>
+                const CommercioIdDeriveDidDocumentEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -130,6 +133,7 @@ class SetDidDocumentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SetDidDocumentFlatButton(
+            accountEventCallback: () => const CommercioIdSetDidDocumentEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -144,9 +148,12 @@ class SetDidDocumentWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: SetDidDocumentCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Setting...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Setting...',
+              textCallback: (state) => state.transactionResult.success
+                  ? 'Success! Hash: ${state.transactionResult.hash}'
+                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            ),
           ),
         ],
       ),
@@ -167,6 +174,7 @@ class RestoreKeysWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RestoreKeysFlatButton(
+            accountEventCallback: () => const CommercioIdRestoreKeysEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
