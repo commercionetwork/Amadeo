@@ -13,20 +13,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CommercioAccountBloc>(
-      create: (_) =>
-          CommercioAccountBloc(commercioAccount: StatefulCommercioAccount()),
+      create: (_) => CommercioAccountBloc(
+        commercioAccount: StatefulCommercioAccount(),
+      ),
       child: MaterialApp(
         title: 'Amadeo',
         theme: companyTheme,
         initialRoute: '/',
         routes: {
-          '/': (context) => const HomeScreen(),
-          '/1-account': (context) => const CommercioAccountPage(),
-          '/2-id': (context) => const CommercioIdPage(),
-          '/3-docs': (context) => const CommercioDocsPage(),
-          '/4-sign': (context) => const CommercioSignPage(),
-          '/5-mint': (context) => const CommercioMintPage(),
-          '/6-membership': (context) => const CommercioMembershipPage(),
+          '/': (_) => const HomeScreen(),
+          '/1-account': (_) => const CommercioAccountPage(),
+          '/1-account/generate-new-wallet': (_) =>
+              const GenerateNewWalletPage(),
+          '/1-account/restore-wallet-from-mnemonic': (_) =>
+              const RestoreWalletFromMnemonicPage(),
+          '/1-account/restore-wallet-from-secure-storage': (_) =>
+              const RestoreWalletFromSecureStoragePage(),
+          '/1-account/share-qr-code': (_) => const ShareQRCodePage(),
+          '/1-account/request-invite-free-tokens': (_) =>
+              const RequestInviteFreeTokensPage(),
+          '/1-account/check-account-balance': (_) =>
+              const CheckAccountBalancePage(),
+          '/1-account/send-tokens': (_) => const SendTokensPage(),
+          '/1-account/generate-many-addresses': (_) =>
+              const GenerateManyAddressesPage(),
+          '/2-id': (_) => const CommercioIdPage(),
+          '/3-docs': (_) => const CommercioDocsPage(),
+          '/4-sign': (_) => const CommercioSignPage(),
+          '/5-mint': (_) => const CommercioMintPage(),
+          '/6-membership': (_) => const CommercioMembershipPage(),
         },
       ),
     );

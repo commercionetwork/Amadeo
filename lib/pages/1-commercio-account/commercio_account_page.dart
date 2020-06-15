@@ -6,8 +6,6 @@ import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 class CommercioAccountPage extends SectionPageWidget {
   const CommercioAccountPage({Key key})
@@ -28,93 +26,100 @@ class CommercioAccountBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                GenerateWalletWidget(),
-                RestoreWalletWidget(),
-                RequestFreeTokensWidget(),
-                CheckAccountBalanceWidget(),
-                SendTokensWidget(),
-                GenerateQrCodeWidget(),
-                GeneratePairwiseWalletWidget(),
+              children: [
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/generate-new-wallet'),
+                  child: const Text(
+                    '1.1 Generate new wallet',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/restore-wallet-from-mnemonic'),
+                  child: const Text(
+                    '1.2 Restore wallet from mnemonic',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context).pushNamed(
+                      '/1-account/restore-wallet-from-secure-storage'),
+                  child: const Text(
+                    '1.3 Restore wallet from secure storage',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/share-qr-code'),
+                  child: const Text(
+                    '1.4 Share QR code',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/request-invite-free-tokens'),
+                  child: const Text(
+                    '1.5 Request invite and free tokens',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/check-account-balance'),
+                  child: const Text(
+                    '1.6 Check account balance',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed('/1-account/send-tokens'),
+                  child: const Text(
+                    '1.7 Send tokens to another address',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () => Navigator.of(context)
+                      .pushNamed('/1-account/generate-many-addresses'),
+                  child: const Text(
+                    '1.8 Generate many addresses with single mnemonic',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class GenerateWalletWidget extends StatelessWidget {
-  const GenerateWalletWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to auto-generate a new wallet. The mnemonic words will be stored inside the device secure storage.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          GenerateWalletFlatButton(
-            loadingChild: () => const Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: () => const Text(
-              'Generate Wallet',
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GenerateWalletTextField(
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.commercioAccount.walletAddress,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class RestoreWalletWidget extends StatelessWidget {
-  const RestoreWalletWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to restore the wallet using the safely saved mnemonic string.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          RestoreWalletFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: () => const Text(
-              'Restore Wallet',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RestoreWalletTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.commercioAccount.walletAddress),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -151,162 +156,6 @@ class RequestFreeTokensWidget extends StatelessWidget {
                   ? 'Success! Hash: ${state.accountRequestResponse.message}'
                   : 'Error: ${state.accountRequestResponse.message}',
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CheckAccountBalanceWidget extends StatelessWidget {
-  const CheckAccountBalanceWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to check the account balance.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          CheckBalanceFlatButton(
-            child: () => const Text(
-              'Check balance',
-              style: TextStyle(color: Colors.white),
-            ),
-            loadingChild: () => const Text(
-              'Checking...',
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: CheckBalanceTextField(
-                loadingTextCallback: () => 'Checking...',
-                textCallback: (state) => state.balance.fold(
-                    '',
-                    (prev, curr) =>
-                        '$prev ${prev.isEmpty ? '' : ','} Amount ${curr.amount} of ${curr.denom}')),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SendTokensWidget extends StatelessWidget {
-  const SendTokensWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to send 100 ucommercio coins.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          SendTokensFlatButton(
-            child: () => const Text('Send tokens',
-                style: TextStyle(color: Colors.white)),
-            loadingChild: () => const Text(
-              'Sending...',
-              style: TextStyle(color: Colors.white),
-            ),
-            recipientAddress: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
-            amount: const [CommercioCoin(amount: '100')],
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SendTokensTextField(
-              loadingTextCallback: () => 'Sending...',
-              textCallback: (state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${jsonEncode(state.result.error)}',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class GenerateQrCodeWidget extends StatelessWidget {
-  const GenerateQrCodeWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to generate a QR code from your wallet.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          GenerateQrFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            child: () => const Text(
-              'Generate QR',
-              style: TextStyle(color: Colors.white),
-            ),
-            loadingChild: () => const Text(
-              'Generating...',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: BlocBuilder<CommercioAccountBloc, CommercioAccountState>(
-                builder: (context, state) {
-              if (state is CommercioAccountQrWithWallet) {
-                return QrImage(data: state.commercioAccount.walletAddress);
-              }
-
-              return Container();
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class GeneratePairwiseWalletWidget extends StatelessWidget {
-  const GeneratePairwiseWalletWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Press the button to generate a pairwise wallet.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          GeneratePairwiseWalletFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            child: () => const Text(
-              'Generate pairwise wallet',
-              style: TextStyle(color: Colors.white),
-            ),
-            loadingChild: () => const Text(
-              'Generating...',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GeneratePairwiseWalletTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.wallet.bech32Address),
           ),
         ],
       ),

@@ -38,7 +38,6 @@ class CommercioMembershipBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: const [
-                RequestFaucetInviteWidget(),
                 BuyMembershipWidget(),
                 InviteMemberWidget(),
               ],
@@ -46,43 +45,6 @@ class CommercioMembershipBody extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class RequestFaucetInviteWidget extends StatelessWidget {
-  const RequestFaucetInviteWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          const ParagraphWidget(
-            'Request an invite from the faucet.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          RequestFaucetInviteFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
-              'Requesting...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: () => const Text(
-              'Request faucet invite',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RequestFaucetInviteTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Requesting...',
-                textCallback: (state) => state.result),
-          ),
-        ],
-      ),
     );
   }
 }
