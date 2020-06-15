@@ -73,7 +73,9 @@ class MyApp extends StatelessWidget {
         '/5-mint': (_) => const CommercioMintPage(),
         '/5-mint/open-cdp': (_) => const OpenCdpPage(),
         '/5-mint/close-cdp': (_) => const CloseCdpPage(),
-        '/6-membership': (_) => const CommercioMembershipPage(),
+        '/6-kyc': (_) => const CommercioKYCPage(),
+        '/6-kyc/buy-membership': (_) => const BuyMembershipPage(),
+        '/6-kyc/invite-member': (_) => const InviteMemberPage(),
       },
     );
   }

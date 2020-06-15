@@ -34,8 +34,8 @@ class HomeScreen extends StatelessWidget {
           'Mint and Burn 1€ a stable coin called Commercio Cash Credit CCC that can be used to pay trasaction fees',
     ),
     SectionPage(
-      sectionPageWidget: CommercioMembershipPage(),
-      title: 'Commercio Membership',
+      sectionPageWidget: CommercioKYCPage(),
+      title: 'Commercio KYC',
       description:
           'Create a network of trusted organizations by inviting companies to perform KYC and earn ABR token rewards ',
     ),
