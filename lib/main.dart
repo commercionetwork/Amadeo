@@ -25,6 +25,9 @@ void main() {
       create: (_) =>
           CommercioMembershipBloc(commercioAccount: commercioAccount),
     ),
+    BlocProvider<CommercioDocsEncDataBloc>(
+      create: (_) => CommercioDocsEncDataBloc(),
+    ),
   ];
 
   runApp(
@@ -62,6 +65,10 @@ class MyApp extends StatelessWidget {
         '/2-id/create-ddo': (_) => const CreateDDOPage(),
         '/2-id/request-powerup': (_) => const RequestPowerupPage(),
         '/3-docs': (_) => const CommercioDocsPage(),
+        '/3-docs/share-doc': (_) => const ShareDocPage(),
+        '/3-docs/send-receipt': (_) => const SendReceiptPage(),
+        '/3-docs/document-list': (_) => const DocumentListPage(),
+        '/3-docs/receipt-list': (_) => const ReceiptListPage(),
         '/4-sign': (_) => const CommercioSignPage(),
         '/5-mint': (_) => const CommercioMintPage(),
         '/6-membership': (_) => const CommercioMembershipPage(),
