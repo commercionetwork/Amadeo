@@ -3,7 +3,6 @@ import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RequestInviteFreeTokensPage extends SectionPageWidget {
   const RequestInviteFreeTokensPage({Key key})
@@ -13,13 +12,8 @@ class RequestInviteFreeTokensPage extends SectionPageWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(
-      bodyWidget: BlocProvider(
-        create: (_) => CommercioMembershipBloc(
-            commercioAccount: BlocProvider.of<CommercioAccountBloc>(context)
-                .commercioAccount),
-        child: const RequestInviteFreeTokensPageBody(),
-      ),
+    return const BaseScaffoldWidget(
+      bodyWidget: RequestInviteFreeTokensPageBody(),
     );
   }
 }

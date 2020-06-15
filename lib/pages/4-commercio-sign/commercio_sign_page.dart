@@ -1,6 +1,6 @@
 import 'package:amadeo_flutter/helpers/bloc/sign_bloc.dart';
 import 'package:amadeo_flutter/pages/1-commercio-account/restore_wallet_from_mnemonic.dart';
-import 'package:amadeo_flutter/pages/2-commercio-id/commercio_id_page.dart';
+import 'package:amadeo_flutter/pages/2-commercio-id/create_ddo_page.dart';
 import 'package:amadeo_flutter/pages/section_page.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
