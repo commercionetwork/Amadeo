@@ -52,7 +52,7 @@ class _DerivationPathChooserWidgetState
                     thumbColor: Colors.white,
                     overlayColor: Colors.grey.withAlpha(32),
                     overlayShape:
-                        const RoundSliderOverlayShape(overlayRadius: 24.0),
+                        const RoundSliderOverlayShape(),
                     tickMarkShape: const RoundSliderTickMarkShape(),
                     activeTickMarkColor: Colors.black87,
                     inactiveTickMarkColor: Colors.black45,
