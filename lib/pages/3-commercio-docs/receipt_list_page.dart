@@ -30,7 +30,8 @@ class ReceiptListPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: const [
-                ReceivedDocumentsWidget(),
+                SentReceiptsWidget(),
+                ReceivedReceiptsWidget(),
               ],
             ),
           ),
@@ -40,8 +41,8 @@ class ReceiptListPageBody extends StatelessWidget {
   }
 }
 
-class ReceivedDocumentsWidget extends StatelessWidget {
-  const ReceivedDocumentsWidget();
+class SentReceiptsWidget extends StatelessWidget {
+  const SentReceiptsWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +50,11 @@ class ReceivedDocumentsWidget extends StatelessWidget {
       child: Column(
         children: [
           const ParagraphWidget(
-            'Press the button to get a list of the received documents.',
+            'Press the button to get a list of the sent receipts.',
             padding: EdgeInsets.all(5.0),
           ),
-          ReceivedDocumentsFlatButton(
-            accountEventCallback: () =>
-                const CommercioDocsReceivedDocumentsEvent(),
+          SentReceiptsFlatButton(
+            accountEventCallback: () => const CommercioDocsSentReceiptsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -62,19 +62,63 @@ class ReceivedDocumentsWidget extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             child: () => const Text(
-              'Received documents',
+              'Sent Receipts',
               style: TextStyle(color: Colors.white),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: ReceivedDocumentsTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.receivedDocuments.fold(
-                    '',
-                    (prev, curr) =>
-                        '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, ')),
+            child: SentReceiptsTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.sentReceipts.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ReceivedReceiptsWidget extends StatelessWidget {
+  const ReceivedReceiptsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          const ParagraphWidget(
+            'Press the button to get a list of the received receipts.',
+            padding: EdgeInsets.all(5.0),
+          ),
+          ReceivedReceiptsFlatButton(
+            accountEventCallback: () =>
+                const CommercioDocsReceivedReceiptsEvent(),
+            color: Theme.of(context).primaryColor,
+            disabledColor: Theme.of(context).primaryColorDark,
+            loadingChild: () => const Text(
+              'Loading...',
+              style: TextStyle(color: Colors.white),
+            ),
+            child: () => const Text(
+              'Received Receipts',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: ReceivedReceiptsTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.receivedReceipts.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            ),
           ),
         ],
       ),
