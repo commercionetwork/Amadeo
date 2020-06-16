@@ -1,5 +1,7 @@
+import 'package:amadeo_flutter/pages/2-commercio-id/export.dart';
 import 'package:amadeo_flutter/pages/section_page.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
+import 'package:amadeo_flutter/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,28 +26,14 @@ class CommercioIdBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: [
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/2-id/create-ddo'),
-                  child: const Text(
-                    '2.1 Create a Ddo',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+              children: const [
+                SubSectionWidget(
+                  sectionPage: CreateDDOPage(),
+                  title: '2.1 Create a Ddo',
                 ),
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/2-id/request-powerup'),
-                  child: const Text(
-                    '2.2 Request Powerup',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                SubSectionWidget(
+                  sectionPage: RequestPowerupPage(),
+                  title: '2.2 Request Powerup',
                 ),
               ],
             ),

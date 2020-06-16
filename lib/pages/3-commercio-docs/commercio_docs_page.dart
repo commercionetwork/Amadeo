@@ -1,5 +1,7 @@
+import 'package:amadeo_flutter/pages/export.dart';
 import 'package:amadeo_flutter/pages/section_page.dart';
 import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
+import 'package:amadeo_flutter/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,50 +26,22 @@ class CommercioDocsBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: [
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/3-docs/share-doc'),
-                  child: const Text(
-                    '3.1 shareDoc(1->1. 1->n, plain/encrypted)',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+              children: const [
+                SubSectionWidget(
+                  sectionPage: ShareDocPage(),
+                  title: '3.1 shareDoc(1->1. 1->n, plain/encrypted)',
                 ),
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/3-docs/send-receipt'),
-                  child: const Text(
-                    '3.2 sendReceipt(1->1)',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                SubSectionWidget(
+                  sectionPage: SendReceiptPage(),
+                  title: '3.2 sendReceipt(1->1)',
                 ),
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/3-docs/document-list'),
-                  child: const Text(
-                    '3.3 documentList(sent/received)',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                SubSectionWidget(
+                  sectionPage: DocumentListPage(),
+                  title: '3.3 documentList(sent/received)',
                 ),
-                FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/3-docs/receipt-list'),
-                  child: const Text(
-                    '3.4 receiptList(sent/received)',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                SubSectionWidget(
+                  sectionPage: ReceiptListPage(),
+                  title: '3.4 receiptList(sent/received)',
                 ),
               ],
             ),

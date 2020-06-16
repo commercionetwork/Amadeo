@@ -41,11 +41,11 @@ class CommercioSignBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 RestoreWalletFromMnemonicWidget(),
-                RestoreKeysWidget(),
-                LoadDocumentWidget(),
-                SignDocumentWidget(),
+                const RestoreKeysWidget(),
+                const LoadDocumentWidget(),
+                const SignDocumentWidget(),
               ],
             ),
           ),
