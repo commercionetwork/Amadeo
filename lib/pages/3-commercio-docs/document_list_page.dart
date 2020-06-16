@@ -31,6 +31,7 @@ class DocumentListPageBody extends StatelessWidget {
             child: Column(
               children: const [
                 SentDocumentsWidget(),
+                ReceivedDocumentsWidget(),
               ],
             ),
           ),
@@ -68,12 +69,56 @@ class SentDocumentsWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: SentDocumentsTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.sentDocuments.fold(
-                    '',
-                    (prev, curr) =>
-                        '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, ')),
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.sentDocuments.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ReceivedDocumentsWidget extends StatelessWidget {
+  const ReceivedDocumentsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          const ParagraphWidget(
+            'Press the button to get a list of the received documents.',
+            padding: EdgeInsets.all(5.0),
+          ),
+          ReceivedDocumentsFlatButton(
+            accountEventCallback: () =>
+                const CommercioDocsReceivedDocumentsEvent(),
+            color: Theme.of(context).primaryColor,
+            disabledColor: Theme.of(context).primaryColorDark,
+            loadingChild: () => const Text(
+              'Loading...',
+              style: TextStyle(color: Colors.white),
+            ),
+            child: () => const Text(
+              'Received documents',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: ReceivedDocumentsTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.receivedDocuments.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            ),
           ),
         ],
       ),
