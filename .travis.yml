@@ -18,7 +18,7 @@ before_script:
     - export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
 script:
     - cd $TRAVIS_BUILD_DIR
-    - flutter pub get
+    # - flutter pub get # Disable to prevent travis git errors
     - flutter analyze --no-pub
     - flutter format -n --set-exit-if-changed .
     - flutter test
