@@ -1,5 +1,5 @@
 dist: xenial
-language: dart
+language: minimal
 addons:
     apt:
         # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
@@ -17,7 +17,7 @@ before_script:
     - export PATH="$PATH:$HOME/flutter/bin/cache/dart-sdk/bin"
 script:
     - cd $TRAVIS_BUILD_DIR
-     - flutter pub get
+    - flutter pub get
     - flutter analyze --no-pub
     - flutter format -n --set-exit-if-changed .
     - flutter test
