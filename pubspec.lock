@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.1"
-  auto_route:
-    dependency: "direct main"
-    description:
-      name: auto_route
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   basic_utils:
     dependency: transitive
     description:
