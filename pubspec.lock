@@ -210,7 +210,7 @@ packages:
       path: "."
       ref: "fix/add-docs"
       resolved-ref: d39f795ce10ba9a1c77961ac6f82340f8623d810
-      url: "git@github.com:commercionetwork/CommercioUI.git"
+      url: "https://github.com/commercionetwork/CommercioUI.git"
     source: git
     version: "0.0.1"
   commerciosdk:

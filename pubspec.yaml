@@ -13,7 +13,7 @@ dependencies:
   bloc: ^4.0.0
   commercio_ui:
     git:
-      url: git@github.com:commercionetwork/CommercioUI.git
+      url: https://github.com/commercionetwork/CommercioUI.git
       ref: fix/add-docs
   commerciosdk: ^2.1.0
   cupertino_icons: ^0.1.3
