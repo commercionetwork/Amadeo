@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:amadeo_flutter/entities/section_page.dart';
-import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
-import 'package:amadeo_flutter/widgets/section_button_widget.dart';
-import 'package:amadeo_flutter/widgets/title_widget.dart';
+import 'package:amadeo/entities/section_page.dart';
+import 'package:amadeo/widgets/paragraph_widget.dart';
+import 'package:amadeo/widgets/section_button_widget.dart';
+import 'package:amadeo/widgets/title_widget.dart';
 
 class SectionCardWidget extends StatelessWidget {
   final SectionPage sectionPage;

@@ -1,6 +1,6 @@
-import 'package:amadeo_flutter/pages/export.dart';
-import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
-import 'package:amadeo_flutter/widgets/subsection_widget.dart';
+import 'package:amadeo/pages/export.dart';
+import 'package:amadeo/widgets/base_scaffold_widget.dart';
+import 'package:amadeo/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

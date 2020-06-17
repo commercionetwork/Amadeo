@@ -1,4 +1,4 @@
-name: amadeo_flutter
+name: amadeo
 description: Amadeo is a tarter/cookbook Flutter projec for Commercio.network.
 
 version: 1.0.0+1
@@ -14,7 +14,10 @@ dependencies:
     git:
       url: https://github.com/commercionetwork/CommercioUI.git
       ref: fix/add-docs
-  commerciosdk: ^2.1.0
+  commerciosdk:
+    git:
+      url: https://github.com/commercionetwork/commercio-sdk.dart.git
+      ref: master
   cupertino_icons: ^0.1.3
   flutter_bloc: ^4.0.1
   log_4_dart_2: ^0.4.0

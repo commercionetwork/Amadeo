@@ -1,7 +1,7 @@
-import 'package:amadeo_flutter/pages/2-commercio-id/export.dart';
-import 'package:amadeo_flutter/pages/section_page.dart';
-import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
-import 'package:amadeo_flutter/widgets/subsection_widget.dart';
+import 'package:amadeo/pages/2-commercio-id/export.dart';
+import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_scaffold_widget.dart';
+import 'package:amadeo/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

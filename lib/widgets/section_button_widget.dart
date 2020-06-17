@@ -1,4 +1,4 @@
-import 'package:amadeo_flutter/entities/section_page.dart';
+import 'package:amadeo/entities/section_page.dart';
 import 'package:flutter/material.dart';
 
 class SectionButtonWidget extends StatelessWidget {
