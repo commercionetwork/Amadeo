@@ -202,7 +202,7 @@ packages:
     description:
       path: "."
       ref: "fix/add-docs"
-      resolved-ref: "76e1f91b29841029a04e47a31e997cad0711a67a"
+      resolved-ref: "0c049b24b9816e56265b28a6caea8fb0ea5e3f3b"
       url: "https://github.com/commercionetwork/CommercioUI.git"
     source: git
     version: "0.0.1"
@@ -212,7 +212,7 @@ packages:
       path: "."
       ref: master
       resolved-ref: "51542cc83e1af81f0651d2fc287c2dc9389cb5dc"
-      url: "git@github.com:commercionetwork/commercio-sdk.dart.git"
+      url: "https://github.com/commercionetwork/commercio-sdk.dart.git"
     source: git
     version: "2.1.0"
   convert:
