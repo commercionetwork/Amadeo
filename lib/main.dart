@@ -1,3 +1,4 @@
+import 'package:amadeo_flutter/helpers/net_helper.dart';
 import 'package:amadeo_flutter/home_screen.dart';
 import 'package:amadeo_flutter/pages/export.dart';
 import 'package:amadeo_flutter/utils/style.dart';
@@ -9,15 +10,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   final commercioAccount = StatefulCommercioAccount(
-      networkInfo: NetworkInfo(
-        bech32Hrp: 'did:com:',
-        lcdUrl: 'http://localhost:1317',
-      ),
-      httpHelper: HttpHelper(
-        faucetDomain: 'faucet-devnet.localhost',
-        lcdUrl: 'http://localhost:1317',
-      ));
+    networkInfo: NetworkInfo(
+      bech32Hrp: ChainNet.dev.bech32Hrp,
+      lcdUrl: ChainNet.dev.lcdUrl,
+    ),
+    httpHelper: HttpHelper(
+      faucetDomain: ChainNet.dev.faucetDomain,
+      lcdUrl: ChainNet.dev.lcdUrl,
+    ),
+  );
   final commercioDocs =
       StatefulCommercioDocs(commercioAccount: commercioAccount);
   final commercioId = StatefulCommercioId(commercioAccount: commercioAccount);
@@ -35,7 +38,9 @@ void main() {
     ),
     BlocProvider(
       create: (_) => CommercioDocsBloc(
-          commercioDocs: commercioDocs, commercioId: commercioId),
+        commercioDocs: commercioDocs,
+        commercioId: commercioId,
+      ),
     ),
     BlocProvider(
       create: (_) => CommercioMintBloc(commercioMint: commercioMint),
@@ -52,7 +57,10 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: providers,
-      child: MyApp(),
+      child: RepositoryProvider<StatefulCommercioAccount>.value(
+        value: commercioAccount,
+        child: MyApp(),
+      ),
     ),
   );
 }
