@@ -48,7 +48,8 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Switched to ${result.name}'),
+                      content: Text(
+                          'Switched to ${result.name}. Please restore the wallet.'),
                       backgroundColor: Colors.green,
                     ),
                   );
@@ -63,6 +64,10 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     child: Text(ChainNet.dev.name),
                   ),
                 ],
+                offset: Offset(
+                    10.0,
+                    MediaQuery.of(context).padding.top * 2 +
+                        preferredSize.height),
                 initialValue: ChainNet.dev,
                 child: const Icon(Icons.settings),
               ),
