@@ -1,4 +1,4 @@
-import 'package:amadeo_flutter/pages/export.dart';
+import 'package:amadeo/pages/export.dart';
 import 'package:flutter/widgets.dart';
 
 class SectionPage {

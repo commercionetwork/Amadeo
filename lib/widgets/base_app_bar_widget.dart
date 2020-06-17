@@ -1,4 +1,4 @@
-import 'package:amadeo_flutter/helpers/net_helper.dart';
+import 'package:amadeo/helpers/net_helper.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commercio_ui/core/utils/export.dart';
 import 'package:commerciosdk/export.dart' as sdk;

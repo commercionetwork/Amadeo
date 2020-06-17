@@ -1,6 +1,6 @@
-import 'package:amadeo_flutter/pages/export.dart';
-import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
-import 'package:amadeo_flutter/widgets/title_widget.dart';
+import 'package:amadeo/pages/export.dart';
+import 'package:amadeo/widgets/paragraph_widget.dart';
+import 'package:amadeo/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 
 class SubSectionWidget extends StatelessWidget {

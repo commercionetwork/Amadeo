@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:amadeo_flutter/entities/section_page.dart';
-import 'package:amadeo_flutter/pages/export.dart';
-import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
-import 'package:amadeo_flutter/widgets/section_card_widget.dart';
+import 'package:amadeo/entities/section_page.dart';
+import 'package:amadeo/pages/export.dart';
+import 'package:amadeo/widgets/base_scaffold_widget.dart';
+import 'package:amadeo/widgets/section_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen();

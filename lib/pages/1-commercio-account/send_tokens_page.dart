@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:amadeo_flutter/pages/section_page.dart';
-import 'package:amadeo_flutter/widgets/base_scaffold_widget.dart';
-import 'package:amadeo_flutter/widgets/paragraph_widget.dart';
-import 'package:amadeo_flutter/widgets/recipient_address_text_field_widget.dart';
+import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_scaffold_widget.dart';
+import 'package:amadeo/widgets/paragraph_widget.dart';
+import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;

@@ -1,7 +1,7 @@
-import 'package:amadeo_flutter/helpers/net_helper.dart';
-import 'package:amadeo_flutter/home_screen.dart';
-import 'package:amadeo_flutter/pages/export.dart';
-import 'package:amadeo_flutter/utils/style.dart';
+import 'package:amadeo/helpers/net_helper.dart';
+import 'package:amadeo/home_screen.dart';
+import 'package:amadeo/pages/export.dart';
+import 'package:amadeo/utils/style.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commercio_ui/core/utils/export.dart';
 import 'package:commerciosdk/export.dart';
