@@ -2,29 +2,47 @@ import 'package:amadeo_flutter/home_screen.dart';
 import 'package:amadeo_flutter/pages/export.dart';
 import 'package:amadeo_flutter/utils/style.dart';
 import 'package:commercio_ui/commercio_ui.dart';
+import 'package:commercio_ui/core/utils/export.dart';
+import 'package:commerciosdk/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final commercioAccount = StatefulCommercioAccount();
+  final commercioAccount = StatefulCommercioAccount(
+      networkInfo: NetworkInfo(
+        bech32Hrp: 'did:com:',
+        lcdUrl: 'http://localhost:1317',
+      ),
+      httpHelper: HttpHelper(
+        faucetDomain: 'faucet-devnet.localhost',
+        lcdUrl: 'http://localhost:1317',
+      ));
+  final commercioDocs =
+      StatefulCommercioDocs(commercioAccount: commercioAccount);
+  final commercioId = StatefulCommercioId(commercioAccount: commercioAccount);
+  final commercioMint =
+      StatefulCommercioMint(commercioAccount: commercioAccount);
+  final commercioMembership =
+      StatefulCommercioMembership(commercioAccount: commercioAccount);
 
   final providers = [
     BlocProvider(
       create: (_) => CommercioAccountBloc(commercioAccount: commercioAccount),
     ),
     BlocProvider(
-      create: (_) => CommercioIdBloc(commercioAccount: commercioAccount),
+      create: (_) => CommercioIdBloc(commercioId: commercioId),
     ),
     BlocProvider(
-      create: (_) => CommercioDocsBloc(commercioAccount: commercioAccount),
+      create: (_) => CommercioDocsBloc(
+          commercioDocs: commercioDocs, commercioId: commercioId),
     ),
     BlocProvider(
-      create: (_) => CommercioMintBloc(commercioAccount: commercioAccount),
+      create: (_) => CommercioMintBloc(commercioMint: commercioMint),
     ),
     BlocProvider(
       create: (_) =>
-          CommercioMembershipBloc(commercioAccount: commercioAccount),
+          CommercioMembershipBloc(commercioMembership: commercioMembership),
     ),
     BlocProvider<CommercioDocsEncDataBloc>(
       create: (_) => CommercioDocsEncDataBloc(),
