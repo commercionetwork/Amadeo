@@ -17,6 +17,9 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final commercioAccount =
+        RepositoryProvider.of<StatefulCommercioAccount>(context);
+
     return AppBar(
       iconTheme: const IconThemeData(
         color: Colors.white,
@@ -33,9 +36,6 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(right: 12.0),
               child: PopupMenuButton<ChainNet>(
                 onSelected: (ChainNet result) {
-                  final commercioAccount =
-                      RepositoryProvider.of<StatefulCommercioAccount>(context);
-
                   commercioAccount.networkInfo = sdk.NetworkInfo(
                     bech32Hrp: result.bech32Hrp,
                     lcdUrl: result.lcdUrl,
@@ -54,21 +54,22 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   );
                 },
-                itemBuilder: (_) => [
-                  PopupMenuItem<ChainNet>(
-                    value: ChainNet.test,
-                    child: Text(ChainNet.test.name),
-                  ),
-                  PopupMenuItem<ChainNet>(
-                    value: ChainNet.dev,
-                    child: Text(ChainNet.dev.name),
-                  ),
-                ],
-                offset: Offset(
-                    10.0,
-                    MediaQuery.of(context).padding.top * 2 +
-                        preferredSize.height),
-                initialValue: ChainNet.dev,
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem<ChainNet>(
+                      enabled: commercioAccount.networkInfo.lcdUrl !=
+                          ChainNet.test.lcdUrl,
+                      value: ChainNet.test,
+                      child: Text(ChainNet.test.name),
+                    ),
+                    PopupMenuItem<ChainNet>(
+                      enabled: commercioAccount.networkInfo.lcdUrl !=
+                          ChainNet.dev.lcdUrl,
+                      value: ChainNet.dev,
+                      child: Text(ChainNet.dev.name),
+                    ),
+                  ];
+                },
                 child: const Icon(Icons.settings),
               ),
             ),
