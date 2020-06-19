@@ -1,14 +1,14 @@
 import 'package:amadeo/helpers/sdn_data_bloc/sdn_data_bloc.dart';
+import 'package:amadeo/helpers/sign_bloc/sign_bloc.dart';
 import 'package:amadeo/helpers/sign_constants.dart';
-import 'package:amadeo/repositories/document_repository.dart';
-import 'package:amadeo/repositories/sdn_selected_repository.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:amadeo/home_screen.dart';
 import 'package:amadeo/pages/export.dart';
+import 'package:amadeo/repositories/document_repository.dart';
+import 'package:amadeo/repositories/sdn_selected_repository.dart';
 import 'package:amadeo/utils/style.dart';
-import 'package:amadeo/helpers/sign_bloc/sign_bloc.dart';
 import 'package:commercio_ui/commercio_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
           create: (_) => SignBloc(
             commercioDocs: commercioDocs,
             commercioId: commercioId,
-            docIdRepository: docIdRepository,
             documentRepository: documentRepository,
             dsbPort: commercioDsbDevPort,
             dsbSignerAddress: commercioDsbDevSigner,
