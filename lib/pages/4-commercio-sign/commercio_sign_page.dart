@@ -128,7 +128,7 @@ class LoadDocumentWidget extends StatelessWidget {
           child: Column(
             children: [
               const ParagraphWidget(
-                'Press the button to load the default document content',
+                'Press the button to load the content of a generic document',
               ),
               BlocBuilder<SignBloc, SignState>(
                 builder: (context, state) {
@@ -242,13 +242,13 @@ class ShareDocDoSignWidget extends StatelessWidget {
                     certificateProfileTextController,
               ),
               const ParagraphWidget(
-                'Select the Subject Distinguish Names to include',
+                'Select the Subject Distinguish Names to include in the generated certificate.',
               ),
               SdnDataInputSwitchWidget(
                 activeColor: Theme.of(context).primaryColor,
               ),
               const ParagraphWidget(
-                'Press the button to derive and share a Did document.',
+                'Press the button to derive and share a Did document with signature.',
               ),
               FlatButton(
                 color: Theme.of(context).primaryColor,
