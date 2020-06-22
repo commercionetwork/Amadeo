@@ -28,6 +28,11 @@ class HomeScreen extends StatelessWidget {
           'Send a document and prove its paternity, non repudial and integrity',
     ),
     SectionPage(
+        sectionPageWidget: CommercioSignPage(),
+        title: 'Commercio Sign',
+        description:
+            'Electronically sign any PDF and XML digital document so no-one can deny having digitally signed the document'),
+    SectionPage(
       sectionPageWidget: CommercioMintPage(),
       title: 'Commercio Mint',
       description:
