@@ -15,17 +15,20 @@ dependencies:
   commercio_ui:
     git:
       url: https://github.com/commercionetwork/CommercioUI.git
-      ref: fix/add-docs
+      ref: master
   commerciosdk:
     git:
-      url: https://github.com/commercionetwork/commercio-sdk.dart.git
+      url: https://github.com/pasqenr/commercio-sdk.dart.git
       ref: master
   cupertino_icons: ^0.1.3
   encrypt: ^4.0.2
   flutter_bloc: ^4.0.1
   pointycastle: ^1.0.2
   qr_flutter: ^3.2.0
-  sacco: ^0.1.4
+  sacco:
+    git:
+      url: https://github.com/pasqenr/sacco.dart
+      ref: master
 
 dev_dependencies:
   flutter_test:
