@@ -8,6 +8,7 @@ import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendTokensPage extends SectionPageWidget {
   const SendTokensPage({Key key})
@@ -31,7 +32,15 @@ class SendTokensPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                SendTokensWidget(),
+                BlocProvider<CommercioAccountSendTokensBloc>(
+                  create: (_) => CommercioAccountSendTokensBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: SendTokensWidget(),
+                ),
               ],
             ),
           ),

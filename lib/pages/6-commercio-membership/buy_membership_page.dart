@@ -4,8 +4,9 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commerciosdk/export.dart' as sdk;
+import 'package:commerciosdk/export.dart' hide Key, Padding;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BuyMembershipPage extends SectionPageWidget {
   const BuyMembershipPage({Key key})
@@ -30,8 +31,14 @@ class BuyMembershipPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                BuyMembershipWidget(),
+              children: [
+                BlocProvider<CommercioKycBuyMembershipBloc>(
+                  create: (_) => CommercioKycBuyMembershipBloc(
+                    commercioKyc:
+                        RepositoryProvider.of<StatefulCommercioKyc>(context),
+                  ),
+                  child: const BuyMembershipWidget(),
+                ),
               ],
             ),
           ),
@@ -42,7 +49,7 @@ class BuyMembershipPageBody extends StatelessWidget {
 }
 
 class BuyMembershipWidget extends StatelessWidget {
-  final sdk.MembershipType membershipType = sdk.MembershipType.BRONZE;
+  final MembershipType membershipType = MembershipType.BRONZE;
 
   const BuyMembershipWidget();
 
@@ -56,7 +63,7 @@ class BuyMembershipWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           BuyMembershipFlatButton(
-            accountEventCallback: () => CommercioMembershipBuyMembershipEvent(
+            accountEventCallback: () => CommercioKycBuyMembershipEvent(
               membershipType: membershipType,
             ),
             color: Theme.of(context).primaryColor,
@@ -73,9 +80,10 @@ class BuyMembershipWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: BuyMembershipTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Buying...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Buying...',
+              textCallback: (state) => jsonEncode(state.result),
+            ),
           ),
         ],
       ),

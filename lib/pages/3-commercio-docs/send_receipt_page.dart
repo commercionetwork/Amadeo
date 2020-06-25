@@ -6,6 +6,7 @@ import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendReceiptPage extends SectionPageWidget {
   const SendReceiptPage({Key key})
@@ -31,7 +32,15 @@ class SendReceiptPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                SendReceiptWidget(),
+                BlocProvider<CommercioDocsSendReceiptBloc>(
+                  create: (_) => CommercioDocsSendReceiptBloc(
+                    commercioDocs:
+                        RepositoryProvider.of<StatefulCommercioDocs>(context),
+                    commercioId:
+                        RepositoryProvider.of<StatefulCommercioId>(context),
+                  ),
+                  child: SendReceiptWidget(),
+                ),
               ],
             ),
           ),
@@ -95,9 +104,9 @@ class SendReceiptWidget extends StatelessWidget {
             child: SendReceiptTextField(
               readOnly: true,
               loadingTextCallback: () => 'Sending...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${jsonEncode(state.result.error)}',
             ),
           ),
         ],

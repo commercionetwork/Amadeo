@@ -5,6 +5,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RequestPowerupPage extends SectionPageWidget {
   const RequestPowerupPage({Key key})
@@ -29,9 +30,23 @@ class RequestPowerupPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                RechargeGovernmentWidget(),
-                RequestDidPowerUpWidget(),
+              children: [
+                BlocProvider<CommercioIdRechargeTumblerBloc>(
+                  create: (_) => CommercioIdRechargeTumblerBloc(
+                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
+                      context,
+                    ),
+                  ),
+                  child: const RechargeGovernmentWidget(),
+                ),
+                BlocProvider<CommercioIdRequestDidPowerUpBloc>(
+                  create: (_) => CommercioIdRequestDidPowerUpBloc(
+                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
+                      context,
+                    ),
+                  ),
+                  child: const RequestDidPowerUpWidget(),
+                ),
               ],
             ),
           ),
@@ -53,10 +68,10 @@ class RechargeGovernmentWidget extends StatelessWidget {
             'Press the button to send tokens to the Tumbler.',
             padding: EdgeInsets.all(5.0),
           ),
-          RechargeGovernmentFlatButton(
-            accountEventCallback: () =>
-                const CommercioIdRechargeGovernmentEvent(
-                    rechargeAmount: [CommercioCoin(amount: '1000')]),
+          RechargeTumblerFlatButton(
+            accountEventCallback: () => const CommercioIdRechargeTumblerEvent(
+              rechargeAmount: [CommercioCoin(amount: '1000')],
+            ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -70,10 +85,11 @@ class RechargeGovernmentWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: RechargeGovernmentCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Recharging...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+            child: RechargeTumblerTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Recharging...',
+              textCallback: (state) => jsonEncode(state.result),
+            ),
           ),
         ],
       ),
@@ -112,10 +128,11 @@ class RequestDidPowerUpWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: RequestDidPowerUpCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Powering up...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+            child: RequestDidPowerUpTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Powering up...',
+              textCallback: (state) => jsonEncode(state.result),
+            ),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DocumentListPage extends SectionPageWidget {
   const DocumentListPage({Key key})
@@ -29,9 +30,25 @@ class DocumentListPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                SentDocumentsWidget(),
-                ReceivedDocumentsWidget(),
+              children: [
+                BlocProvider<CommercioDocsSentDocumentsBloc>(
+                  create: (_) => CommercioDocsSentDocumentsBloc(
+                    commercioDocs:
+                        RepositoryProvider.of<StatefulCommercioDocs>(context),
+                    commercioId:
+                        RepositoryProvider.of<StatefulCommercioId>(context),
+                  ),
+                  child: const SentDocumentsWidget(),
+                ),
+                BlocProvider<CommercioDocsReceivedDocumentsBloc>(
+                  create: (_) => CommercioDocsReceivedDocumentsBloc(
+                    commercioDocs:
+                        RepositoryProvider.of<StatefulCommercioDocs>(context),
+                    commercioId:
+                        RepositoryProvider.of<StatefulCommercioId>(context),
+                  ),
+                  child: const ReceivedDocumentsWidget(),
+                ),
               ],
             ),
           ),

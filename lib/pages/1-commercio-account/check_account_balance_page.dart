@@ -3,6 +3,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckAccountBalancePage extends SectionPageWidget {
   const CheckAccountBalancePage({Key key})
@@ -28,8 +29,16 @@ class CheckAccountBalancePageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                CheckAccountBalanceWidget(),
+              children: [
+                BlocProvider<CommercioAccountCheckBalanceBloc>(
+                  create: (_) => CommercioAccountCheckBalanceBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: const CheckAccountBalanceWidget(),
+                ),
               ],
             ),
           ),

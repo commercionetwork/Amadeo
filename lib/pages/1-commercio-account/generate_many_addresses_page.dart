@@ -5,6 +5,7 @@ import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GenerateManyAddressesPage extends SectionPageWidget {
   const GenerateManyAddressesPage({Key key})
@@ -29,8 +30,16 @@ class GenerateManyAddressesPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                GeneratePairwiseWalletWidget(),
+              children: [
+                BlocProvider<CommercioAccountGeneratePairwiseWalletBloc>(
+                  create: (_) => CommercioAccountGeneratePairwiseWalletBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: const GeneratePairwiseWalletWidget(),
+                ),
               ],
             ),
           ),
@@ -103,9 +112,10 @@ class _GeneratePairwiseWalletWidgetState
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: GeneratePairwiseWalletTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.wallet.bech32Address),
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.wallet.bech32Address,
+            ),
           ),
         ],
       ),

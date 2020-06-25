@@ -3,6 +3,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RequestInviteFreeTokensPage extends SectionPageWidget {
   const RequestInviteFreeTokensPage({Key key})
@@ -29,9 +30,24 @@ class RequestInviteFreeTokensPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                RequestFaucetInviteWidget(),
-                RequestFreeTokensWidget(),
+              children: [
+                BlocProvider<CommercioKycRequestFaucetInviteBloc>(
+                  create: (_) => CommercioKycRequestFaucetInviteBloc(
+                    commercioKyc: RepositoryProvider.of<StatefulCommercioKyc>(
+                      context,
+                    ),
+                  ),
+                  child: const RequestFaucetInviteWidget(),
+                ),
+                BlocProvider<CommercioAccountRequestFreeTokensBloc>(
+                  create: (_) => CommercioAccountRequestFreeTokensBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: const RequestFreeTokensWidget(),
+                ),
               ],
             ),
           ),
@@ -55,7 +71,7 @@ class RequestFaucetInviteWidget extends StatelessWidget {
           ),
           RequestFaucetInviteFlatButton(
             accountEventCallback: () =>
-                const CommercioMembershipRequestFaucetInviteEvent(),
+                const CommercioKycRequestFaucetInviteEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
             loadingChild: () => const Text(
@@ -70,9 +86,10 @@ class RequestFaucetInviteWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: RequestFaucetInviteTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Requesting...',
-                textCallback: (state) => state.result),
+              readOnly: true,
+              loadingTextCallback: () => 'Requesting...',
+              textCallback: (state) => state.result,
+            ),
           ),
         ],
       ),

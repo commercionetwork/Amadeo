@@ -5,6 +5,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateDDOPage extends SectionPageWidget {
   const CreateDDOPage({Key key})
@@ -29,10 +30,31 @@ class CreateDDOPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                GenerateKeysWidget(),
-                DeriveDidDocumentWidget(),
-                SetDidDocumentWidget(),
+              children: [
+                BlocProvider<CommercioIdGenerateKeysBloc>(
+                  create: (_) => CommercioIdGenerateKeysBloc(
+                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
+                      context,
+                    ),
+                  ),
+                  child: const GenerateKeysWidget(),
+                ),
+                BlocProvider<CommercioIdDeriveDidDocumentBloc>(
+                  create: (_) => CommercioIdDeriveDidDocumentBloc(
+                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
+                      context,
+                    ),
+                  ),
+                  child: const DeriveDidDocumentWidget(),
+                ),
+                BlocProvider<CommercioIdSetDidDocumentBloc>(
+                  create: (_) => CommercioIdSetDidDocumentBloc(
+                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
+                      context,
+                    ),
+                  ),
+                  child: const SetDidDocumentWidget(),
+                ),
               ],
             ),
           ),
@@ -69,11 +91,11 @@ class GenerateKeysWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: GenerateKeysCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Generating...',
-                textCallback: (state) =>
-                    jsonEncode(state.commercioId.commercioIdKeys)),
+            child: GenerateKeysTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Generating...',
+              textCallback: (state) => jsonEncode(state.commercioIdKeys),
+            ),
           ),
         ],
       ),
@@ -109,10 +131,11 @@ class DeriveDidDocumentWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: DeriveDidDocumentCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Deriving...',
-                textCallback: (state) => jsonEncode(state.didDocument)),
+            child: DeriveDidDocumentTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Deriving...',
+              textCallback: (state) => jsonEncode(state.didDocument),
+            ),
           ),
         ],
       ),
@@ -147,12 +170,12 @@ class SetDidDocumentWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: SetDidDocumentCommercioIdTextField(
+            child: SetDidDocumentTextField(
               readOnly: true,
               loadingTextCallback: () => 'Setting...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${jsonEncode(state.result.error)}',
             ),
           ),
         ],
@@ -188,11 +211,11 @@ class RestoreKeysWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: RestoreKeysCommercioIdTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Restoring...',
-                textCallback: (state) =>
-                    jsonEncode(state.commercioId.commercioIdKeys)),
+            child: RestoreKeysTextField(
+              readOnly: true,
+              loadingTextCallback: () => 'Restoring...',
+              textCallback: (state) => jsonEncode(state.commercioIdKeys),
+            ),
           ),
         ],
       ),

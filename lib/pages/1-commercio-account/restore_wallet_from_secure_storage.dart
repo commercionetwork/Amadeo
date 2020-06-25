@@ -1,8 +1,9 @@
 import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RestoreWalletFromSecureStoragePage extends SectionPageWidget {
   const RestoreWalletFromSecureStoragePage({Key key})
@@ -28,8 +29,20 @@ class RestoreWalletFromSecureStoragePageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                RestoreWalletWidget(),
+              children: [
+                MultiBlocProvider(
+                  providers: [
+                    BlocProvider<CommercioAccountRestoreWalletBloc>(
+                      create: (_) => CommercioAccountRestoreWalletBloc(
+                        commercioAccount:
+                            RepositoryProvider.of<StatefulCommercioAccount>(
+                          context,
+                        ),
+                      ),
+                    ),
+                  ],
+                  child: const RestoreWalletWidget(),
+                )
               ],
             ),
           ),
@@ -68,9 +81,10 @@ class RestoreWalletWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: RestoreWalletTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Loading...',
-                textCallback: (state) => state.commercioAccount.walletAddress),
+              readOnly: true,
+              loadingTextCallback: () => 'Loading...',
+              textCallback: (state) => state.walletAddress,
+            ),
           ),
         ],
       ),

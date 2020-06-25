@@ -31,8 +31,14 @@ class InviteMemberPageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                InviteMemberWidget(),
+              children: [
+                BlocProvider<CommercioKycInviteMemberBloc>(
+                  create: (_) => CommercioKycInviteMemberBloc(
+                    commercioKyc:
+                        RepositoryProvider.of<StatefulCommercioKyc>(context),
+                  ),
+                  child: const InviteMemberWidget(),
+                ),
               ],
             ),
           ),
@@ -56,9 +62,9 @@ class InviteMemberWidget extends StatelessWidget {
           ),
           FutureBuilder<Wallet>(
               future: StatelessCommercioAccount.generateNewWallet(
-                  networkInfo: BlocProvider.of<CommercioAccountBloc>(context)
-                      .commercioAccount
-                      .networkInfo),
+                  networkInfo:
+                      RepositoryProvider.of<StatefulCommercioAccount>(context)
+                          .networkInfo),
               builder: (_, snap) {
                 if (snap.connectionState == ConnectionState.waiting) {
                   return FlatButton(
@@ -73,8 +79,7 @@ class InviteMemberWidget extends StatelessWidget {
                 }
 
                 return InviteMemberFlatButton(
-                  accountEventCallback: () =>
-                      CommercioMembershipInviteMemberEvent(
+                  accountEventCallback: () => CommercioKycInviteMemberEvent(
                     invitedAddress: snap.data.bech32Address,
                   ),
                   color: Theme.of(context).primaryColor,
@@ -92,9 +97,10 @@ class InviteMemberWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: InviteMemberTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Inviting...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Inviting...',
+              textCallback: (state) => jsonEncode(state.result),
+            ),
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -27,8 +27,16 @@ class ShareQRCodePageBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: const [
-                GenerateQrCodeWidget(),
+              children: [
+                BlocProvider<CommercioAccountGenerateQrBloc>(
+                  create: (_) => CommercioAccountGenerateQrBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: const GenerateQrCodeWidget(),
+                ),
               ],
             ),
           ),
@@ -64,14 +72,17 @@ class GenerateQrCodeWidget extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
-            child: BlocBuilder<CommercioAccountBloc, CommercioAccountState>(
-                builder: (context, state) {
-              if (state is CommercioAccountQrWithWallet) {
-                return QrImage(data: state.commercioAccount.walletAddress);
-              }
-
-              return Container();
-            }),
+            child: BlocBuilder<CommercioAccountGenerateQrBloc,
+                CommercioAccountQrState>(
+              builder: (context, state) {
+                return state.when(
+                  (walletAddress) => QrImage(data: walletAddress),
+                  initial: () => Container(),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (_) => Container(),
+                );
+              },
+            ),
           ),
         ],
       ),

@@ -34,8 +34,24 @@ class ShareDocPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                ShareDocWidget(),
-                ShareEncDocWidget(),
+                BlocProvider<CommercioDocsShareDocumentBloc>(
+                  create: (_) => CommercioDocsShareDocumentBloc(
+                    commercioDocs:
+                        RepositoryProvider.of<StatefulCommercioDocs>(context),
+                    commercioId:
+                        RepositoryProvider.of<StatefulCommercioId>(context),
+                  ),
+                  child: ShareDocWidget(),
+                ),
+                BlocProvider<CommercioDocsShareEncryptedDocumentBloc>(
+                  create: (_) => CommercioDocsShareEncryptedDocumentBloc(
+                    commercioDocs:
+                        RepositoryProvider.of<StatefulCommercioDocs>(context),
+                    commercioId:
+                        RepositoryProvider.of<StatefulCommercioId>(context),
+                  ),
+                  child: ShareEncDocWidget(),
+                ),
               ],
             ),
           ),
@@ -45,7 +61,12 @@ class ShareDocPageBody extends StatelessWidget {
   }
 }
 
-class ShareDocWidget extends StatelessWidget {
+class ShareDocWidget extends StatefulWidget {
+  @override
+  _ShareDocWidgetState createState() => _ShareDocWidgetState();
+}
+
+class _ShareDocWidgetState extends State<ShareDocWidget> {
   final TextEditingController recipientTextController = TextEditingController();
   final TextEditingController contentUriController = TextEditingController();
   final TextEditingController metadataSchemaUriController =
@@ -108,9 +129,9 @@ class ShareDocWidget extends StatelessWidget {
             child: ShareDocumentTextField(
               readOnly: true,
               loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${jsonEncode(state.result.error)}',
             ),
           ),
         ],
@@ -188,9 +209,9 @@ class ShareEncDocWidget extends StatelessWidget {
             child: ShareEncryptedDocumentTextField(
               readOnly: true,
               loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${jsonEncode(state.result.error)}',
             ),
           ),
         ],

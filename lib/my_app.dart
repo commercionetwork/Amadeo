@@ -20,9 +20,6 @@ class MyApp extends StatelessWidget {
         RepositoryProvider.of<StatefulCommercioAccount>(context);
     final commercioId = RepositoryProvider.of<StatefulCommercioId>(context);
     final commercioDocs = RepositoryProvider.of<StatefulCommercioDocs>(context);
-    final commercioMint = RepositoryProvider.of<StatefulCommercioMint>(context);
-    final commercioMembership =
-        RepositoryProvider.of<StatefulCommercioMembership>(context);
     final documentRepository =
         RepositoryProvider.of<DocumentRepository>(context);
     final sdnSelectedDataRepository =
@@ -30,19 +27,6 @@ class MyApp extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) =>
-              CommercioAccountBloc(commercioAccount: commercioAccount),
-        ),
-        BlocProvider(
-          create: (_) => CommercioIdBloc(commercioId: commercioId),
-        ),
-        BlocProvider(
-          create: (_) => CommercioDocsBloc(
-            commercioDocs: commercioDocs,
-            commercioId: commercioId,
-          ),
-        ),
         BlocProvider(
           create: (_) => SignBloc(
             commercioDocs: commercioDocs,
@@ -52,13 +36,6 @@ class MyApp extends StatelessWidget {
             dsbSignerAddress: commercioDsbDevSigner,
             dsbUrl: commercioDsbDevUrl,
           ),
-        ),
-        BlocProvider(
-          create: (_) => CommercioMintBloc(commercioMint: commercioMint),
-        ),
-        BlocProvider(
-          create: (_) =>
-              CommercioMembershipBloc(commercioMembership: commercioMembership),
         ),
         BlocProvider<CommercioDocsEncDataBloc>(
             create: (_) => CommercioDocsEncDataBloc()),

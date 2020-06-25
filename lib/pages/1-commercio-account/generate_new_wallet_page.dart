@@ -1,7 +1,7 @@
 import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +28,15 @@ class GenerateNewWalletPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                GenerateWalletWidget(),
+                BlocProvider<CommercioAccountGenerateWalletBloc>(
+                  create: (_) => CommercioAccountGenerateWalletBloc(
+                    commercioAccount:
+                        RepositoryProvider.of<StatefulCommercioAccount>(
+                      context,
+                    ),
+                  ),
+                  child: GenerateWalletWidget(),
+                ),
               ],
             ),
           ),
@@ -55,7 +63,7 @@ class GenerateWalletWidget extends StatelessWidget {
           ),
           GenerateWalletFlatButton(
             accountEventCallback: () =>
-                const CommercioAccountGenerateNewWalletEvent(),
+                const CommercioAccountGenerateWalletEvent(),
             loadingChild: () => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
@@ -67,26 +75,28 @@ class GenerateWalletWidget extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
           ),
-          BlocBuilder<CommercioAccountBloc, CommercioAccountState>(
-              builder: (_, snap) {
-            if (snap is CommercioAccountInitial) {
-              mnemonicTextController.text = '';
-            }
+          BlocBuilder<CommercioAccountGenerateWalletBloc,
+              CommercioAccountGenerateWalletState>(
+            builder: (_, snap) {
+              snap.when(
+                (mnemonic, wallet, walletAddress) =>
+                    mnemonicTextController.text = mnemonic,
+                initial: () => mnemonicTextController.text = '',
+                loading: () => mnemonicTextController.text = 'Loading...',
+                error: (_) => null,
+              );
 
-            if (snap is CommercioAccountGeneratedWithWallet) {
-              mnemonicTextController.text = snap.commercioAccount.mnemonic;
-            }
-
-            return TextField(
-              readOnly: true,
-              controller: mnemonicTextController,
-            );
-          }),
+              return TextField(
+                readOnly: true,
+                controller: mnemonicTextController,
+              );
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: GenerateWalletTextField(
               loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.commercioAccount.walletAddress,
+              textCallback: (state) => state.walletAddress,
             ),
           ),
         ],

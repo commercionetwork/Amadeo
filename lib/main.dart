@@ -46,7 +46,7 @@ void main() {
         ),
         RepositoryProvider(
           create: (_) =>
-              StatefulCommercioMembership(commercioAccount: commercioAccount),
+              StatefulCommercioKyc(commercioAccount: commercioAccount),
         ),
         RepositoryProvider(create: (_) => DocumentRepository()),
         RepositoryProvider(create: (_) => SdnSelectedDataRepository()),

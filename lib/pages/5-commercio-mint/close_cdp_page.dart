@@ -5,6 +5,7 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CloseCdpPage extends SectionPageWidget {
   const CloseCdpPage({Key key})
@@ -30,7 +31,13 @@ class CloseCdpPageBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                CloseCdpWidget(),
+                BlocProvider<CommercioMintCloseCdpBloc>(
+                  create: (_) => CommercioMintCloseCdpBloc(
+                    commercioMint:
+                        RepositoryProvider.of<StatefulCommercioMint>(context),
+                  ),
+                  child: CloseCdpWidget(),
+                ),
               ],
             ),
           ),
@@ -77,9 +84,10 @@ class CloseCdpWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: CloseCdpTextField(
-                readOnly: true,
-                loadingTextCallback: () => 'Closing...',
-                textCallback: (state) => jsonEncode(state.transactionResult)),
+              readOnly: true,
+              loadingTextCallback: () => 'Closing...',
+              textCallback: (state) => jsonEncode(state.result),
+            ),
           ),
         ],
       ),
