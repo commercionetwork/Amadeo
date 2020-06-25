@@ -27,10 +27,14 @@ class CommercioKYCPageBody extends StatelessWidget {
                 SubSectionWidget(
                   sectionPage: BuyMembershipPage(),
                   title: '6.1 Buy a membership with Cash Coins',
+                  subtitle:
+                      'Buys the membership with the given membershipType.',
                 ),
                 SubSectionWidget(
                   sectionPage: InviteMemberPage(),
                   title: '6.2 Invite a Member',
+                  subtitle:
+                      'Sends a new transaction in order to invite the given userDid.',
                 ),
               ],
             ),

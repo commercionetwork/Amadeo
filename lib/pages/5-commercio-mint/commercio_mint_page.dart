@@ -27,18 +27,25 @@ class CommercioMintBody extends StatelessWidget {
                 SubSectionWidget(
                   sectionPage: OpenCdpPage(),
                   title: '5.1 Opening a Collateral Debt Position',
+                  subtitle:
+                      'Opens a new CDP depositing the given Commercio Token amount.',
                 ),
                 SubSectionWidget(
                   sectionPage: CloseCdpPage(),
                   title: '5.2 Closing a Collateral Debt Position',
+                  subtitle:
+                      'Closes the CDP having the given timestamp (height).',
                 ),
                 SubSectionWidget(
                   sectionPage: CheckAccountBalancePage(),
                   title: '5.3 Check an account CCC balance',
+                  subtitle: 'Get the account CCC balance.',
                 ),
                 SubSectionWidget(
                   sectionPage: SendTokensPage(),
                   title: '5.4 Send a Credit (CCC) to another address',
+                  subtitle:
+                      'Send a Commercio Cash Credit (CCC) to another account.',
                 ),
               ],
             ),

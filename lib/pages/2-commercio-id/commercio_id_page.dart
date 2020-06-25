@@ -30,10 +30,14 @@ class CommercioIdBody extends StatelessWidget {
                 SubSectionWidget(
                   sectionPage: CreateDDOPage(),
                   title: '2.1 Create a Ddo',
+                  subtitle:
+                      'Perform a transaction to set the specified DidDocument as being associated with the address present inside the specified wallet.',
                 ),
                 SubSectionWidget(
                   sectionPage: RequestPowerupPage(),
                   title: '2.2 Request Powerup',
+                  subtitle:
+                      'Creates a new Did power up request for the given pairwiseDid and of the given amount only after you made a did deposit request.',
                 ),
               ],
             ),
