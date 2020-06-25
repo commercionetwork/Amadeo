@@ -134,10 +134,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
         return;
       }
 
-      final getResult = await _retrieveDocument(
-        walletAddress: event.walletAddress,
-        docId: event.docId,
-      );
+      final getResult = await _retrieveDocument(docId: event.docId);
 
       final verified = _verifySignature(dsbResult: getResult, digest: digest);
 
@@ -200,7 +197,6 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   }
 
   Future<DsbResult> _retrieveDocument({
-    @required String walletAddress,
     @required String docId,
   }) async {
     final uri = Uri.http('$dsbUrl:$dsbPort', '${DsbEndpoint.get.value}/$docId');
