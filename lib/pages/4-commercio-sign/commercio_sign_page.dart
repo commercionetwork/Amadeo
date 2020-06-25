@@ -33,7 +33,6 @@ class CommercioSignBody extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                const RestoreWalletWidget(),
                 GenerateUuidWidget(),
                 LoadDocumentWidget(),
                 ShareDocDoSignWidget(),
@@ -170,7 +169,12 @@ class LoadDocumentWidget extends StatelessWidget {
   }
 }
 
-class ShareDocDoSignWidget extends StatelessWidget {
+class ShareDocDoSignWidget extends StatefulWidget {
+  @override
+  _ShareDocDoSignWidgetState createState() => _ShareDocDoSignWidgetState();
+}
+
+class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
   final TextEditingController recipientTextController = TextEditingController();
   final TextEditingController signerIstanceTextController =
       TextEditingController();
@@ -180,7 +184,6 @@ class ShareDocDoSignWidget extends StatelessWidget {
       TextEditingController(text: 'xxxx');
   final TextEditingController certificateProfileTextController =
       TextEditingController(text: 'xxxx');
-
   final TextEditingController contentUriController = TextEditingController();
   final TextEditingController metadataSchemaUriController =
       TextEditingController();
@@ -190,13 +193,13 @@ class ShareDocDoSignWidget extends StatelessWidget {
       TextEditingController();
   final TextEditingController metadataSchemaTypeController =
       TextEditingController(text: '');
-
   final TextEditingController signedTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final signBloc = BlocProvider.of<SignBloc>(context);
-    final accountBloc = BlocProvider.of<CommercioAccountBloc>(context);
+    final commercioAccount =
+        RepositoryProvider.of<StatefulCommercioAccount>(context);
 
     storageUriTextController.text =
         Uri.http('${signBloc.dsbUrl}:${signBloc.dsbPort}', '').toString();
@@ -280,8 +283,7 @@ class ShareDocDoSignWidget extends StatelessWidget {
                             ),
                             schemaType: metadataSchemaTypeController.text,
                           ),
-                          walletAddress:
-                              accountBloc.commercioAccount.walletAddress,
+                          walletAddress: commercioAccount.walletAddress,
                         )),
                 child: const Text(
                   'Sign document',
