@@ -20,12 +20,18 @@ class SectionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TitleWidget(sectionPage.title),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TitleWidget(sectionPage.title),
+            ),
             ParagraphWidget(sectionPage.description),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
