@@ -1,6 +1,4 @@
 import 'package:amadeo/pages/export.dart';
-import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:amadeo/widgets/title_widget.dart';
 import 'package:flutter/material.dart';
 
 class SubSectionWidget extends StatelessWidget {
@@ -24,19 +22,19 @@ class SubSectionWidget extends StatelessWidget {
         padding: externalPadding,
         child: Container(
           decoration: BoxDecoration(
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.grey,
-                offset: const Offset(0.0, 1.0),
+                offset: Offset(0.0, 1.0),
                 blurRadius: 1.0,
               ),
             ],
             borderRadius: BorderRadius.circular(13.0),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: const [0.18, 0.93],
-              colors: const [
+              stops: [0.18, 0.93],
+              colors: [
                 Color(0xFF38BA8C),
                 Color(0xFF22c4b9),
               ],
