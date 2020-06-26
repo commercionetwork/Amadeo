@@ -59,8 +59,9 @@ class CloseCdpWidget extends StatelessWidget {
           TextField(
             controller: blockHeightTextController,
             decoration: const InputDecoration(
-                hintText: '46487',
-                labelText: 'Block height of the previously opened CDP'),
+              hintText: '46487',
+              labelText: 'Block height of the previously opened CDP',
+            ),
           ),
           const ParagraphWidget(
             'Press the button to close a Cdp at height at the specified block height.',
@@ -86,7 +87,10 @@ class CloseCdpWidget extends StatelessWidget {
             child: CloseCdpTextField(
               readOnly: true,
               loadingTextCallback: () => 'Closing...',
-              textCallback: (state) => jsonEncode(state.result),
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${state.result.error.errorMessage}',
+              maxLines: null,
             ),
           ),
         ],

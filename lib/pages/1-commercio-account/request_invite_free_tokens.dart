@@ -89,6 +89,7 @@ class RequestFaucetInviteWidget extends StatelessWidget {
               readOnly: true,
               loadingTextCallback: () => 'Requesting...',
               textCallback: (state) => state.result,
+              maxLines: null,
             ),
           ),
         ],
@@ -130,6 +131,7 @@ class RequestFreeTokensWidget extends StatelessWidget {
               textCallback: (state) => state.accountRequestResponse.isSuccess
                   ? 'Success! Hash: ${state.accountRequestResponse.message}'
                   : 'Error: ${state.accountRequestResponse.message}',
+              maxLines: null,
             ),
           ),
         ],

@@ -93,6 +93,7 @@ class GenerateUuidWidget extends StatelessWidget {
                   return TextField(
                     controller: uuidTextController,
                     readOnly: true,
+                    maxLines: null,
                   );
                 },
               ),
@@ -158,6 +159,7 @@ class LoadDocumentWidget extends StatelessWidget {
                   return TextField(
                     controller: documentTextController,
                     readOnly: true,
+                    maxLines: null,
                   );
                 },
               ),
@@ -295,6 +297,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               TextField(
                 controller: signedTextController,
                 readOnly: true,
+                maxLines: null,
               )
             ],
           );

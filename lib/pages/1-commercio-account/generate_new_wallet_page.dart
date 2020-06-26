@@ -97,6 +97,7 @@ class GenerateWalletWidget extends StatelessWidget {
             child: GenerateWalletTextField(
               loadingTextCallback: () => 'Loading...',
               textCallback: (state) => state.walletAddress,
+              maxLines: null,
             ),
           ),
         ],

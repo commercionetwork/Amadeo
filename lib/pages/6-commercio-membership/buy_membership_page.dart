@@ -82,7 +82,10 @@ class BuyMembershipWidget extends StatelessWidget {
             child: BuyMembershipTextField(
               readOnly: true,
               loadingTextCallback: () => 'Buying...',
-              textCallback: (state) => jsonEncode(state.result),
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${state.result.error.errorMessage}',
+              maxLines: null,
             ),
           ),
         ],

@@ -58,7 +58,9 @@ class OpenCdpWidget extends StatelessWidget {
           TextField(
             controller: amountTextController,
             decoration: const InputDecoration(
-                hintText: '100', labelText: 'Amount of tokens'),
+              hintText: '100',
+              labelText: 'Amount of tokens',
+            ),
           ),
           const ParagraphWidget(
             'Press the button to open a Cdp with the specified.',
@@ -84,7 +86,10 @@ class OpenCdpWidget extends StatelessWidget {
             child: OpenCdpTextField(
               readOnly: true,
               loadingTextCallback: () => 'Opening...',
-              textCallback: (state) => jsonEncode(state.result),
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${state.result.error.errorMessage}',
+              maxLines: null,
             ),
           ),
         ],

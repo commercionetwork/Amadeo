@@ -77,11 +77,13 @@ class CheckAccountBalanceWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: CheckBalanceTextField(
-                loadingTextCallback: () => 'Checking...',
-                textCallback: (state) => state.balance.fold(
-                    '',
-                    (prev, curr) =>
-                        '$prev ${prev.isEmpty ? '' : ','} Amount ${curr.amount} of ${curr.denom}')),
+              loadingTextCallback: () => 'Checking...',
+              textCallback: (state) => state.balance.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : ','} Amount ${curr.amount} of ${curr.denom}'),
+              maxLines: null,
+            ),
           ),
         ],
       ),

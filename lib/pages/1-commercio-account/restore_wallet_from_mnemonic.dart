@@ -101,6 +101,7 @@ class RestoreWalletFromMnemonicWidget extends StatelessWidget {
               readOnly: true,
               loadingTextCallback: () => 'Loading...',
               textCallback: (state) => state.walletAddress,
+              maxLines: null,
             ),
           ),
         ],

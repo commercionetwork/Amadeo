@@ -95,6 +95,7 @@ class GenerateKeysWidget extends StatelessWidget {
               readOnly: true,
               loadingTextCallback: () => 'Generating...',
               textCallback: (state) => jsonEncode(state.commercioIdKeys),
+              maxLines: null,
             ),
           ),
         ],
@@ -135,6 +136,7 @@ class DeriveDidDocumentWidget extends StatelessWidget {
               readOnly: true,
               loadingTextCallback: () => 'Deriving...',
               textCallback: (state) => jsonEncode(state.didDocument),
+              maxLines: null,
             ),
           ),
         ],
@@ -176,6 +178,7 @@ class SetDidDocumentWidget extends StatelessWidget {
               textCallback: (state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
+              maxLines: null,
             ),
           ),
         ],
@@ -215,6 +218,7 @@ class RestoreKeysWidget extends StatelessWidget {
               readOnly: true,
               loadingTextCallback: () => 'Restoring...',
               textCallback: (state) => jsonEncode(state.commercioIdKeys),
+              maxLines: null,
             ),
           ),
         ],

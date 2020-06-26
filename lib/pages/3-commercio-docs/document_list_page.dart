@@ -92,6 +92,7 @@ class SentDocumentsWidget extends StatelessWidget {
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+              maxLines: null,
             ),
           ),
         ],
@@ -135,6 +136,7 @@ class ReceivedDocumentsWidget extends StatelessWidget {
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+              maxLines: null,
             ),
           ),
         ],

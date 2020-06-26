@@ -88,7 +88,10 @@ class RechargeGovernmentWidget extends StatelessWidget {
             child: RechargeTumblerTextField(
               readOnly: true,
               loadingTextCallback: () => 'Recharging...',
-              textCallback: (state) => jsonEncode(state.result),
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${state.result.error.errorMessage}',
+              maxLines: null,
             ),
           ),
         ],
@@ -131,7 +134,10 @@ class RequestDidPowerUpWidget extends StatelessWidget {
             child: RequestDidPowerUpTextField(
               readOnly: true,
               loadingTextCallback: () => 'Powering up...',
-              textCallback: (state) => jsonEncode(state.result),
+              textCallback: (state) => state.result.success
+                  ? 'Success! Hash: ${state.result.hash}'
+                  : 'Error: ${state.result.error.errorMessage}',
+              maxLines: null,
             ),
           ),
         ],

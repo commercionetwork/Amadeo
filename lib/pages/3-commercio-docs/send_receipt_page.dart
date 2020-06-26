@@ -67,16 +67,20 @@ class SendReceiptWidget extends StatelessWidget {
           ),
           TextField(
             decoration: const InputDecoration(
-                hintText:
-                    'BC5810E7A8FD7E057A8EA56152D4C8EF1F38CE235D8DAF179AFD7B75B0415695',
-                labelText: 'Transaction hash'),
+              hintText:
+                  'BC5810E7A8FD7E057A8EA56152D4C8EF1F38CE235D8DAF179AFD7B75B0415695',
+              labelText: 'Transaction hash',
+            ),
             controller: txHashController,
+            maxLines: null,
           ),
           TextField(
             decoration: const InputDecoration(
-                hintText: '28cdad1b-9289-4a4a-985e-3a44a1c3ba9b',
-                labelText: 'Document id'),
+              hintText: '28cdad1b-9289-4a4a-985e-3a44a1c3ba9b',
+              labelText: 'Document id',
+            ),
             controller: docIdController,
+            maxLines: null,
           ),
           const ParagraphWidget(
             'Press the button to send a receipt to the inseted hash and docId.',
@@ -107,6 +111,7 @@ class SendReceiptWidget extends StatelessWidget {
               textCallback: (state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
+              maxLines: null,
             ),
           ),
         ],

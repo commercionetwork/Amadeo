@@ -115,6 +115,7 @@ class _GeneratePairwiseWalletWidgetState
               readOnly: true,
               loadingTextCallback: () => 'Loading...',
               textCallback: (state) => state.wallet.bech32Address,
+              maxLines: null,
             ),
           ),
         ],

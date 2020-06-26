@@ -115,6 +115,7 @@ class SendTokensWidget extends StatelessWidget {
               textCallback: (state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
+              maxLines: null,
             ),
           ),
         ],
