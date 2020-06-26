@@ -59,7 +59,7 @@ class SubSectionWidget extends StatelessWidget {
                 if (subtitle != null)
                   Text(
                     subtitle,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
               ],
             ),
