@@ -89,6 +89,7 @@ class GenerateWalletWidget extends StatelessWidget {
               return TextField(
                 readOnly: true,
                 controller: mnemonicTextController,
+                maxLines: null,
               );
             },
           ),
