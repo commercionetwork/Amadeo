@@ -68,14 +68,14 @@ class CloseCdpWidget extends StatelessWidget {
           CloseCdpFlatButton(
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Closing...',
               style: TextStyle(color: Colors.white),
             ),
-            accountEventCallback: () => CommercioMintCloseCdpEvent(
+            event: () => CommercioMintCloseCdpEvent(
               blockHeight: int.tryParse(blockHeightTextController.text),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Close Cdp',
               style: TextStyle(color: Colors.white),
             ),
@@ -84,8 +84,8 @@ class CloseCdpWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: CloseCdpTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Closing...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Closing...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,

@@ -61,14 +61,15 @@ class GenerateQrCodeWidget extends StatelessWidget {
           GenerateQrFlatButton(
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            child: () => const Text(
+            child: (_) => const Text(
               'Generate QR',
               style: TextStyle(color: Colors.white),
             ),
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Generating...',
               style: TextStyle(color: Colors.white),
             ),
+            event: () => const CommercioAccountGenerateQrEvent(),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),

@@ -67,16 +67,16 @@ class RechargeGovernmentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RechargeTumblerFlatButton(
-            accountEventCallback: () => const CommercioIdRechargeTumblerEvent(
+            event: () => const CommercioIdRechargeTumblerEvent(
               rechargeAmount: [CommercioCoin(amount: '1000')],
             ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Recharging...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Send tokens to Tumbler',
               style: TextStyle(color: Colors.white),
             ),
@@ -85,8 +85,8 @@ class RechargeGovernmentWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RechargeTumblerTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Recharging...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Recharging...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,
@@ -111,18 +111,18 @@ class RequestDidPowerUpWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RequestDidPowerUpFlatButton(
-            accountEventCallback: () => const CommercioIdRequestDidPowerUpEvent(
+            event: () => const CommercioIdRequestDidPowerUpEvent(
               amount: [CommercioCoin(amount: '1000')],
               pairwiseAddress:
                   'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
             ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Powering up...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Request Did PowerUp',
               style: TextStyle(color: Colors.white),
             ),
@@ -131,8 +131,8 @@ class RequestDidPowerUpWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RequestDidPowerUpTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Powering up...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Powering up...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,

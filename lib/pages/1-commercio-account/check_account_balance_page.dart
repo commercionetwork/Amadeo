@@ -61,13 +61,12 @@ class CheckAccountBalanceWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           CheckBalanceFlatButton(
-            accountEventCallback: () =>
-                const CommercioAccountCheckBalanceEvent(),
-            child: () => const Text(
+            event: () => const CommercioAccountCheckBalanceEvent(),
+            child: (_) => const Text(
               'Check balance',
               style: TextStyle(color: Colors.white),
             ),
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Checking...',
               style: TextStyle(color: Colors.white),
             ),
@@ -77,8 +76,8 @@ class CheckAccountBalanceWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: CheckBalanceTextField(
-              loadingTextCallback: () => 'Checking...',
-              textCallback: (state) => state.balance.fold(
+              loading: (_) => 'Checking...',
+              text: (_, state) => state.balance.fold(
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : ','} Amount ${curr.amount} of ${curr.denom}'),

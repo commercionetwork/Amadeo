@@ -97,24 +97,26 @@ class _GeneratePairwiseWalletWidgetState
             padding: EdgeInsets.all(5.0),
           ),
           GeneratePairwiseWalletFlatButton(
-            lastDerivationPath: derivationPathValue.toString(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            child: () => const Text(
+            child: (_) => const Text(
               'Generate pairwise wallet',
               style: TextStyle(color: Colors.white),
             ),
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Generating...',
               style: TextStyle(color: Colors.white),
+            ),
+            event: () => CommercioAccountGeneratePairwiseWalletEvent(
+              lastDerivationPath: derivationPathValue.toString(),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: GeneratePairwiseWalletTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.wallet.bech32Address,
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.wallet.bech32Address,
               maxLines: null,
             ),
           ),

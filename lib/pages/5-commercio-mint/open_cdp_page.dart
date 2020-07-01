@@ -67,14 +67,14 @@ class OpenCdpWidget extends StatelessWidget {
           OpenCdpFlatButton(
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Opening...',
               style: TextStyle(color: Colors.white),
             ),
-            accountEventCallback: () => CommercioMintOpenCdpEvent(
+            event: () => CommercioMintOpenCdpEvent(
               amount: int.tryParse(amountTextController.text),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Open Cdp',
               style: TextStyle(color: Colors.white),
             ),
@@ -83,8 +83,8 @@ class OpenCdpWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: OpenCdpTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Opening...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Opening...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,

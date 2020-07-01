@@ -71,14 +71,14 @@ class SentReceiptsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SentReceiptsFlatButton(
-            accountEventCallback: () => const CommercioDocsSentReceiptsEvent(),
+            event: () => const CommercioDocsSentReceiptsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Sent Receipts',
               style: TextStyle(color: Colors.white),
             ),
@@ -87,8 +87,8 @@ class SentReceiptsWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: SentReceiptsTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.sentReceipts.fold(
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.sentReceipts.fold(
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
@@ -114,15 +114,14 @@ class ReceivedReceiptsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           ReceivedReceiptsFlatButton(
-            accountEventCallback: () =>
-                const CommercioDocsReceivedReceiptsEvent(),
+            event: () => const CommercioDocsReceivedReceiptsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Received Receipts',
               style: TextStyle(color: Colors.white),
             ),
@@ -131,8 +130,8 @@ class ReceivedReceiptsWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: ReceivedReceiptsTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.receivedReceipts.fold(
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.receivedReceipts.fold(
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),

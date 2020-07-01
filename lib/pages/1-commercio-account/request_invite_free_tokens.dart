@@ -70,15 +70,14 @@ class RequestFaucetInviteWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RequestFaucetInviteFlatButton(
-            accountEventCallback: () =>
-                const CommercioKycRequestFaucetInviteEvent(),
+            event: () => const CommercioKycRequestFaucetInviteEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Requesting...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Request faucet invite',
               style: TextStyle(color: Colors.white),
             ),
@@ -87,8 +86,8 @@ class RequestFaucetInviteWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RequestFaucetInviteTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Requesting...',
-              textCallback: (state) => state.result,
+              loading: (_) => 'Requesting...',
+              text: (_, state) => state.result,
               maxLines: null,
             ),
           ),
@@ -111,15 +110,14 @@ class RequestFreeTokensWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RequestFreeTokensFlatButton(
-            accountEventCallback: () =>
-                const CommercioAccountRequestFreeTokensEvent(),
+            event: () => const CommercioAccountRequestFreeTokensEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Requesting...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Request free tokens',
               style: TextStyle(color: Colors.white),
             ),
@@ -127,8 +125,8 @@ class RequestFreeTokensWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: RequestFreeTokensTextField(
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.accountRequestResponse.isSuccess
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.accountRequestResponse.isSuccess
                   ? 'Success! Hash: ${state.accountRequestResponse.message}'
                   : 'Error: ${state.accountRequestResponse.message}',
               maxLines: null,

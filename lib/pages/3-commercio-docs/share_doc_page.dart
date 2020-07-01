@@ -98,7 +98,7 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
             padding: EdgeInsets.all(5.0),
           ),
           ShareDocumentFlatButton(
-            accountEventCallback: () => CommercioDocsShareDocumentEvent(
+            event: () => CommercioDocsShareDocumentEvent(
               recipients: recipientTextController.text
                   .split(',')
                   .map((e) => e.trim())
@@ -115,11 +115,11 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
             ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Deriving & sharing...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Derive & Share Did document',
               style: TextStyle(color: Colors.white),
             ),
@@ -128,8 +128,8 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
             padding: const EdgeInsets.all(5.0),
             child: ShareDocumentTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Deriving & sharing...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
               maxLines: null,
@@ -176,8 +176,7 @@ class ShareEncDocWidget extends StatelessWidget {
             activeColor: Theme.of(context).primaryColor,
           ),
           ShareEncryptedDocumentFlatButton(
-            accountEventCallback: () =>
-                CommercioDocsShareEncryptedDocumentEvent(
+            event: () => CommercioDocsShareEncryptedDocumentEvent(
               recipients: recipientTextController.text
                   .split(',')
                   .map((e) => e.trim())
@@ -196,11 +195,11 @@ class ShareEncDocWidget extends StatelessWidget {
             ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Deriving & sharing...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Derive & Share Did document',
               style: TextStyle(color: Colors.white),
             ),
@@ -209,8 +208,8 @@ class ShareEncDocWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: ShareEncryptedDocumentTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Deriving & sharing...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
               maxLines: null,

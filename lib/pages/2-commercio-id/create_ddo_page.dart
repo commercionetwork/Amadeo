@@ -77,14 +77,14 @@ class GenerateKeysWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           GenerateKeysFlatButton(
-            accountEventCallback: () => const CommercioIdGenerateKeysEvent(),
+            event: () => const CommercioIdGenerateKeysEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Generating...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Generate keys',
               style: TextStyle(color: Colors.white),
             ),
@@ -93,8 +93,8 @@ class GenerateKeysWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: GenerateKeysTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Generating...',
-              textCallback: (state) => jsonEncode(state.commercioIdKeys),
+              loading: (_) => 'Generating...',
+              text: (_, state) => jsonEncode(state.commercioIdKeys),
               maxLines: null,
             ),
           ),
@@ -117,15 +117,14 @@ class DeriveDidDocumentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           DeriveDidDocumentFlatButton(
-            accountEventCallback: () =>
-                const CommercioIdDeriveDidDocumentEvent(),
+            event: () => const CommercioIdDeriveDidDocumentEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Deriving...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Derive document',
               style: TextStyle(color: Colors.white),
             ),
@@ -134,8 +133,8 @@ class DeriveDidDocumentWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: DeriveDidDocumentTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Deriving...',
-              textCallback: (state) => jsonEncode(state.didDocument),
+              loading: (_) => 'Deriving...',
+              text: (_, state) => jsonEncode(state.didDocument),
               maxLines: null,
             ),
           ),
@@ -158,14 +157,14 @@ class SetDidDocumentWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SetDidDocumentFlatButton(
-            accountEventCallback: () => const CommercioIdSetDidDocumentEvent(),
+            event: () => const CommercioIdSetDidDocumentEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Setting...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Set document',
               style: TextStyle(color: Colors.white),
             ),
@@ -174,8 +173,8 @@ class SetDidDocumentWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: SetDidDocumentTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Setting...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Setting...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
               maxLines: null,
@@ -200,14 +199,14 @@ class RestoreKeysWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RestoreKeysFlatButton(
-            accountEventCallback: () => const CommercioIdRestoreKeysEvent(),
+            event: () => const CommercioIdRestoreKeysEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Restoring...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Restore keys',
               style: TextStyle(color: Colors.white),
             ),
@@ -216,8 +215,8 @@ class RestoreKeysWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RestoreKeysTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Restoring...',
-              textCallback: (state) => jsonEncode(state.commercioIdKeys),
+              loading: (_) => 'Restoring...',
+              text: (_, state) => jsonEncode(state.commercioIdKeys),
               maxLines: null,
             ),
           ),

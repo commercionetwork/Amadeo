@@ -61,16 +61,16 @@ class BuyMembershipWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           BuyMembershipFlatButton(
-            accountEventCallback: () => CommercioKycBuyMembershipEvent(
+            event: () => CommercioKycBuyMembershipEvent(
               membershipType: membershipType,
             ),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Buying...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Buy membership',
               style: TextStyle(color: Colors.white),
             ),
@@ -79,8 +79,8 @@ class BuyMembershipWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: BuyMembershipTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Buying...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Buying...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,

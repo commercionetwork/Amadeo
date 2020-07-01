@@ -77,16 +77,16 @@ class InviteMemberWidget extends StatelessWidget {
                 }
 
                 return InviteMemberFlatButton(
-                  accountEventCallback: () => CommercioKycInviteMemberEvent(
+                  event: () => CommercioKycInviteMemberEvent(
                     invitedAddress: snap.data.bech32Address,
                   ),
                   color: Theme.of(context).primaryColor,
                   disabledColor: Theme.of(context).primaryColorDark,
-                  loadingChild: () => const Text(
+                  loading: (_) => const Text(
                     'Inviting...',
                     style: TextStyle(color: Colors.white),
                   ),
-                  child: () => const Text(
+                  child: (_) => const Text(
                     'Invite new wallet',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -96,8 +96,8 @@ class InviteMemberWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: InviteMemberTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Inviting...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Inviting...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${state.result.error.errorMessage}',
               maxLines: null,

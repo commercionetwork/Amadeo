@@ -71,14 +71,14 @@ class SentDocumentsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SentDocumentsFlatButton(
-            accountEventCallback: () => const CommercioDocsSentDocumentsEvent(),
+            event: () => const CommercioDocsSentDocumentsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Sent documents',
               style: TextStyle(color: Colors.white),
             ),
@@ -87,8 +87,8 @@ class SentDocumentsWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: SentDocumentsTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.sentDocuments.fold(
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.sentDocuments.fold(
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
@@ -114,15 +114,14 @@ class ReceivedDocumentsWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           ReceivedDocumentsFlatButton(
-            accountEventCallback: () =>
-                const CommercioDocsReceivedDocumentsEvent(),
+            event: () => const CommercioDocsReceivedDocumentsEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Received documents',
               style: TextStyle(color: Colors.white),
             ),
@@ -131,8 +130,8 @@ class ReceivedDocumentsWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: ReceivedDocumentsTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.receivedDocuments.fold(
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.receivedDocuments.fold(
                   '',
                   (prev, curr) =>
                       '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),

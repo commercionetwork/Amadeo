@@ -62,13 +62,12 @@ class GenerateWalletWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           GenerateWalletFlatButton(
-            accountEventCallback: () =>
-                const CommercioAccountGenerateWalletEvent(),
-            loadingChild: () => const Text(
+            event: () => const CommercioAccountGenerateWalletEvent(),
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Generate Wallet',
               style: TextStyle(color: Colors.white),
             ),
@@ -96,8 +95,8 @@ class GenerateWalletWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: GenerateWalletTextField(
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.walletAddress,
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.walletAddress,
               maxLines: null,
             ),
           ),

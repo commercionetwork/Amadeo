@@ -99,8 +99,8 @@ class RestoreWalletFromMnemonicWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RestoreWalletTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.walletAddress,
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.walletAddress,
               maxLines: null,
             ),
           ),

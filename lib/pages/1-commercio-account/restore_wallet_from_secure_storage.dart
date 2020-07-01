@@ -65,15 +65,14 @@ class RestoreWalletWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           RestoreWalletFlatButton(
-            accountEventCallback: () =>
-                const CommercioAccountRestoreWalletEvent(),
+            event: () => const CommercioAccountRestoreWalletEvent(),
             color: Theme.of(context).primaryColor,
             disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Loading...',
               style: TextStyle(color: Colors.white),
             ),
-            child: () => const Text(
+            child: (_) => const Text(
               'Restore Wallet',
               style: TextStyle(color: Colors.white),
             ),
@@ -82,8 +81,8 @@ class RestoreWalletWidget extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: RestoreWalletTextField(
               readOnly: true,
-              loadingTextCallback: () => 'Loading...',
-              textCallback: (state) => state.walletAddress,
+              loading: (_) => 'Loading...',
+              text: (_, state) => state.walletAddress,
               maxLines: null,
             ),
           ),

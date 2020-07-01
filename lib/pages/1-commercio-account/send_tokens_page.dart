@@ -90,7 +90,7 @@ class SendTokensWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           SendTokensFlatButton(
-            accountEventCallback: () => CommercioAccountSendTokensEvent(
+            event: () => CommercioAccountSendTokensEvent(
               recipientAddress:
                   recipientTextController.text.split(',')[0].trim(),
               amount: [
@@ -99,9 +99,9 @@ class SendTokensWidget extends StatelessWidget {
                     amount: amountTextController.text)
               ],
             ),
-            child: () => const Text('Send tokens',
+            child: (_) => const Text('Send tokens',
                 style: TextStyle(color: Colors.white)),
-            loadingChild: () => const Text(
+            loading: (_) => const Text(
               'Sending...',
               style: TextStyle(color: Colors.white),
             ),
@@ -111,8 +111,8 @@ class SendTokensWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(5.0),
             child: SendTokensTextField(
-              loadingTextCallback: () => 'Sending...',
-              textCallback: (state) => state.result.success
+              loading: (_) => 'Sending...',
+              text: (_, state) => state.result.success
                   ? 'Success! Hash: ${state.result.hash}'
                   : 'Error: ${jsonEncode(state.result.error)}',
               maxLines: null,
