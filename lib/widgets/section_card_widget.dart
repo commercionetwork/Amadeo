@@ -35,7 +35,6 @@ class SectionCardWidget extends StatelessWidget {
             ParagraphWidget(sectionPage.description),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SectionButtonWidget(sectionPage: sectionPage),
               ],

@@ -34,7 +34,6 @@ class _DerivationPathChooserWidgetState
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const Text(
                 '0',
@@ -63,7 +62,6 @@ class _DerivationPathChooserWidgetState
                     ),
                   ),
                   child: Slider(
-                    min: 0.0,
                     max: 10.0,
                     divisions: 10,
                     value: lastDerivationPathSegment,
