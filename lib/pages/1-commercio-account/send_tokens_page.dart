@@ -59,7 +59,7 @@ class SendTokensWidget extends StatelessWidget {
 
   final String defaultAmount;
   final String defaultDenom;
-  final recipientTextController = TextEditingController(
+  final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau,',
   );
   final TextEditingController amountTextController;
@@ -71,7 +71,7 @@ class SendTokensWidget extends StatelessWidget {
       child: Column(
         children: [
           RecipientAddressTextFieldWidget(
-            recipientTextController: recipientTextController,
+            recipientTextController: _recipientTextController,
           ),
           TextField(
             controller: amountTextController,
@@ -94,7 +94,7 @@ class SendTokensWidget extends StatelessWidget {
           SendTokensFlatButton(
             event: () => CommercioAccountSendTokensEvent(
               recipientAddress:
-                  recipientTextController.text.split(',')[0].trim(),
+                  _recipientTextController.text.split(',')[0].trim(),
               amount: [
                 sdk.StdCoin(
                   denom: denomTextController.text,

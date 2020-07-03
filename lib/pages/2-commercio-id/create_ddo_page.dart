@@ -116,12 +116,12 @@ class GenerateKeysWebWidget extends StatefulWidget {
 }
 
 class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
-  final String demoKeysPath = 'assets/id_keys.json';
-  final textController = TextEditingController(text: '');
-  bool isFetchingDemoKeys = false;
+  final String _demoKeysPath = 'assets/id_keys.json';
+  final _textController = TextEditingController(text: '');
+  bool _isFetchingDemoKeys = false;
 
   Future<String> _fetchDemoKeys() async {
-    final rsaKeysRaw = await rootBundle.loadString(demoKeysPath);
+    final rsaKeysRaw = await rootBundle.loadString(_demoKeysPath);
     final decodedJson = jsonDecode(rsaKeysRaw) as Map<String, dynamic>;
     RepositoryProvider.of<StatefulCommercioId>(context).commercioIdKeys =
         CommercioIdKeys.fromJson(decodedJson);
@@ -130,7 +130,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
   }
 
   void _showWebKeysWarningDialog() {
-    if (textController.text.isEmpty) {
+    if (_textController.text.isEmpty) {
       showDialog(
         context: context,
         builder: (context) {
@@ -156,20 +156,20 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
       _showWebKeysWarningDialog();
 
       setState(() {
-        textController.text = '';
-        isFetchingDemoKeys = true;
+        _textController.text = '';
+        _isFetchingDemoKeys = true;
       });
     };
 
     return FutureBuilder<String>(
-        future: isFetchingDemoKeys ? _fetchDemoKeys() : null,
+        future: _isFetchingDemoKeys ? _fetchDemoKeys() : null,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             onPressed = null;
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            textController.text = snapshot.data;
+            _textController.text = snapshot.data;
           }
 
           return Card(
@@ -193,7 +193,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
                   child: TextField(
                     readOnly: true,
                     maxLines: null,
-                    controller: textController,
+                    controller: _textController,
                   ),
                 ),
               ],

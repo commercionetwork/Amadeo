@@ -53,14 +53,14 @@ class GenerateUuidWidget extends StatefulWidget {
 }
 
 class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
-  SignBloc signBloc;
-  final uuidTextController = TextEditingController();
+  SignBloc _signBloc;
+  final _uuidTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    signBloc = BlocProvider.of<SignBloc>(context)
+    _signBloc = BlocProvider.of<SignBloc>(context)
       ..add(const SignGenerateNewDocUuid());
   }
 
@@ -76,7 +76,7 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
               ),
               FlatButton(
                 color: Theme.of(context).primaryColor,
-                onPressed: () => signBloc.add(const SignGenerateNewDocUuid()),
+                onPressed: () => _signBloc.add(const SignGenerateNewDocUuid()),
                 child: const Text(
                   'Generate a new document id',
                   style: TextStyle(color: Colors.white),
@@ -95,15 +95,15 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
                 },
                 builder: (_, state) {
                   if (state is SignInitial) {
-                    uuidTextController.text = '';
+                    _uuidTextController.text = '';
                   }
 
                   if (state is NewDocUuid) {
-                    uuidTextController.text = state.docId;
+                    _uuidTextController.text = state.docId;
                   }
 
                   return TextField(
-                    controller: uuidTextController,
+                    controller: _uuidTextController,
                     readOnly: true,
                     maxLines: null,
                   );
@@ -123,14 +123,13 @@ class LoadDocumentWidget extends StatefulWidget {
 }
 
 class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
-  DocumentRepository documentRepository;
-  final documentTextController = TextEditingController(text: '');
+  DocumentRepository _documentRepository;
 
   @override
   void initState() {
     super.initState();
 
-    documentRepository = RepositoryProvider.of<DocumentRepository>(context);
+    _documentRepository = RepositoryProvider.of<DocumentRepository>(context);
   }
 
   @override
@@ -147,7 +146,7 @@ class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
         }
       },
       child: FutureBuilder<String>(
-          future: documentRepository.fetchContent(),
+          future: _documentRepository.fetchContent(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Card(
@@ -162,7 +161,7 @@ class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
                 child: Row(
                   children: [
                     ParagraphWidget(
-                      'The document that will be sended is: \n\n${documentRepository.documentPath}\n\n with the following content:\n\n${snapshot.data}',
+                      'The document that will be sended is: \n\n${_documentRepository.documentPath}\n\n with the following content:\n\n${snapshot.data}',
                     ),
                   ],
                 ),
@@ -181,38 +180,39 @@ class ShareDocDoSignWidget extends StatefulWidget {
 }
 
 class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
-  SignBloc signBloc;
-  StatefulCommercioAccount commercioAccount;
-  final recipientTextController = TextEditingController(
+  SignBloc _signBloc;
+  StatefulCommercioAccount _commercioAccount;
+  final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
   );
-  final signerIstanceTextController = TextEditingController();
-  final storageUriTextController = TextEditingController();
-  final vcrIdTextController = TextEditingController(text: 'xxxx');
-  final certificateProfileTextController = TextEditingController(text: 'xxxx');
-  final contentUriController = TextEditingController(
+  final _signerIstanceTextController = TextEditingController();
+  final _storageUriTextController = TextEditingController();
+  final _vcrIdTextController = TextEditingController(text: 'xxxx');
+  final _certificateProfileTextController = TextEditingController(text: 'xxxx');
+  final _contentUriController = TextEditingController(
     text: 'https://example.com/document',
   );
-  final metadataSchemaUriController = TextEditingController(
+  final _metadataSchemaUriController = TextEditingController(
     text: 'https://example.com/custom/metadata/schema',
   );
-  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
-  final metadataContentUriController = TextEditingController(
+  final _metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final _metadataContentUriController = TextEditingController(
     text: 'https://example.com/document/metadata',
   );
-  final metadataSchemaTypeController = TextEditingController(text: '');
-  final signedTextController = TextEditingController();
+  final _metadataSchemaTypeController = TextEditingController(text: '');
+  final _signedTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    signBloc = BlocProvider.of<SignBloc>(context);
-    commercioAccount = RepositoryProvider.of<StatefulCommercioAccount>(context);
+    _signBloc = BlocProvider.of<SignBloc>(context);
+    _commercioAccount =
+        RepositoryProvider.of<StatefulCommercioAccount>(context);
 
-    storageUriTextController.text =
-        Uri.http('${signBloc.dsbUrl}:${signBloc.dsbPort}', '').toString();
-    signerIstanceTextController.text = signBloc.dsbSignerAddress;
+    _storageUriTextController.text =
+        Uri.http('${_signBloc.dsbUrl}:${_signBloc.dsbPort}', '').toString();
+    _signerIstanceTextController.text = _signBloc.dsbSignerAddress;
   }
 
   @override
@@ -231,30 +231,30 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
           }
         }, builder: (context, state) {
           if (state is SignedDocument) {
-            signedTextController.text = state.result;
+            _signedTextController.text = state.result;
           } else {
-            signedTextController.text = '';
+            _signedTextController.text = '';
           }
 
           return Column(
             children: [
               RecipientAddressTextFieldWidget(
-                recipientTextController: recipientTextController,
+                recipientTextController: _recipientTextController,
               ),
               DocMetadataWidget(
-                contentUriController: contentUriController,
-                metadataSchemaUriController: metadataSchemaUriController,
+                contentUriController: _contentUriController,
+                metadataSchemaUriController: _metadataSchemaUriController,
                 metadataSchemaVersionController:
-                    metadataSchemaVersionController,
-                metadataContentUriController: metadataContentUriController,
-                metadataSchemaTypeController: metadataSchemaTypeController,
+                    _metadataSchemaVersionController,
+                metadataContentUriController: _metadataContentUriController,
+                metadataSchemaTypeController: _metadataSchemaTypeController,
               ),
               ShareSignedDocInputWidget(
-                signerIstanceTextController: signerIstanceTextController,
-                storageUriTextController: storageUriTextController,
-                vcrIdTextController: vcrIdTextController,
+                signerIstanceTextController: _signerIstanceTextController,
+                storageUriTextController: _storageUriTextController,
+                vcrIdTextController: _vcrIdTextController,
                 certificateProfileTextController:
-                    certificateProfileTextController,
+                    _certificateProfileTextController,
               ),
               const ParagraphWidget(
                 'Select the Subject Distinguish Names to include in the generated certificate.',
@@ -269,33 +269,33 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
                 color: Theme.of(context).primaryColor,
                 onPressed: (state is SignDocumentLoading)
                     ? null
-                    : () => signBloc.add(SignDocumentEvent(
-                          recipients: recipientTextController.text
+                    : () => _signBloc.add(SignDocumentEvent(
+                          recipients: _recipientTextController.text
                               .split(',')
                               .map((e) => e.trim())
                               .toList(),
                           docId:
                               RepositoryProvider.of<DocumentRepository>(context)
                                   .docId,
-                          signerIstance: signerIstanceTextController.text,
-                          storageUri: storageUriTextController.text,
+                          signerIstance: _signerIstanceTextController.text,
+                          storageUri: _storageUriTextController.text,
                           sdnData:
                               RepositoryProvider.of<SdnSelectedDataRepository>(
                                       context)
                                   .sdnDataList,
-                          vcrId: vcrIdTextController.text,
+                          vcrId: _vcrIdTextController.text,
                           certificateProfile:
-                              certificateProfileTextController.text,
-                          contentUri: contentUriController.text,
+                              _certificateProfileTextController.text,
+                          contentUri: _contentUriController.text,
                           metadata: sdk.CommercioDocMetadata(
-                            contentUri: metadataContentUriController.text,
+                            contentUri: _metadataContentUriController.text,
                             schema: sdk.CommercioDocMetadataSchema(
-                              uri: metadataSchemaUriController.text,
-                              version: metadataSchemaVersionController.text,
+                              uri: _metadataSchemaUriController.text,
+                              version: _metadataSchemaVersionController.text,
                             ),
-                            schemaType: metadataSchemaTypeController.text,
+                            schemaType: _metadataSchemaTypeController.text,
                           ),
-                          walletAddress: commercioAccount.walletAddress,
+                          walletAddress: _commercioAccount.walletAddress,
                         )),
                 child: const Text(
                   'Sign document',
@@ -305,7 +305,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
                 ),
               ),
               TextField(
-                controller: signedTextController,
+                controller: _signedTextController,
                 readOnly: true,
                 maxLines: null,
               )

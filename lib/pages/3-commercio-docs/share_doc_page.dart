@@ -67,20 +67,20 @@ class ShareDocWidget extends StatefulWidget {
 }
 
 class _ShareDocWidgetState extends State<ShareDocWidget> {
-  final recipientTextController = TextEditingController(
+  final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
   );
-  final contentUriController = TextEditingController(
+  final _contentUriController = TextEditingController(
     text: 'https://example.com/document',
   );
-  final metadataSchemaUriController = TextEditingController(
+  final _metadataSchemaUriController = TextEditingController(
     text: 'https://example.com/custom/metadata/schema',
   );
-  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
-  final metadataContentUriController = TextEditingController(
+  final _metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final _metadataContentUriController = TextEditingController(
     text: 'https://example.com/document/metadata',
   );
-  final metadataSchemaTypeController = TextEditingController(text: '');
+  final _metadataSchemaTypeController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +88,14 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
       child: Column(
         children: [
           RecipientAddressTextFieldWidget(
-            recipientTextController: recipientTextController,
+            recipientTextController: _recipientTextController,
           ),
           DocMetadataWidget(
-            contentUriController: contentUriController,
-            metadataSchemaUriController: metadataSchemaUriController,
-            metadataSchemaVersionController: metadataSchemaVersionController,
-            metadataContentUriController: metadataContentUriController,
-            metadataSchemaTypeController: metadataSchemaTypeController,
+            contentUriController: _contentUriController,
+            metadataSchemaUriController: _metadataSchemaUriController,
+            metadataSchemaVersionController: _metadataSchemaVersionController,
+            metadataContentUriController: _metadataContentUriController,
+            metadataSchemaTypeController: _metadataSchemaTypeController,
           ),
           const ParagraphWidget(
             'Press the button to derive and share a Did document.',
@@ -103,18 +103,18 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
           ),
           ShareDocumentFlatButton(
             event: () => CommercioDocsShareDocumentEvent(
-              recipients: recipientTextController.text
+              recipients: _recipientTextController.text
                   .split(',')
                   .map((e) => e.trim())
                   .toList(),
-              contentUri: contentUriController.text,
+              contentUri: _contentUriController.text,
               metadata: sdk.CommercioDocMetadata(
-                contentUri: metadataContentUriController.text,
+                contentUri: _metadataContentUriController.text,
                 schema: sdk.CommercioDocMetadataSchema(
-                  uri: metadataSchemaUriController.text,
-                  version: metadataSchemaVersionController.text,
+                  uri: _metadataSchemaUriController.text,
+                  version: _metadataSchemaVersionController.text,
                 ),
-                schemaType: metadataSchemaTypeController.text,
+                schemaType: _metadataSchemaTypeController.text,
               ),
             ),
             color: Theme.of(context).primaryColor,
@@ -146,21 +146,20 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
 }
 
 class ShareEncDocWidget extends StatelessWidget {
-  final recipientTextController = TextEditingController(
+  final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
   );
-  final contentUriController = TextEditingController(
+  final _contentUriController = TextEditingController(
     text: 'https://example.com/document',
   );
-  final metadataSchemaUriController = TextEditingController(
+  final _metadataSchemaUriController = TextEditingController(
     text: 'https://example.com/custom/metadata/schema',
   );
-  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
-  final metadataContentUriController = TextEditingController(
+  final _metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final _metadataContentUriController = TextEditingController(
     text: 'https://example.com/document/metadata',
   );
-  final TextEditingController metadataSchemaTypeController =
-      TextEditingController(text: '');
+  final _metadataSchemaTypeController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -168,14 +167,14 @@ class ShareEncDocWidget extends StatelessWidget {
       child: Column(
         children: [
           RecipientAddressTextFieldWidget(
-            recipientTextController: recipientTextController,
+            recipientTextController: _recipientTextController,
           ),
           DocMetadataWidget(
-            contentUriController: contentUriController,
-            metadataSchemaUriController: metadataSchemaUriController,
-            metadataSchemaVersionController: metadataSchemaVersionController,
-            metadataContentUriController: metadataContentUriController,
-            metadataSchemaTypeController: metadataSchemaTypeController,
+            contentUriController: _contentUriController,
+            metadataSchemaUriController: _metadataSchemaUriController,
+            metadataSchemaVersionController: _metadataSchemaVersionController,
+            metadataContentUriController: _metadataContentUriController,
+            metadataSchemaTypeController: _metadataSchemaTypeController,
           ),
           const ParagraphWidget(
             'Press the button to derive and share an encrypted Did document with a random AES key.',
@@ -186,18 +185,18 @@ class ShareEncDocWidget extends StatelessWidget {
           ),
           ShareEncryptedDocumentFlatButton(
             event: () => CommercioDocsShareEncryptedDocumentEvent(
-              recipients: recipientTextController.text
+              recipients: _recipientTextController.text
                   .split(',')
                   .map((e) => e.trim())
                   .toList(),
-              contentUri: contentUriController.text,
+              contentUri: _contentUriController.text,
               metadata: sdk.CommercioDocMetadata(
-                contentUri: metadataContentUriController.text,
+                contentUri: _metadataContentUriController.text,
                 schema: sdk.CommercioDocMetadataSchema(
-                  uri: metadataSchemaUriController.text,
-                  version: metadataSchemaVersionController.text,
+                  uri: _metadataSchemaUriController.text,
+                  version: _metadataSchemaVersionController.text,
                 ),
-                schemaType: metadataSchemaTypeController.text,
+                schemaType: _metadataSchemaTypeController.text,
               ),
               encryptedData: BlocProvider.of<CommercioDocsEncDataBloc>(context)
                   .encryptedDataList,
