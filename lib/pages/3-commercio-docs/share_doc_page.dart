@@ -67,16 +67,20 @@ class ShareDocWidget extends StatefulWidget {
 }
 
 class _ShareDocWidgetState extends State<ShareDocWidget> {
-  final TextEditingController recipientTextController = TextEditingController();
-  final TextEditingController contentUriController = TextEditingController();
-  final TextEditingController metadataSchemaUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaVersionController =
-      TextEditingController();
-  final TextEditingController metadataContentUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaTypeController =
-      TextEditingController(text: '');
+  final recipientTextController = TextEditingController(
+    text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+  );
+  final contentUriController = TextEditingController(
+    text: 'https://example.com/document',
+  );
+  final metadataSchemaUriController = TextEditingController(
+    text: 'https://example.com/custom/metadata/schema',
+  );
+  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final metadataContentUriController = TextEditingController(
+    text: 'https://example.com/document/metadata',
+  );
+  final metadataSchemaTypeController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -142,14 +146,19 @@ class _ShareDocWidgetState extends State<ShareDocWidget> {
 }
 
 class ShareEncDocWidget extends StatelessWidget {
-  final TextEditingController recipientTextController = TextEditingController();
-  final TextEditingController contentUriController = TextEditingController();
-  final TextEditingController metadataSchemaUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaVersionController =
-      TextEditingController();
-  final TextEditingController metadataContentUriController =
-      TextEditingController();
+  final recipientTextController = TextEditingController(
+    text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+  );
+  final contentUriController = TextEditingController(
+    text: 'https://example.com/document',
+  );
+  final metadataSchemaUriController = TextEditingController(
+    text: 'https://example.com/custom/metadata/schema',
+  );
+  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final metadataContentUriController = TextEditingController(
+    text: 'https://example.com/document/metadata',
+  );
   final TextEditingController metadataSchemaTypeController =
       TextEditingController(text: '');
 
