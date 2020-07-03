@@ -4,7 +4,9 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateDDOPage extends SectionPageWidget {
@@ -37,7 +39,9 @@ class CreateDDOPageBody extends StatelessWidget {
                       context,
                     ),
                   ),
-                  child: const GenerateKeysWidget(),
+                  child: kIsWeb
+                      ? const GenerateKeysWebWidget()
+                      : const GenerateKeysWidget(),
                 ),
                 BlocProvider<CommercioIdDeriveDidDocumentBloc>(
                   create: (_) => CommercioIdDeriveDidDocumentBloc(
@@ -101,6 +105,101 @@ class GenerateKeysWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class GenerateKeysWebWidget extends StatefulWidget {
+  const GenerateKeysWebWidget();
+
+  @override
+  _GenerateKeysWebWidgetState createState() => _GenerateKeysWebWidgetState();
+}
+
+class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
+  final String demoKeysPath = 'assets/id_keys.json';
+  final textController = TextEditingController(text: '');
+  bool isFetchingDemoKeys = false;
+
+  Future<String> _fetchDemoKeys() async {
+    final rsaKeysRaw = await rootBundle.loadString(demoKeysPath);
+    final decodedJson = jsonDecode(rsaKeysRaw) as Map<String, dynamic>;
+    RepositoryProvider.of<StatefulCommercioId>(context).commercioIdKeys =
+        CommercioIdKeys.fromJson(decodedJson);
+
+    return rsaKeysRaw;
+  }
+
+  void _showWebKeysWarningDialog() {
+    if (textController.text.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Warning'),
+            content: const Text(
+                'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!'),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    void Function() onPressed = () {
+      _showWebKeysWarningDialog();
+
+      setState(() {
+        textController.text = '';
+        isFetchingDemoKeys = true;
+      });
+    };
+
+    return FutureBuilder<String>(
+        future: isFetchingDemoKeys ? _fetchDemoKeys() : null,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            onPressed = null;
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            textController.text = snapshot.data;
+          }
+
+          return Card(
+            child: Column(
+              children: [
+                const ParagraphWidget(
+                  'Press the button to generate new RSA keys.',
+                  padding: EdgeInsets.all(5.0),
+                ),
+                FlatButton(
+                  onPressed: onPressed,
+                  color: Theme.of(context).primaryColor,
+                  disabledColor: Theme.of(context).primaryColorDark,
+                  child: const Text(
+                    'Generate keys',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: TextField(
+                    readOnly: true,
+                    maxLines: null,
+                    controller: textController,
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
 
