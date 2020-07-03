@@ -59,7 +59,9 @@ class SendTokensWidget extends StatelessWidget {
 
   final String defaultAmount;
   final String defaultDenom;
-  final TextEditingController recipientTextController = TextEditingController();
+  final recipientTextController = TextEditingController(
+    text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau,',
+  );
   final TextEditingController amountTextController;
   final TextEditingController denomTextController;
 
@@ -95,12 +97,15 @@ class SendTokensWidget extends StatelessWidget {
                   recipientTextController.text.split(',')[0].trim(),
               amount: [
                 sdk.StdCoin(
-                    denom: denomTextController.text,
-                    amount: amountTextController.text)
+                  denom: denomTextController.text,
+                  amount: amountTextController.text,
+                )
               ],
             ),
-            child: (_) => const Text('Send tokens',
-                style: TextStyle(color: Colors.white)),
+            child: (_) => const Text(
+              'Send tokens',
+              style: TextStyle(color: Colors.white),
+            ),
             loading: (_) => const Text(
               'Sending...',
               style: TextStyle(color: Colors.white),
