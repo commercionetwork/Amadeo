@@ -2,19 +2,27 @@ import 'package:amadeo/helpers/net_helper.dart';
 import 'package:amadeo/my_app.dart';
 import 'package:amadeo/repositories/document_repository.dart';
 import 'package:amadeo/repositories/sdn_selected_repository.dart';
-import 'package:amadeo/simple_bloc_delegate.dart';
+import 'package:amadeo/simple_bloc_observer.dart';
+import 'package:colorize_lumberdash/colorize_lumberdash.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commercio_ui/core/utils/export.dart';
+import 'package:commercio_ui/core/utils/utils.dart';
 import 'package:commerciosdk/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lumberdash/lumberdash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
+  putLumberdashToWork(
+    withClients: [
+      ColorizeLumberdash(),
+    ],
+  );
+
   if (!kReleaseMode) {
-    BlocSupervisor.delegate = SimpleBlocDelegate();
+    Bloc.observer = SimpleBlocObserver();
   }
 
   final commercioAccount = StatefulCommercioAccount(

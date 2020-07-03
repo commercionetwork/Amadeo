@@ -32,7 +32,7 @@ class CommercioSignBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
-              children: [
+              children: const [
                 GenerateUuidWidget(),
                 LoadDocumentWidget(),
                 ShareDocDoSignWidget(),
@@ -45,15 +45,27 @@ class CommercioSignBody extends StatelessWidget {
   }
 }
 
-class GenerateUuidWidget extends StatelessWidget {
-  GenerateUuidWidget();
+class GenerateUuidWidget extends StatefulWidget {
+  const GenerateUuidWidget();
 
-  final TextEditingController uuidTextController = TextEditingController();
+  @override
+  _GenerateUuidWidgetState createState() => _GenerateUuidWidgetState();
+}
+
+class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
+  SignBloc signBloc;
+  final uuidTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    signBloc = BlocProvider.of<SignBloc>(context)
+      ..add(const SignGenerateNewDocUuid());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final signBloc = BlocProvider.of<SignBloc>(context);
-
     return Card(
       child: Padding(
           padding: const EdgeInsets.all(7.0),
@@ -66,7 +78,7 @@ class GenerateUuidWidget extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 onPressed: () => signBloc.add(const SignGenerateNewDocUuid()),
                 child: const Text(
-                  'Generate new document id',
+                  'Generate a new document id',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -103,11 +115,23 @@ class GenerateUuidWidget extends StatelessWidget {
   }
 }
 
-class LoadDocumentWidget extends StatelessWidget {
-  final TextEditingController documentTextController =
-      TextEditingController(text: '');
+class LoadDocumentWidget extends StatefulWidget {
+  const LoadDocumentWidget();
 
-  LoadDocumentWidget();
+  @override
+  _LoadDocumentWidgetState createState() => _LoadDocumentWidgetState();
+}
+
+class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
+  DocumentRepository documentRepository;
+  final documentTextController = TextEditingController(text: '');
+
+  @override
+  void initState() {
+    super.initState();
+
+    documentRepository = RepositoryProvider.of<DocumentRepository>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,91 +146,77 @@ class LoadDocumentWidget extends StatelessWidget {
           );
         }
       },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(7.0),
-          child: Column(
-            children: [
-              const ParagraphWidget(
-                'Press the button to load the content of a generic document',
-              ),
-              BlocBuilder<SignBloc, SignState>(
-                builder: (context, state) {
-                  return FlatButton(
-                      color: Theme.of(context).primaryColor,
-                      onPressed: (state is SignLoadDocumentLoading)
-                          ? null
-                          : () => BlocProvider.of<SignBloc>(context)
-                              .add(const SignLoadDocumentEvent()),
-                      child: const Text(
-                        'Load document',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ));
-                },
-              ),
-              BlocBuilder<SignBloc, SignState>(
-                builder: (context, state) {
-                  if (state is SignDocumentLoaded) {
-                    documentTextController.text = state.content;
-                  }
+      child: FutureBuilder<String>(
+          future: documentRepository.fetchContent(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Card(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-                  if (state is SignLoadDocumentError) {
-                    documentTextController.text = state.error;
-                  }
-
-                  return TextField(
-                    controller: documentTextController,
-                    readOnly: true,
-                    maxLines: null,
-                  );
-                },
+            return Card(
+              margin: const EdgeInsets.all(0.0),
+              child: Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: Row(
+                  children: [
+                    ParagraphWidget(
+                      'The document that will be sended is: \n\n${documentRepository.documentPath}\n\n with the following content:\n\n${snapshot.data}',
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
   }
 }
 
 class ShareDocDoSignWidget extends StatefulWidget {
+  const ShareDocDoSignWidget();
+
   @override
   _ShareDocDoSignWidgetState createState() => _ShareDocDoSignWidgetState();
 }
 
 class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
-  final TextEditingController recipientTextController = TextEditingController();
-  final TextEditingController signerIstanceTextController =
-      TextEditingController();
-  final TextEditingController storageUriTextController =
-      TextEditingController();
-  final TextEditingController vcrIdTextController =
-      TextEditingController(text: 'xxxx');
-  final TextEditingController certificateProfileTextController =
-      TextEditingController(text: 'xxxx');
-  final TextEditingController contentUriController = TextEditingController();
-  final TextEditingController metadataSchemaUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaVersionController =
-      TextEditingController();
-  final TextEditingController metadataContentUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaTypeController =
-      TextEditingController(text: '');
-  final TextEditingController signedTextController = TextEditingController();
+  SignBloc signBloc;
+  StatefulCommercioAccount commercioAccount;
+  final recipientTextController = TextEditingController(
+    text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+  );
+  final signerIstanceTextController = TextEditingController();
+  final storageUriTextController = TextEditingController();
+  final vcrIdTextController = TextEditingController(text: 'xxxx');
+  final certificateProfileTextController = TextEditingController(text: 'xxxx');
+  final contentUriController = TextEditingController(
+    text: 'https://example.com/document',
+  );
+  final metadataSchemaUriController = TextEditingController(
+    text: 'https://example.com/custom/metadata/schema',
+  );
+  final metadataSchemaVersionController = TextEditingController(text: '1.0.0');
+  final metadataContentUriController = TextEditingController(
+    text: 'https://example.com/document/metadata',
+  );
+  final metadataSchemaTypeController = TextEditingController(text: '');
+  final signedTextController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    final signBloc = BlocProvider.of<SignBloc>(context);
-    final commercioAccount =
-        RepositoryProvider.of<StatefulCommercioAccount>(context);
+  void initState() {
+    super.initState();
+
+    signBloc = BlocProvider.of<SignBloc>(context);
+    commercioAccount = RepositoryProvider.of<StatefulCommercioAccount>(context);
 
     storageUriTextController.text =
         Uri.http('${signBloc.dsbUrl}:${signBloc.dsbPort}', '').toString();
     signerIstanceTextController.text = signBloc.dsbSignerAddress;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(7.0),

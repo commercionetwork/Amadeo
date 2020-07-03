@@ -1,22 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
+//import 'dart:typed_data';
 
-import 'package:amadeo/entities/dsb_result.dart';
+//import 'package:amadeo/entities/dsb_result.dart';
 import 'package:amadeo/helpers/sign_constants.dart';
 import 'package:amadeo/repositories/document_repository.dart';
-import 'package:asn1lib/asn1lib.dart';
-import 'package:basic_utils/basic_utils.dart';
+//import 'package:asn1lib/asn1lib.dart';
+//import 'package:basic_utils/basic_utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:convert/convert.dart';
+//import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
-import 'package:encrypt/encrypt.dart';
+//import 'package:encrypt/encrypt.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:commerciosdk/export.dart' hide RSAPrivateKey, RSAPublicKey;
 import 'package:http/http.dart';
-import 'package:pointycastle/pointycastle.dart' show RSAPublicKey hide Digest;
+//import 'package:pointycastle/pointycastle.dart' show RSAPublicKey hide Digest;
 
 part 'sign_event.dart';
 part 'sign_state.dart';
@@ -40,16 +40,14 @@ class SignBloc extends Bloc<SignEvent, SignState> {
     String dsbPort,
   })  : client = client ?? Client(),
         dsbUrl = dsbUrl ?? 'localhost',
-        dsbPort = dsbPort ?? '9999';
+        dsbPort = dsbPort ?? '9999',
+        super(const SignInitial());
 
   crypto.Digest sha256Digest(String value) {
     final valueAsBytes = utf8.encode(value);
 
     return crypto.sha256.convert(valueAsBytes);
   }
-
-  @override
-  SignState get initialState => const SignInitial();
 
   @override
   Stream<SignState> mapEventToState(
@@ -106,7 +104,8 @@ class SignBloc extends Bloc<SignEvent, SignState> {
 
       if (documentRepository.hasNotDocIdGenerated) {
         throw Exception(
-            'Error: a document id should be generated before share a document.');
+          'Error: a document id should be generated before share a document.',
+        );
       }
 
       if (documentRepository.hasNotLoadedDocument) {
@@ -128,20 +127,30 @@ class SignBloc extends Bloc<SignEvent, SignState> {
       );
 
       if (!shareDocResult.success) {
-        yield SignedDocument(
-            result:
-                'Error while sharing the document (${shareDocResult.error.errorCode}): ${shareDocResult.error.errorMessage}');
-        return;
+        throw Exception(
+          'Error while sharing the document (${shareDocResult.error.errorCode}): ${shareDocResult.error.errorMessage}',
+        );
       }
 
-      final getResult = await _retrieveDocument(docId: event.docId);
+      final getUri = Uri.http(
+        '$dsbUrl:$dsbPort',
+        '${DsbEndpoint.get.value}/${event.docId}',
+      );
+
+      yield SignedDocument(
+        result:
+            'Get the generated certificate and signed hash at:\n\n${getUri.toString()}',
+      );
+
+      /*final getResult = await _retrieveDocument(docId: event.docId);
 
       final verified = _verifySignature(dsbResult: getResult, digest: digest);
 
       yield SignedDocument(
-          result: verified
-              ? 'Document signed, shared and verified'
-              : 'Document signed, shared but not verified');
+        result: verified
+            ? 'Document signed, shared and verified'
+            : 'Document signed, shared but not verified',
+      );*/
     } catch (e) {
       yield SignDocumentError(e.toString());
     }
@@ -196,7 +205,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
     );
   }
 
-  Future<DsbResult> _retrieveDocument({
+  /*Future<DsbResult> _retrieveDocument({
     @required String docId,
   }) async {
     final uri = Uri.http('$dsbUrl:$dsbPort', '${DsbEndpoint.get.value}/$docId');
@@ -242,5 +251,5 @@ class SignBloc extends Bloc<SignEvent, SignState> {
         RSAPublicKey(modulus.valueAsBigInteger, exponent.valueAsBigInteger);
 
     return rsaPublicKey;
-  }
+  }*/
 }
