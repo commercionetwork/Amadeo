@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amadeo/entities/section_page.dart';
@@ -6,8 +7,15 @@ import 'package:amadeo/pages/export.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/section_card_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen();
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool alertDisplayed = false;
 
   final List<SectionPage> sections = const [
     SectionPage(
@@ -45,6 +53,45 @@ class HomeScreen extends StatelessWidget {
           'Create a network of trusted organizations by inviting companies to perform KYC and earn ABR token rewards ',
     ),
   ];
+
+  void _showWebWarningDialog() {
+    if (kIsWeb && !alertDisplayed) {
+      setState(() {
+        alertDisplayed = true;
+      });
+
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Warning'),
+            content: const Text(
+                'Web support is highly experimental, your secrets are stored inside the browser.'),
+            actions: [
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (mounted) {
+      Future.delayed(Duration.zero, () => _showWebWarningDialog());
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
