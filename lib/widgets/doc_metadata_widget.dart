@@ -21,25 +21,30 @@ class DocMetadataWidget extends StatelessWidget {
       children: [
         TextField(
           decoration: const InputDecoration(
-              hintText: 'https://example.com/document',
-              labelText: 'Content uri'),
+            hintText: 'https://example.com/document',
+            labelText: 'Content uri',
+          ),
           controller: contentUriController,
         ),
         TextField(
           decoration: const InputDecoration(
-              hintText: 'https://example.com/document/metadata',
-              labelText: 'Metadata content uri'),
+            hintText: 'https://example.com/document/metadata',
+            labelText: 'Metadata content uri',
+          ),
           controller: metadataContentUriController,
         ),
         TextField(
           decoration: const InputDecoration(
-              hintText: 'https://example.com/custom/metadata/schema',
-              labelText: 'Metadata schema uri'),
+            hintText: 'https://example.com/custom/metadata/schema',
+            labelText: 'Metadata schema uri',
+          ),
           controller: metadataSchemaUriController,
         ),
         TextField(
           decoration: const InputDecoration(
-              hintText: '1.0.0', labelText: 'Metadata schema version'),
+            hintText: '1.0.0',
+            labelText: 'Metadata schema version',
+          ),
           controller: metadataSchemaVersionController,
         ),
         TextField(
