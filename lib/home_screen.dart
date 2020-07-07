@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:amadeo/entities/section_page.dart';
 import 'package:amadeo/pages/export.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/section_card_widget.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen();
@@ -89,18 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      bodyWidget: SingleChildScrollView(
-        child: Column(
-          children: sections
-              .map((section) => SectionCardWidget(sectionPage: section))
-              .toList(),
+      bodyWidget: ListView.builder(
+        itemCount: sections.length,
+        itemBuilder: (context, i) => SectionCardWidget(
+          sectionPage: sections[i],
         ),
       ),
     );
