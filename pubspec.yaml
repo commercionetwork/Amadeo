@@ -1,5 +1,5 @@
 name: amadeo
-description: Amadeo is a tarter/cookbook Flutter projec for Commercio.network.
+description: Amadeo is a starter/cookbook Flutter projec for Commercio.network.
 
 version: 0.3.0
 
@@ -47,6 +47,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
+          style: normal
+        - asset: fonts/Lato-Italic.ttf
+          style: italic
+        - asset: fonts/Lato-Bold.ttf
+          weight: 700
 
   assets:
     - document.txt
