@@ -1,4 +1,6 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/balance_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -7,8 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckAccountBalancePage extends SectionPageWidget {
   const CheckAccountBalancePage({Key key})
-      : super('/1-account/check-account-balance', 'CheckAccountBalancePage',
-            key: key);
+      : super(
+          '/1-account/check-account-balance',
+          'CheckAccountBalancePage',
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +28,17 @@ class CheckAccountBalancePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioAccountCheckBalanceBloc>(
-                  create: (_) => CommercioAccountCheckBalanceBloc(
-                    commercioAccount:
-                        RepositoryProvider.of<StatefulCommercioAccount>(
-                      context,
-                    ),
-                  ),
-                  child: const CheckAccountBalanceWidget(),
-                ),
-              ],
+        BlocProvider(
+          create: (_) => CommercioAccountCheckBalanceBloc(
+            commercioAccount: RepositoryProvider.of<StatefulCommercioAccount>(
+              context,
             ),
           ),
+          child: const CheckAccountBalanceWidget(),
         ),
       ],
     );
@@ -53,36 +50,33 @@ class CheckAccountBalanceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to check the account balance.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          CheckBalanceFlatButton(
-            event: () => const CommercioAccountCheckBalanceEvent(),
-            child: (_) => const Text(
-              'Check balance',
-              style: TextStyle(color: Colors.white),
-            ),
-            loading: (_) => const Text(
-              'Checking...',
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: CheckBalanceTextField(
-              loading: (_) => 'Checking...',
-              text: (_, state) => state.balance.fold(
-                  '',
-                  (prev, curr) =>
-                      '$prev ${prev.isEmpty ? '' : ','} Amount ${curr.amount} of ${curr.denom}'),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: CheckBalanceFlatButton(
+                event: () => const CommercioAccountCheckBalanceEvent(),
+                child: (_) => const Text(
+                  'Check balance',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+              ),
             ),
+          ),
+          CheckBalanceTextField(
+            loading: (_) => 'Checking...',
+            text: (_, state) => balanceToString(state.balance),
           ),
         ],
       ),

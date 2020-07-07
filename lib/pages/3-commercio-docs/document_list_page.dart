@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -24,34 +25,25 @@ class DocumentListPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioDocsSentDocumentsBloc>(
-                  create: (_) => CommercioDocsSentDocumentsBloc(
-                    commercioDocs:
-                        RepositoryProvider.of<StatefulCommercioDocs>(context),
-                    commercioId:
-                        RepositoryProvider.of<StatefulCommercioId>(context),
-                  ),
-                  child: const SentDocumentsWidget(),
-                ),
-                BlocProvider<CommercioDocsReceivedDocumentsBloc>(
-                  create: (_) => CommercioDocsReceivedDocumentsBloc(
-                    commercioDocs:
-                        RepositoryProvider.of<StatefulCommercioDocs>(context),
-                    commercioId:
-                        RepositoryProvider.of<StatefulCommercioId>(context),
-                  ),
-                  child: const ReceivedDocumentsWidget(),
-                ),
-              ],
-            ),
+        BlocProvider(
+          create: (_) => CommercioDocsSentDocumentsBloc(
+            commercioDocs:
+                RepositoryProvider.of<StatefulCommercioDocs>(context),
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(context),
           ),
+          child: const SentDocumentsWidget(),
+        ),
+        BlocProvider(
+          create: (_) => CommercioDocsReceivedDocumentsBloc(
+            commercioDocs:
+                RepositoryProvider.of<StatefulCommercioDocs>(context),
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(context),
+          ),
+          child: const ReceivedDocumentsWidget(),
         ),
       ],
     );
@@ -63,37 +55,34 @@ class SentDocumentsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to get a list of the sent documents.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          SentDocumentsFlatButton(
-            event: () => const CommercioDocsSentDocumentsEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Sent documents',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SentDocumentsTextField(
-              readOnly: true,
-              loading: (_) => 'Loading...',
-              text: (_, state) => state.sentDocuments.fold(
-                  '',
-                  (prev, curr) =>
-                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: SentDocumentsFlatButton(
+                event: () => const CommercioDocsSentDocumentsEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Sent documents',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          SentDocumentsTextField(
+            loading: (_) => 'Loading...',
+            text: (_, state) => state.sentDocuments.fold(
+                '',
+                (prev, curr) =>
+                    '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
           ),
         ],
       ),
@@ -106,37 +95,34 @@ class ReceivedDocumentsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to get a list of the received documents.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          ReceivedDocumentsFlatButton(
-            event: () => const CommercioDocsReceivedDocumentsEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Received documents',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: ReceivedDocumentsTextField(
-              readOnly: true,
-              loading: (_) => 'Loading...',
-              text: (_, state) => state.receivedDocuments.fold(
-                  '',
-                  (prev, curr) =>
-                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: ReceivedDocumentsFlatButton(
+                event: () => const CommercioDocsReceivedDocumentsEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Received documents',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          ReceivedDocumentsTextField(
+            loading: (_) => 'Loading...',
+            text: (_, state) => state.receivedDocuments.fold(
+                '',
+                (prev, curr) =>
+                    '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
           ),
         ],
       ),

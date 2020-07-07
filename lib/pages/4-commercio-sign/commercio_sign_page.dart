@@ -2,6 +2,7 @@ import 'package:amadeo/helpers/sign_bloc/sign_bloc.dart';
 import 'package:amadeo/pages/export.dart';
 import 'package:amadeo/repositories/document_repository.dart';
 import 'package:amadeo/repositories/sdn_selected_repository.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/doc_metadata_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
@@ -26,20 +27,13 @@ class CommercioSignPage extends SectionPageWidget {
 class CommercioSignBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return const BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: const [
-                GenerateUuidWidget(),
-                LoadDocumentWidget(),
-                ShareDocDoSignWidget(),
-              ],
-            ),
-          ),
-        ),
+        GenerateUuidWidget(),
+        LoadDocumentWidget(),
+        ShareDocDoSignWidget(),
       ],
     );
   }
@@ -65,16 +59,24 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
   }
 
   @override
+  void dispose() {
+    _uuidTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-          padding: const EdgeInsets.all(7.0),
-          child: Column(
-            children: [
-              const ParagraphWidget(
-                'Press the button to generate a new document id',
-              ),
-              FlatButton(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: [
+          const ParagraphWidget(
+            'Press the button to generate a new document id',
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: FlatButton(
                 color: Theme.of(context).primaryColor,
                 onPressed: () => _signBloc.add(const SignGenerateNewDocUuid()),
                 child: const Text(
@@ -82,35 +84,37 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              BlocConsumer<SignBloc, SignState>(
-                listener: (context, state) {
-                  if (state is SignLoadDocumentError) {
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.error),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                },
-                builder: (_, state) {
-                  if (state is SignInitial) {
-                    _uuidTextController.text = '';
-                  }
+            ),
+          ),
+          BlocConsumer<SignBloc, SignState>(
+            listener: (context, state) {
+              if (state is SignLoadDocumentError) {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.error),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            builder: (_, state) {
+              if (state is SignInitial) {
+                _uuidTextController.text = '';
+              }
 
-                  if (state is NewDocUuid) {
-                    _uuidTextController.text = state.docId;
-                  }
+              if (state is NewDocUuid) {
+                _uuidTextController.text = state.docId;
+              }
 
-                  return TextField(
-                    controller: _uuidTextController,
-                    readOnly: true,
-                    maxLines: null,
-                  );
-                },
-              ),
-            ],
-          )),
+              return TextField(
+                controller: _uuidTextController,
+                readOnly: true,
+                maxLines: null,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -146,28 +150,26 @@ class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
         }
       },
       child: FutureBuilder<String>(
-          future: _documentRepository.fetchContent(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Card(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return Card(
-              margin: const EdgeInsets.all(0.0),
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Row(
-                  children: [
-                    ParagraphWidget(
-                      'The document that will be sended is: \n\n${_documentRepository.documentPath}\n\n with the following content:\n\n${snapshot.data}',
-                    ),
-                  ],
-                ),
-              ),
+        future: _documentRepository.fetchContent(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Card(
+              child: CircularProgressIndicator(),
             );
-          }),
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                ParagraphWidget(
+                  'The document that will be sended is: \n\n${_documentRepository.documentPath}\n\n with the following content:\n\n${snapshot.data}',
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -216,11 +218,27 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
   }
 
   @override
+  void dispose() {
+    _recipientTextController.dispose();
+    _signerIstanceTextController.dispose();
+    _storageUriTextController.dispose();
+    _vcrIdTextController.dispose();
+    _certificateProfileTextController.dispose();
+    _contentUriController.dispose();
+    _metadataSchemaUriController.dispose();
+    _metadataSchemaVersionController.dispose();
+    _metadataContentUriController.dispose();
+    _metadataSchemaTypeController.dispose();
+    _signedTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(7.0),
-        child: BlocConsumer<SignBloc, SignState>(listener: (context, state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: BlocConsumer<SignBloc, SignState>(
+        listener: (context, state) {
           if (state is SignDocumentError) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
@@ -229,7 +247,8 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               ),
             );
           }
-        }, builder: (context, state) {
+        },
+        builder: (context, state) {
           if (state is SignedDocument) {
             _signedTextController.text = state.result;
           } else {
@@ -237,6 +256,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
           }
 
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RecipientAddressTextFieldWidget(
                 recipientTextController: _recipientTextController,
@@ -265,42 +285,47 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               const ParagraphWidget(
                 'Press the button to derive and share a Did document with signature.',
               ),
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                onPressed: (state is SignDocumentLoading)
-                    ? null
-                    : () => _signBloc.add(SignDocumentEvent(
-                          recipients: _recipientTextController.text
-                              .split(',')
-                              .map((e) => e.trim())
-                              .toList(),
-                          docId:
-                              RepositoryProvider.of<DocumentRepository>(context)
-                                  .docId,
-                          signerIstance: _signerIstanceTextController.text,
-                          storageUri: _storageUriTextController.text,
-                          sdnData:
-                              RepositoryProvider.of<SdnSelectedDataRepository>(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Center(
+                  child: FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    onPressed: (state is SignDocumentLoading)
+                        ? null
+                        : () => _signBloc.add(SignDocumentEvent(
+                              recipients: _recipientTextController.text
+                                  .split(',')
+                                  .map((e) => e.trim())
+                                  .toList(),
+                              docId: RepositoryProvider.of<DocumentRepository>(
                                       context)
+                                  .docId,
+                              signerIstance: _signerIstanceTextController.text,
+                              storageUri: _storageUriTextController.text,
+                              sdnData: RepositoryProvider.of<
+                                      SdnSelectedDataRepository>(context)
                                   .sdnDataList,
-                          vcrId: _vcrIdTextController.text,
-                          certificateProfile:
-                              _certificateProfileTextController.text,
-                          contentUri: _contentUriController.text,
-                          metadata: sdk.CommercioDocMetadata(
-                            contentUri: _metadataContentUriController.text,
-                            schema: sdk.CommercioDocMetadataSchema(
-                              uri: _metadataSchemaUriController.text,
-                              version: _metadataSchemaVersionController.text,
-                            ),
-                            schemaType: _metadataSchemaTypeController.text,
-                          ),
-                          walletAddress: _commercioAccount.walletAddress,
-                        )),
-                child: const Text(
-                  'Sign document',
-                  style: TextStyle(
-                    color: Colors.white,
+                              vcrId: _vcrIdTextController.text,
+                              certificateProfile:
+                                  _certificateProfileTextController.text,
+                              contentUri: _contentUriController.text,
+                              metadata: sdk.CommercioDocMetadata(
+                                contentUri: _metadataContentUriController.text,
+                                schema: sdk.CommercioDocMetadataSchema(
+                                  uri: _metadataSchemaUriController.text,
+                                  version:
+                                      _metadataSchemaVersionController.text,
+                                ),
+                                schemaType: _metadataSchemaTypeController.text,
+                              ),
+                              walletAddress: _commercioAccount.walletAddress,
+                            )),
+                    child: const Text(
+                      'Sign document',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -311,7 +336,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               )
             ],
           );
-        }),
+        },
       ),
     );
   }

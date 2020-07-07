@@ -1,4 +1,6 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -22,32 +24,25 @@ class RequestPowerupPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioIdRechargeTumblerBloc>(
-                  create: (_) => CommercioIdRechargeTumblerBloc(
-                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
-                      context,
-                    ),
-                  ),
-                  child: const RechargeGovernmentWidget(),
-                ),
-                BlocProvider<CommercioIdRequestDidPowerUpBloc>(
-                  create: (_) => CommercioIdRequestDidPowerUpBloc(
-                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
-                      context,
-                    ),
-                  ),
-                  child: const RequestDidPowerUpWidget(),
-                ),
-              ],
+        BlocProvider(
+          create: (_) => CommercioIdRechargeTumblerBloc(
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(
+              context,
             ),
           ),
+          child: const RechargeGovernmentWidget(),
+        ),
+        BlocProvider(
+          create: (_) => CommercioIdRequestDidPowerUpBloc(
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(
+              context,
+            ),
+          ),
+          child: const RequestDidPowerUpWidget(),
         ),
       ],
     );
@@ -59,38 +54,33 @@ class RechargeGovernmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to send tokens to the Tumbler.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          RechargeTumblerFlatButton(
-            event: () => const CommercioIdRechargeTumblerEvent(
-              rechargeAmount: [CommercioCoin(amount: '1000')],
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Recharging...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Send tokens to Tumbler',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RechargeTumblerTextField(
-              readOnly: true,
-              loading: (_) => 'Recharging...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${state.result.error.errorMessage}',
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: RechargeTumblerFlatButton(
+                event: () => const CommercioIdRechargeTumblerEvent(
+                  rechargeAmount: [CommercioCoin(amount: '1000')],
+                ),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Send tokens to Tumbler',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          RechargeTumblerTextField(
+            loading: (_) => 'Recharging...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),
@@ -103,40 +93,35 @@ class RequestDidPowerUpWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to request a Did PowerUp.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          RequestDidPowerUpFlatButton(
-            event: () => const CommercioIdRequestDidPowerUpEvent(
-              amount: [CommercioCoin(amount: '1000')],
-              pairwiseAddress:
-                  'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Powering up...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Request Did PowerUp',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RequestDidPowerUpTextField(
-              readOnly: true,
-              loading: (_) => 'Powering up...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${state.result.error.errorMessage}',
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: RequestDidPowerUpFlatButton(
+                event: () => const CommercioIdRequestDidPowerUpEvent(
+                  amount: [CommercioCoin(amount: '1000')],
+                  pairwiseAddress:
+                      'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+                ),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Request Did PowerUp',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          RequestDidPowerUpTextField(
+            loading: (_) => 'Powering up...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),

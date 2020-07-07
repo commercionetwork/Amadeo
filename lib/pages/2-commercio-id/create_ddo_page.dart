@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -26,42 +28,35 @@ class CreateDDOPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioIdGenerateKeysBloc>(
-                  create: (_) => CommercioIdGenerateKeysBloc(
-                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
-                      context,
-                    ),
-                  ),
-                  child: kIsWeb
-                      ? const GenerateKeysWebWidget()
-                      : const GenerateKeysWidget(),
-                ),
-                BlocProvider<CommercioIdDeriveDidDocumentBloc>(
-                  create: (_) => CommercioIdDeriveDidDocumentBloc(
-                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
-                      context,
-                    ),
-                  ),
-                  child: const DeriveDidDocumentWidget(),
-                ),
-                BlocProvider<CommercioIdSetDidDocumentBloc>(
-                  create: (_) => CommercioIdSetDidDocumentBloc(
-                    commercioId: RepositoryProvider.of<StatefulCommercioId>(
-                      context,
-                    ),
-                  ),
-                  child: const SetDidDocumentWidget(),
-                ),
-              ],
+        BlocProvider(
+          create: (_) => CommercioIdGenerateKeysBloc(
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(
+              context,
             ),
           ),
+          child: kIsWeb
+              ? const GenerateKeysWebWidget()
+              : const GenerateKeysWidget(),
+        ),
+        BlocProvider(
+          create: (_) => CommercioIdDeriveDidDocumentBloc(
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(
+              context,
+            ),
+          ),
+          child: const DeriveDidDocumentWidget(),
+        ),
+        BlocProvider(
+          create: (_) => CommercioIdSetDidDocumentBloc(
+            commercioId: RepositoryProvider.of<StatefulCommercioId>(
+              context,
+            ),
+          ),
+          child: const SetDidDocumentWidget(),
         ),
       ],
     );
@@ -73,34 +68,31 @@ class GenerateKeysWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to generate new RSA keys.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          GenerateKeysFlatButton(
-            event: () => const CommercioIdGenerateKeysEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Generating...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Generate keys',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GenerateKeysTextField(
-              readOnly: true,
-              loading: (_) => 'Generating...',
-              text: (_, state) => jsonEncode(state.commercioIdKeys),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: GenerateKeysFlatButton(
+                event: () => const CommercioIdGenerateKeysEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Generate keys',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          GenerateKeysTextField(
+            loading: (_) => 'Generating...',
+            text: (_, state) => jsonEncode(state.commercioIdKeys),
           ),
         ],
       ),
@@ -120,6 +112,12 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
   final _textController = TextEditingController(text: '');
   bool _isFetchingDemoKeys = false;
 
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
   Future<String> _fetchDemoKeys() async {
     final rsaKeysRaw = await rootBundle.loadString(_demoKeysPath);
     final decodedJson = jsonDecode(rsaKeysRaw) as Map<String, dynamic>;
@@ -137,7 +135,8 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
           return AlertDialog(
             title: const Text('Warning'),
             content: const Text(
-                'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!'),
+              'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!',
+            ),
             actions: [
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -172,29 +171,32 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
             _textController.text = snapshot.data;
           }
 
-          return Card(
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const ParagraphWidget(
                   'Press the button to generate new RSA keys.',
-                  padding: EdgeInsets.all(5.0),
-                ),
-                FlatButton(
-                  onPressed: onPressed,
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColorDark,
-                  child: const Text(
-                    'Generate keys',
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: TextField(
-                    readOnly: true,
-                    maxLines: null,
-                    controller: _textController,
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Center(
+                    child: FlatButton(
+                      onPressed: onPressed,
+                      color: Theme.of(context).primaryColor,
+                      disabledColor: Theme.of(context).primaryColorDark,
+                      child: const Text(
+                        'Generate keys',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
+                ),
+                TextField(
+                  readOnly: true,
+                  maxLines: null,
+                  controller: _textController,
                 ),
               ],
             ),
@@ -208,34 +210,29 @@ class DeriveDidDocumentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ParagraphWidget(
-            'Press the button to derive a Did document.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          DeriveDidDocumentFlatButton(
-            event: () => const CommercioIdDeriveDidDocumentEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Deriving...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Derive document',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          const ParagraphWidget('Press the button to derive a Did document.'),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: DeriveDidDocumentTextField(
-              readOnly: true,
-              loading: (_) => 'Deriving...',
-              text: (_, state) => jsonEncode(state.didDocument),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: DeriveDidDocumentFlatButton(
+                event: () => const CommercioIdDeriveDidDocumentEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Derive document',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          DeriveDidDocumentTextField(
+            loading: (_) => 'Deriving...',
+            text: (_, state) => jsonEncode(state.didDocument),
           ),
         ],
       ),
@@ -248,36 +245,31 @@ class SetDidDocumentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Press the button to derive and set a Did document.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          SetDidDocumentFlatButton(
-            event: () => const CommercioIdSetDidDocumentEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Setting...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Set document',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SetDidDocumentTextField(
-              readOnly: true,
-              loading: (_) => 'Setting...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${jsonEncode(state.result.error)}',
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: SetDidDocumentFlatButton(
+                event: () => const CommercioIdSetDidDocumentEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Set document',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          SetDidDocumentTextField(
+            loading: (_) => 'Setting...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),
@@ -290,34 +282,29 @@ class RestoreKeysWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const ParagraphWidget(
-            'Press the button to restore the RSA keys.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          RestoreKeysFlatButton(
-            event: () => const CommercioIdRestoreKeysEvent(),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Restoring...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Restore keys',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          const ParagraphWidget('Press the button to restore the RSA keys.'),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RestoreKeysTextField(
-              readOnly: true,
-              loading: (_) => 'Restoring...',
-              text: (_, state) => jsonEncode(state.commercioIdKeys),
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: RestoreKeysFlatButton(
+                event: () => const CommercioIdRestoreKeysEvent(),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Restore keys',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          RestoreKeysTextField(
+            loading: (_) => 'Restoring...',
+            text: (_, state) => jsonEncode(state.commercioIdKeys),
           ),
         ],
       ),

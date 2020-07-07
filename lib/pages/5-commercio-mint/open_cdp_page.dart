@@ -1,4 +1,6 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -22,39 +24,47 @@ class OpenCdpPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioMintOpenCdpBloc>(
-                  create: (_) => CommercioMintOpenCdpBloc(
-                    commercioMint:
-                        RepositoryProvider.of<StatefulCommercioMint>(context),
-                  ),
-                  child: OpenCdpWidget(),
-                ),
-              ],
-            ),
+        BlocProvider(
+          create: (_) => CommercioMintOpenCdpBloc(
+            commercioMint:
+                RepositoryProvider.of<StatefulCommercioMint>(context),
           ),
+          child: const OpenCdpWidget(),
         ),
       ],
     );
   }
 }
 
-class OpenCdpWidget extends StatelessWidget {
-  final TextEditingController amountTextController = TextEditingController();
+class OpenCdpWidget extends StatefulWidget {
+  const OpenCdpWidget();
+
+  @override
+  _OpenCdpWidgetState createState() => _OpenCdpWidgetState();
+}
+
+class _OpenCdpWidgetState extends State<OpenCdpWidget> {
+  final _amountTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    _amountTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
-            controller: amountTextController,
+            controller: _amountTextController,
             decoration: const InputDecoration(
               hintText: '100',
               labelText: 'Amount of tokens',
@@ -64,31 +74,25 @@ class OpenCdpWidget extends StatelessWidget {
             'Press the button to open a Cdp with the specified.',
             padding: EdgeInsets.all(5.0),
           ),
-          OpenCdpFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Opening...',
-              style: TextStyle(color: Colors.white),
-            ),
-            event: () => CommercioMintOpenCdpEvent(
-              amount: int.tryParse(amountTextController.text),
-            ),
-            child: (_) => const Text(
-              'Open Cdp',
-              style: TextStyle(color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: OpenCdpFlatButton(
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                event: () => CommercioMintOpenCdpEvent(
+                  amount: int.tryParse(_amountTextController.text),
+                ),
+                child: (_) => const Text(
+                  'Open Cdp',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: OpenCdpTextField(
-              readOnly: true,
-              loading: (_) => 'Opening...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${state.result.error.errorMessage}',
-              maxLines: null,
-            ),
+          OpenCdpTextField(
+            loading: (_) => 'Opening...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),

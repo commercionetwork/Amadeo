@@ -1,4 +1,5 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -7,14 +8,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RestoreWalletFromMnemonicPage extends SectionPageWidget {
   const RestoreWalletFromMnemonicPage({Key key})
-      : super('/1-account/restore-wallet-from-mnemonic',
-            'RestoreWalletFromMnemonicPage',
-            key: key);
+      : super(
+          '/1-account/restore-wallet-from-mnemonic',
+          'RestoreWalletFromMnemonicPage',
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
     return const BaseScaffoldWidget(
-        bodyWidget: RestoreWalletFromMnemonicPageBody());
+      bodyWidget: RestoreWalletFromMnemonicPageBody(),
+    );
   }
 }
 
@@ -23,21 +27,23 @@ class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child: Column(
               children: [
-                BlocProvider<CommercioAccountRestoreWalletBloc>(
+                BlocProvider(
                   create: (_) => CommercioAccountRestoreWalletBloc(
                     commercioAccount:
                         RepositoryProvider.of<StatefulCommercioAccount>(
                       context,
                     ),
                   ),
-                  child: RestoreWalletFromMnemonicWidget(),
+                  child: const RestoreWalletFromMnemonicWidget(),
                 ),
               ],
             ),
@@ -48,23 +54,35 @@ class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
   }
 }
 
-class RestoreWalletFromMnemonicWidget extends StatelessWidget {
-  RestoreWalletFromMnemonicWidget();
+class RestoreWalletFromMnemonicWidget extends StatefulWidget {
+  const RestoreWalletFromMnemonicWidget();
 
-  final TextEditingController mnemonicTextController =
-      TextEditingController(text: '');
+  @override
+  _RestoreWalletFromMnemonicWidgetState createState() =>
+      _RestoreWalletFromMnemonicWidgetState();
+}
+
+class _RestoreWalletFromMnemonicWidgetState
+    extends State<RestoreWalletFromMnemonicWidget> {
+  final _mnemonicTextController = TextEditingController(text: '');
+
+  @override
+  void dispose() {
+    _mnemonicTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const ParagraphWidget(
             'Press the button to restore the wallet using the entered input words.',
-            padding: EdgeInsets.all(5.0),
           ),
           TextField(
-            controller: mnemonicTextController,
+            controller: _mnemonicTextController,
           ),
           BlocBuilder<CommercioAccountRestoreWalletBloc,
               CommercioAccountRestoredWalletState>(
@@ -73,7 +91,7 @@ class RestoreWalletFromMnemonicWidget extends StatelessWidget {
                   BlocProvider.of<CommercioAccountRestoreWalletBloc>(context);
               Function() f = () => restoreBloc.add(
                     CommercioAccountRestoreWalletEvent(
-                      mnemonic: mnemonicTextController.text,
+                      mnemonic: _mnemonicTextController.text,
                     ),
                   );
 
@@ -84,25 +102,23 @@ class RestoreWalletFromMnemonicWidget extends StatelessWidget {
                 error: (_) => null,
               );
 
-              return FlatButton(
-                onPressed: f,
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
-                child: const Text(
-                  'Restore Wallet',
-                  style: TextStyle(color: Colors.white),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: FlatButton(
+                  onPressed: f,
+                  color: Theme.of(context).primaryColor,
+                  disabledColor: Theme.of(context).primaryColorDark,
+                  child: const Text(
+                    'Restore Wallet',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               );
             },
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: RestoreWalletTextField(
-              readOnly: true,
-              loading: (_) => 'Loading...',
-              text: (_, state) => state.walletAddress,
-              maxLines: null,
-            ),
+          RestoreWalletTextField(
+            loading: (_) => 'Loading...',
+            text: (_, state) => state.walletAddress,
           ),
         ],
       ),

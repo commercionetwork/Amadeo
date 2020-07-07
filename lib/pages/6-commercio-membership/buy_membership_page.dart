@@ -1,4 +1,6 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -23,23 +25,15 @@ class BuyMembershipPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioKycBuyMembershipBloc>(
-                  create: (_) => CommercioKycBuyMembershipBloc(
-                    commercioKyc:
-                        RepositoryProvider.of<StatefulCommercioKyc>(context),
-                  ),
-                  child: const BuyMembershipWidget(),
-                ),
-              ],
-            ),
+        BlocProvider(
+          create: (_) => CommercioKycBuyMembershipBloc(
+            commercioKyc: RepositoryProvider.of<StatefulCommercioKyc>(context),
           ),
+          child: const BuyMembershipWidget(),
         ),
       ],
     );
@@ -53,38 +47,33 @@ class BuyMembershipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Buy a membership for the current account.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          BuyMembershipFlatButton(
-            event: () => CommercioKycBuyMembershipEvent(
-              membershipType: membershipType,
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loading: (_) => const Text(
-              'Buying...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: (_) => const Text(
-              'Buy membership',
-              style: TextStyle(color: Colors.white),
-            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: BuyMembershipTextField(
-              readOnly: true,
-              loading: (_) => 'Buying...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${state.result.error.errorMessage}',
-              maxLines: null,
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: BuyMembershipFlatButton(
+                event: () => CommercioKycBuyMembershipEvent(
+                  membershipType: membershipType,
+                ),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).primaryColorDark,
+                child: (_) => const Text(
+                  'Buy membership',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          BuyMembershipTextField(
+            loading: (_) => 'Buying...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),

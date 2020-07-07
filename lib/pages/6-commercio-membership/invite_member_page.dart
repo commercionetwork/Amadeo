@@ -1,4 +1,6 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -23,23 +25,15 @@ class InviteMemberPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioKycInviteMemberBloc>(
-                  create: (_) => CommercioKycInviteMemberBloc(
-                    commercioKyc:
-                        RepositoryProvider.of<StatefulCommercioKyc>(context),
-                  ),
-                  child: const InviteMemberWidget(),
-                ),
-              ],
-            ),
+        BlocProvider(
+          create: (_) => CommercioKycInviteMemberBloc(
+            commercioKyc: RepositoryProvider.of<StatefulCommercioKyc>(context),
           ),
+          child: const InviteMemberWidget(),
         ),
       ],
     );
@@ -51,57 +45,50 @@ class InviteMemberWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Invite a new random wallet address.',
             padding: EdgeInsets.all(5.0),
           ),
           FutureBuilder<Wallet>(
-              future: StatelessCommercioAccount.generateNewWallet(
-                  networkInfo:
-                      RepositoryProvider.of<StatefulCommercioAccount>(context)
-                          .networkInfo),
-              builder: (_, snap) {
-                if (snap.connectionState == ConnectionState.waiting) {
-                  return FlatButton(
-                    onPressed: null,
-                    disabledColor: Theme.of(context).primaryColorDark,
+            future: StatelessCommercioAccount.generateNewWallet(
+              networkInfo:
+                  RepositoryProvider.of<StatefulCommercioAccount>(context)
+                      .networkInfo,
+            ),
+            builder: (_, snap) {
+              CommercioKycInviteMemberEvent Function() event =
+                  () => CommercioKycInviteMemberEvent(
+                        invitedAddress: snap.data.bech32Address,
+                      );
+
+              if (snap.connectionState == ConnectionState.waiting) {
+                event = null;
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Center(
+                  child: InviteMemberFlatButton(
+                    event: event,
                     color: Theme.of(context).primaryColor,
-                    child: const Text(
+                    disabledColor: Theme.of(context).primaryColorDark,
+                    child: (_) => const Text(
                       'Invite new wallet',
                       style: TextStyle(color: Colors.white),
                     ),
-                  );
-                }
-
-                return InviteMemberFlatButton(
-                  event: () => CommercioKycInviteMemberEvent(
-                    invitedAddress: snap.data.bech32Address,
                   ),
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColorDark,
-                  loading: (_) => const Text(
-                    'Inviting...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  child: (_) => const Text(
-                    'Invite new wallet',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
-              }),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: InviteMemberTextField(
-              readOnly: true,
-              loading: (_) => 'Inviting...',
-              text: (_, state) => state.result.success
-                  ? 'Success! Hash: ${state.result.hash}'
-                  : 'Error: ${state.result.error.errorMessage}',
-              maxLines: null,
-            ),
+                ),
+              );
+            },
+          ),
+          InviteMemberTextField(
+            loading: (_) => 'Inviting...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),

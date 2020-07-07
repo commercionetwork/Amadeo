@@ -1,4 +1,5 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -7,8 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GenerateNewWalletPage extends SectionPageWidget {
   const GenerateNewWalletPage({Key key})
-      : super('/1-account/generate-new-wallet', 'GenerateNewWalletPage',
-            key: key);
+      : super(
+          '/1-account/generate-new-wallet',
+          'GenerateNewWalletPage',
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -21,84 +25,82 @@ class GenerateNewWalletPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioAccountGenerateWalletBloc>(
-                  create: (_) => CommercioAccountGenerateWalletBloc(
-                    commercioAccount:
-                        RepositoryProvider.of<StatefulCommercioAccount>(
-                      context,
-                    ),
-                  ),
-                  child: GenerateWalletWidget(),
-                ),
-              ],
+        BlocProvider(
+          create: (_) => CommercioAccountGenerateWalletBloc(
+            commercioAccount: RepositoryProvider.of<StatefulCommercioAccount>(
+              context,
             ),
           ),
+          child: const GenerateWalletWidget(),
         ),
       ],
     );
   }
 }
 
-class GenerateWalletWidget extends StatelessWidget {
-  GenerateWalletWidget();
+class GenerateWalletWidget extends StatefulWidget {
+  const GenerateWalletWidget();
 
-  final TextEditingController mnemonicTextController =
-      TextEditingController(text: '');
+  @override
+  _GenerateWalletWidgetState createState() => _GenerateWalletWidgetState();
+}
+
+class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
+  final _mnemonicTextController = TextEditingController(text: '');
+
+  @override
+  void dispose() {
+    _mnemonicTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const ParagraphWidget(
             'Press the button to auto-generate a new wallet. The mnemonic words will be stored inside the device secure storage.',
             padding: EdgeInsets.all(5.0),
           ),
-          GenerateWalletFlatButton(
-            event: () => const CommercioAccountGenerateWalletEvent(),
-            loading: (_) => const Text(
-              'Loading...',
-              style: TextStyle(color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: GenerateWalletFlatButton(
+              event: () => const CommercioAccountGenerateWalletEvent(),
+              child: (_) => const Text(
+                'Generate Wallet',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Theme.of(context).primaryColor,
+              disabledColor: Theme.of(context).primaryColorDark,
             ),
-            child: (_) => const Text(
-              'Generate Wallet',
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
           ),
           BlocBuilder<CommercioAccountGenerateWalletBloc,
               CommercioAccountGenerateWalletState>(
             builder: (_, snap) {
               snap.when(
                 (mnemonic, wallet, walletAddress) =>
-                    mnemonicTextController.text = mnemonic,
-                initial: () => mnemonicTextController.text = '',
-                loading: () => mnemonicTextController.text = 'Loading...',
+                    _mnemonicTextController.text = mnemonic,
+                initial: () => _mnemonicTextController.text = '',
+                loading: () => _mnemonicTextController.text = 'Loading...',
                 error: (_) => null,
               );
 
               return TextField(
                 readOnly: true,
-                controller: mnemonicTextController,
+                controller: _mnemonicTextController,
                 maxLines: null,
               );
             },
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GenerateWalletTextField(
-              loading: (_) => 'Loading...',
-              text: (_, state) => state.walletAddress,
-              maxLines: null,
-            ),
+          GenerateWalletTextField(
+            loading: (_) => 'Loading...',
+            text: (_, state) => state.walletAddress,
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/derivation_path_chooser_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
@@ -24,25 +25,22 @@ class GenerateManyAddressesPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioAccountGeneratePairwiseWalletBloc>(
-                  create: (_) => CommercioAccountGeneratePairwiseWalletBloc(
-                    commercioAccount:
-                        RepositoryProvider.of<StatefulCommercioAccount>(
-                      context,
-                    ),
-                  ),
-                  child: const GeneratePairwiseWalletWidget(),
+        Column(
+          children: [
+            BlocProvider(
+              create: (_) => CommercioAccountGeneratePairwiseWalletBloc(
+                commercioAccount:
+                    RepositoryProvider.of<StatefulCommercioAccount>(
+                  context,
                 ),
-              ],
+              ),
+              child: const GeneratePairwiseWalletWidget(),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -65,60 +63,49 @@ class _GeneratePairwiseWalletWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ParagraphWidget(
             'Choose a derivation path value',
-            padding: EdgeInsets.all(5.0),
           ),
-          DerivationPathChooserWidget(
-            onChanged: (selectedValue) {
-              derivationPathValue = selectedValue;
+          Center(
+            child: DerivationPathChooserWidget(
+              onChanged: (selectedValue) {
+                derivationPathValue = selectedValue;
 
-              setState(() {
-                derivationPath =
-                    "$baseDerivationPath/${derivationPathValue.toInt()}";
-              });
-            },
-          ),
-          Container(
-            width: double.infinity,
-            child: const Text('Derivation path'),
-          ),
-          Container(
-            width: double.infinity,
-            child: Text(
-              derivationPath,
+                setState(() {
+                  derivationPath =
+                      '$baseDerivationPath/${derivationPathValue.toInt()}';
+                });
+              },
             ),
+          ),
+          Container(
+            width: double.infinity,
+            child: Text('Derivation path: $derivationPath'),
           ),
           const ParagraphWidget(
             'Press the button to generate a pairwise wallet.',
-            padding: EdgeInsets.all(5.0),
           ),
-          GeneratePairwiseWalletFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            child: (_) => const Text(
-              'Generate pairwise wallet',
-              style: TextStyle(color: Colors.white),
-            ),
-            loading: (_) => const Text(
-              'Generating...',
-              style: TextStyle(color: Colors.white),
-            ),
-            event: () => CommercioAccountGeneratePairwiseWalletEvent(
-              lastDerivationPath: derivationPathValue.toString(),
+          Center(
+            child: GeneratePairwiseWalletFlatButton(
+              color: Theme.of(context).primaryColor,
+              disabledColor: Theme.of(context).primaryColorDark,
+              child: (_) => const Text(
+                'Generate pairwise wallet',
+                style: TextStyle(color: Colors.white),
+              ),
+              event: () => CommercioAccountGeneratePairwiseWalletEvent(
+                lastDerivationPath: derivationPathValue.toString(),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GeneratePairwiseWalletTextField(
-              readOnly: true,
-              loading: (_) => 'Loading...',
-              text: (_, state) => state.wallet.bech32Address,
-              maxLines: null,
-            ),
+          GeneratePairwiseWalletTextField(
+            loading: (_) => 'Loading...',
+            text: (_, state) => state.wallet.bech32Address,
           ),
         ],
       ),

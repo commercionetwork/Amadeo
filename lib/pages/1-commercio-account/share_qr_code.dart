@@ -1,4 +1,5 @@
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
@@ -21,25 +22,17 @@ class ShareQRCodePageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                BlocProvider<CommercioAccountGenerateQrBloc>(
-                  create: (_) => CommercioAccountGenerateQrBloc(
-                    commercioAccount:
-                        RepositoryProvider.of<StatefulCommercioAccount>(
-                      context,
-                    ),
-                  ),
-                  child: const GenerateQrCodeWidget(),
-                ),
-              ],
+        BlocProvider(
+          create: (_) => CommercioAccountGenerateQrBloc(
+            commercioAccount: RepositoryProvider.of<StatefulCommercioAccount>(
+              context,
             ),
           ),
+          child: const GenerateQrCodeWidget(),
         ),
       ],
     );
@@ -51,39 +44,38 @@ class GenerateQrCodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         children: [
           const ParagraphWidget(
             'Press the button to generate a QR code from your wallet.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          GenerateQrFlatButton(
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            child: (_) => const Text(
-              'Generate QR',
-              style: TextStyle(color: Colors.white),
-            ),
-            loading: (_) => const Text(
-              'Generating...',
-              style: TextStyle(color: Colors.white),
-            ),
-            event: () => const CommercioAccountGenerateQrEvent(),
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: BlocBuilder<CommercioAccountGenerateQrBloc,
-                CommercioAccountQrState>(
-              builder: (context, state) {
-                return state.when(
-                  (walletAddress) => QrImage(data: walletAddress),
-                  initial: () => Container(),
-                  loading: () => const CircularProgressIndicator(),
-                  error: (_) => Container(),
-                );
-              },
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: GenerateQrFlatButton(
+              color: Theme.of(context).primaryColor,
+              disabledColor: Theme.of(context).primaryColorDark,
+              child: (_) => const Text(
+                'Generate QR',
+                style: TextStyle(color: Colors.white),
+              ),
+              loading: (_) => const Text(
+                'Generating...',
+                style: TextStyle(color: Colors.white),
+              ),
+              event: () => const CommercioAccountGenerateQrEvent(),
             ),
+          ),
+          BlocBuilder<CommercioAccountGenerateQrBloc, CommercioAccountQrState>(
+            builder: (context, state) {
+              return state.when(
+                (walletAddress) => QrImage(data: walletAddress),
+                initial: () => Container(),
+                loading: () => const CircularProgressIndicator(),
+                error: (_) => Container(),
+              );
+            },
           ),
         ],
       ),
