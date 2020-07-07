@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 [![bloc library](https://tinyurl.com/bloc-library)](https://pub.dev/packages/bloc)
 
-Amadeo is a starter/cookbook Flutter project to let anyone create on Commercio.network a:
+Amadeo is a starter/cookbook Flutter project to let anyone create on [Commercio.network](https://commercio.network/) a:
 
 * Auth app
 * eID app
@@ -13,7 +13,7 @@ Amadeo is a starter/cookbook Flutter project to let anyone create on Commercio.n
 * Token App
 * KYC app
   
-How?  Commercio provides a set of ready-made easy-to-modifiy visual elements to build any solution to any document problem.  
+How? Commercio provides a set of ready-made easy-to-modifiy visual elements to build any solution to any document problem.  
 
 * CommercioAccount
 * CommercioID
@@ -26,13 +26,13 @@ Amadeo in not a production ready app. You need to fork it and create your own vi
 
 ## Screenshots
 
-[![Amadeo Screen 1](docs/images/screenshots/Amadeo_App_screen_1_small.png)](docs/images/screenshots/Amadeo_App_screen_1.png)
-[![Amadeo Screen 2](docs/images/screenshots/Amadeo_App_screen_2_small.png)](docs/images/screenshots/Amadeo_App_screen_2.png)
-[![Amadeo Screen 3](docs/images/screenshots/Amadeo_App_screen_3_small.png)](docs/images/screenshots/Amadeo_App_screen_3.png)
+[![Amadeo Screen 1](docs/images/screenshots/Amadeo_App_screen_1_small.jpg)](docs/images/screenshots/Amadeo_App_screen_1.jpg)
+[![Amadeo Screen 2](docs/images/screenshots/Amadeo_App_screen_2_small.jpg)](docs/images/screenshots/Amadeo_App_screen_2.jpg)
+[![Amadeo Screen 3](docs/images/screenshots/Amadeo_App_screen_3_small.jpg)](docs/images/screenshots/Amadeo_App_screen_3.jpg)
 
 ## About
 
-The name Amadeo is to celebrate and remember the life of [Amadeo Peter Giannini](https://en.wikipedia.org/wiki/Amadeo_Giannini)
+The name Amadeo is to celebrate and remember the life of [Amadeo Peter Giannini](https://en.wikipedia.org/wiki/Amadeo_Giannini).
 
 ## Getting Started
 
@@ -49,8 +49,27 @@ Compile and run the app:
 flutter run   # Use --release flag to build in release mode
 ```
 
+The app is also avaiable as an experimental web application. To enable web support for Flutter:
+```bash
+flutter channel beta
+flutter upgrade
+flutter config --enable-web
+```
+
+* Debug with:
+  ```bash
+  flutter run -d web-server
+  ```
+* Compile and deploy (here we use `python`):
+  ```bash
+  flutter build web
+  cd build/web/
+  python -m SimpleHTTPServer 8000  # Navigate to http://localhost:8000/
+  ```
+
 ## Licence
 
+```
 MIT License
 
 Copyright (c) 2020 Commercio.network
@@ -72,3 +91,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
