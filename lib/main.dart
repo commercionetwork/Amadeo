@@ -1,6 +1,7 @@
 import 'package:amadeo/helpers/net_helper.dart';
 import 'package:amadeo/my_app.dart';
 import 'package:amadeo/repositories/document_repository.dart';
+import 'package:amadeo/repositories/layout_repository.dart';
 import 'package:amadeo/repositories/sdn_selected_repository.dart';
 import 'package:amadeo/simple_bloc_observer.dart';
 import 'package:colorize_lumberdash/colorize_lumberdash.dart';
@@ -58,6 +59,7 @@ void main() {
         ),
         RepositoryProvider(create: (_) => DocumentRepository()),
         RepositoryProvider(create: (_) => SdnSelectedDataRepository()),
+        RepositoryProvider(create: (_) => LayoutRepository()),
       ],
       child: const MyApp(),
     ),
