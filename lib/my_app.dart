@@ -37,9 +37,8 @@ class MyApp extends StatelessWidget {
             dsbUrl: commercioDsbDevUrl,
           ),
         ),
-        BlocProvider<CommercioDocsEncDataBloc>(
-            create: (_) => CommercioDocsEncDataBloc()),
-        BlocProvider<SdnDataBloc>(
+        BlocProvider(create: (_) => CommercioDocsEncDataBloc()),
+        BlocProvider(
           create: (_) =>
               SdnDataBloc(sdnSelectedDataRepository: sdnSelectedDataRepository),
         ),
