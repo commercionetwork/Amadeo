@@ -16,7 +16,9 @@ class SectionButtonWidget extends StatelessWidget {
       child: FlatButton(
         onPressed: sectionPage.enabled
             ? () => Navigator.pushNamed(
-                context, sectionPage.sectionPageWidget.routeName)
+                  context,
+                  sectionPage.sectionPageWidget.routeName,
+                )
             : null,
         color: Theme.of(context).primaryColor,
         textColor: Colors.white,
@@ -26,9 +28,7 @@ class SectionButtonWidget extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        child: Text(
-          sectionPage.title,
-        ),
+        child: Text(sectionPage.title),
       ),
     );
   }
