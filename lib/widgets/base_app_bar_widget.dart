@@ -21,15 +21,22 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         RepositoryProvider.of<StatefulCommercioAccount>(context);
 
     return AppBar(
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
       title: Text(
         title,
         style: const TextStyle(
-          color: Colors.white,
+          fontSize: 28.0,
         ),
       ),
+      centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },
+        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+      ),
+      backgroundColor: Colors.transparent,
+      elevation: .0,
       actions: widgets ??
           [
             Padding(
@@ -49,7 +56,8 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Switched to ${result.name}. Please restore the wallet.'),
+                        'Switched to ${result.name}. Please restore the wallet.',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );
