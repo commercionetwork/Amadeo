@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:amadeo/repositories/app_repository.dart';
+import 'package:amadeo/repositories/dialog_warnings_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
