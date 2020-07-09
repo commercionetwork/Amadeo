@@ -1,3 +1,4 @@
+import 'package:amadeo/helpers/sdn_data_bloc/sdn_data_bloc.dart';
 import 'package:amadeo/helpers/sign_bloc/sign_bloc.dart';
 import 'package:amadeo/pages/export.dart';
 import 'package:amadeo/repositories/document_repository.dart';
@@ -235,6 +236,9 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final sdnSelectedDataRepository =
+        RepositoryProvider.of<SdnSelectedDataRepository>(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: BlocConsumer<SignBloc, SignState>(
@@ -279,8 +283,13 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               const ParagraphWidget(
                 'Select the Subject Distinguish Names to include in the generated certificate.',
               ),
-              SdnDataInputSwitchWidget(
-                activeColor: Theme.of(context).primaryColor,
+              BlocProvider(
+                create: (_) => SdnDataBloc(
+                  sdnSelectedDataRepository: sdnSelectedDataRepository,
+                ),
+                child: SdnDataInputSwitchWidget(
+                  activeColor: Theme.of(context).primaryColor,
+                ),
               ),
               const ParagraphWidget(
                 'Press the button to derive and share a Did document with signature.',

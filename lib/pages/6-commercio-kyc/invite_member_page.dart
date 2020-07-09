@@ -61,22 +61,17 @@ class InviteMemberWidget extends StatelessWidget {
                       .networkInfo,
             ),
             builder: (_, snap) {
-              CommercioKycInviteMemberEvent Function() event =
-                  () => CommercioKycInviteMemberEvent(
-                        invitedAddress: snap.data.bech32Address,
-                      );
-
-              if (snap.connectionState == ConnectionState.waiting) {
-                event = null;
-              }
-
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
                   child: InviteMemberFlatButton(
-                    event: event,
+                    event: (snap.connectionState == ConnectionState.done)
+                        ? () => CommercioKycInviteMemberEvent(
+                              invitedAddress: snap.data.bech32Address,
+                            )
+                        : null,
                     color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).primaryColorDark,
+                    disabledColor: Colors.grey,
                     child: (_) => const Text(
                       'Invite new wallet',
                       style: TextStyle(color: Colors.white),

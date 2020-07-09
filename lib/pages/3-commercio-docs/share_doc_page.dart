@@ -39,12 +39,20 @@ class ShareDocPageBody extends StatelessWidget {
           ),
           child: ShareDocWidget(),
         ),
-        BlocProvider(
-          create: (_) => CommercioDocsShareEncryptedDocumentBloc(
-            commercioDocs:
-                RepositoryProvider.of<StatefulCommercioDocs>(context),
-            commercioId: RepositoryProvider.of<StatefulCommercioId>(context),
-          ),
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => CommercioDocsShareEncryptedDocumentBloc(
+                commercioDocs:
+                    RepositoryProvider.of<StatefulCommercioDocs>(context),
+                commercioId:
+                    RepositoryProvider.of<StatefulCommercioId>(context),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => CommercioDocsEncDataBloc(),
+            )
+          ],
           child: const ShareEncDocWidget(),
         ),
       ],

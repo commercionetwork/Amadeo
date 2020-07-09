@@ -1,14 +1,17 @@
-import 'dart:convert';
-
+import 'package:amadeo/helpers/demo_keys/demo_keys_bloc.dart';
+import 'package:amadeo/helpers/warning_dialog_bloc/warning_dialog_bloc.dart';
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/commercio_keys_presenter.dart';
+import 'package:amadeo/presenters/did_doc_presenter.dart';
 import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/repositories/dialog_warnings_repository.dart';
+import 'package:amadeo/repositories/keys_repository.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateDDOPage extends SectionPageWidget {
@@ -39,7 +42,27 @@ class CreateDDOPageBody extends StatelessWidget {
             ),
           ),
           child: kIsWeb
-              ? const GenerateKeysWebWidget()
+              ? MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => WarningDialogBloc(
+                        dialogWarningsRepository:
+                            RepositoryProvider.of<DialogWarningsRepository>(
+                          context,
+                        ),
+                      ),
+                    ),
+                    BlocProvider(
+                      create: (_) => DemoKeysBloc(
+                        keysRepository:
+                            RepositoryProvider.of<KeysRepository>(context),
+                        commercioIdKeys:
+                            RepositoryProvider.of<StatefulCommercioId>(context),
+                      ),
+                    ),
+                  ],
+                  child: const GenerateKeysWebWidget(),
+                )
               : const GenerateKeysWidget(),
         ),
         BlocProvider(
@@ -92,7 +115,7 @@ class GenerateKeysWidget extends StatelessWidget {
           ),
           GenerateKeysTextField(
             loading: (_) => 'Generating...',
-            text: (_, state) => jsonEncode(state.commercioIdKeys),
+            text: (_, state) => commercioKeysToString(state.commercioIdKeys),
           ),
         ],
       ),
@@ -108,9 +131,7 @@ class GenerateKeysWebWidget extends StatefulWidget {
 }
 
 class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
-  final String _demoKeysPath = 'assets/id_keys.json';
   final _textController = TextEditingController(text: '');
-  bool _isFetchingDemoKeys = false;
 
   @override
   void dispose() {
@@ -118,90 +139,100 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
     super.dispose();
   }
 
-  Future<String> _fetchDemoKeys() async {
-    final rsaKeysRaw = await rootBundle.loadString(_demoKeysPath);
-    final decodedJson = jsonDecode(rsaKeysRaw) as Map<String, dynamic>;
-    RepositoryProvider.of<StatefulCommercioId>(context).commercioIdKeys =
-        CommercioIdKeys.fromJson(decodedJson);
-
-    return rsaKeysRaw;
-  }
-
-  void _showWebKeysWarningDialog() {
-    if (_textController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Warning'),
-            content: const Text(
-              'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!',
+  void _showWebKeysWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Warning'),
+          content: const Text(
+            'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!',
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
             ),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    void Function() onPressed = () {
-      _showWebKeysWarningDialog();
+    return BlocListener<WarningDialogBloc, WarningDialogState>(
+      listener: (context, state) {
+        if (state is ShowKeysWarningDialogState) {
+          _showWebKeysWarningDialog(context);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const ParagraphWidget(
+              'Press the button to generate new RSA keys.',
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Center(
+                child: FlatButton(
+                  onPressed: () {
+                    BlocProvider.of<WarningDialogBloc>(context).add(
+                      const MaybeShowKeysWarningDialogEvent(),
+                    );
 
-      setState(() {
-        _textController.text = '';
-        _isFetchingDemoKeys = true;
-      });
-    };
-
-    return FutureBuilder<String>(
-        future: _isFetchingDemoKeys ? _fetchDemoKeys() : null,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            onPressed = null;
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            _textController.text = snapshot.data;
-          }
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ParagraphWidget(
-                  'Press the button to generate new RSA keys.',
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Center(
-                    child: FlatButton(
-                      onPressed: onPressed,
-                      color: Theme.of(context).primaryColor,
-                      disabledColor: Theme.of(context).primaryColorDark,
-                      child: const Text(
-                        'Generate keys',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    BlocProvider.of<DemoKeysBloc>(context).add(
+                      const LoadDemoKeysEvent(),
+                    );
+                  },
+                  color: Theme.of(context).primaryColor,
+                  disabledColor: Theme.of(context).primaryColorDark,
+                  child: const Text(
+                    'Generate keys',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                TextField(
+              ),
+            ),
+            BlocConsumer<DemoKeysBloc, DemoKeysState>(
+              listener: (context, state) {
+                if (state is DemoKeysError) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state is DemoKeysLoading) {
+                  _textController.text = 'Loading...';
+                }
+
+                if (state is DemoKeysError) {
+                  _textController.text = state.message;
+                }
+
+                if (state is DemoKeysData) {
+                  _textController.text =
+                      commercioKeysToString(state.commercioIdKeys);
+                }
+
+                return TextField(
                   readOnly: true,
                   maxLines: null,
                   controller: _textController,
-                ),
-              ],
+                );
+              },
             ),
-          );
-        });
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -232,7 +263,7 @@ class DeriveDidDocumentWidget extends StatelessWidget {
           ),
           DeriveDidDocumentTextField(
             loading: (_) => 'Deriving...',
-            text: (_, state) => jsonEncode(state.didDocument),
+            text: (_, state) => didDocumentToString(state.didDocument),
           ),
         ],
       ),
@@ -304,7 +335,7 @@ class RestoreKeysWidget extends StatelessWidget {
           ),
           RestoreKeysTextField(
             loading: (_) => 'Restoring...',
-            text: (_, state) => jsonEncode(state.commercioIdKeys),
+            text: (_, state) => commercioKeysToString(state.commercioIdKeys),
           ),
         ],
       ),
