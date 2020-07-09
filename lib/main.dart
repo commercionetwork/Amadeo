@@ -1,6 +1,8 @@
 import 'package:amadeo/helpers/net_helper.dart';
 import 'package:amadeo/my_app.dart';
+import 'package:amadeo/repositories/dialog_warnings_repository.dart';
 import 'package:amadeo/repositories/document_repository.dart';
+import 'package:amadeo/repositories/keys_repository.dart';
 import 'package:amadeo/repositories/layout_repository.dart';
 import 'package:amadeo/repositories/sdn_selected_repository.dart';
 import 'package:amadeo/simple_bloc_observer.dart';
@@ -60,6 +62,8 @@ void main() {
         RepositoryProvider(create: (_) => DocumentRepository()),
         RepositoryProvider(create: (_) => SdnSelectedDataRepository()),
         RepositoryProvider(create: (_) => LayoutRepository()),
+        RepositoryProvider(create: (_) => DialogWarningsRepository()),
+        RepositoryProvider(create: (_) => const KeysRepository()),
       ],
       child: const MyApp(),
     ),
