@@ -1,9 +1,10 @@
 import 'package:amadeo/entities/section_page.dart';
+import 'package:amadeo/helpers/warning_dialog_bloc/warning_dialog_bloc.dart';
 import 'package:amadeo/pages/export.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/section_card_widget.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen();
@@ -13,8 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool alertDisplayed = false;
-
   final List<SectionPage> sections = const [
     SectionPage(
         sectionPageWidget: CommercioAccountPage(),
@@ -52,47 +51,51 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  void _showWebWarningDialog() {
-    if (kIsWeb && !alertDisplayed) {
-      setState(() {
-        alertDisplayed = true;
-      });
-
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Warning'),
-            content: const Text(
-                'Web support is highly experimental, your secrets are stored inside the browser.'),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+  void _showWebWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Warning'),
+          content: const Text(
+            'Web support is highly experimental, your secrets are stored inside the browser.',
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
 
-    if (mounted) {
-      Future.delayed(Duration.zero, () => _showWebWarningDialog());
-    }
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => BlocProvider.of<WarningDialogBloc>(context).add(
+        const MaybeShowWebWarningDialogEvent(),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldWidget(
-      bodyWidget: ListView.builder(
-        itemCount: sections.length,
-        itemBuilder: (context, i) => SectionCardWidget(
-          sectionPage: sections[i],
+      bodyWidget: BlocListener<WarningDialogBloc, WarningDialogState>(
+        listener: (context, state) {
+          if (state is ShowWebWarningDialogState) {
+            _showWebWarningDialog(context);
+          }
+        },
+        child: ListView.builder(
+          itemCount: sections.length,
+          itemBuilder: (context, i) => SectionCardWidget(
+            sectionPage: sections[i],
+          ),
         ),
       ),
     );
