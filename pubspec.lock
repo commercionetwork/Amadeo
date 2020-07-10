@@ -42,7 +42,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   basic_utils:
     dependency: "direct main"
     description:
@@ -215,8 +215,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.3.0"
-      resolved-ref: "2bd741707550a8408bed684095bae45b527887f8"
+      ref: "0.2.0"
+      resolved-ref: "4b294010c3dc10675f392521e86bffcce2c7447a"
       url: "https://github.com/commercionetwork/CommercioUI.git"
     source: git
     version: "0.0.3"
@@ -726,7 +726,7 @@ packages:
       name: stack_trace
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.3"
+    version: "1.9.5"
   steel_crypt:
     dependency: transitive
     description:
