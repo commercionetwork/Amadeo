@@ -50,8 +50,29 @@ class ReceiptListPageBody extends StatelessWidget {
   }
 }
 
-class SentReceiptsWidget extends StatelessWidget {
+class SentReceiptsWidget extends StatefulWidget {
   const SentReceiptsWidget();
+
+  @override
+  _SentReceiptsWidgetState createState() => _SentReceiptsWidgetState();
+}
+
+class _SentReceiptsWidgetState extends State<SentReceiptsWidget> {
+  final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textController.text =
+        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +81,23 @@ class SentReceiptsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          TextField(
+            decoration: const InputDecoration(
+              hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+              labelText: 'Wallet address',
+            ),
+            controller: _textController,
+          ),
           const ParagraphWidget(
-            'Press the button to get a list of the sent receipts.',
+            'Press the button to get a list of the sent receipts from the selected address.',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: SentReceiptsFlatButton(
-                event: () => const CommercioDocsSentReceiptsEvent(),
+                event: () => CommercioDocsSentReceiptsEvent(
+                  walletAddress: _textController.text,
+                ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(
@@ -90,8 +120,29 @@ class SentReceiptsWidget extends StatelessWidget {
   }
 }
 
-class ReceivedReceiptsWidget extends StatelessWidget {
+class ReceivedReceiptsWidget extends StatefulWidget {
   const ReceivedReceiptsWidget();
+
+  @override
+  _ReceivedReceiptsWidgetState createState() => _ReceivedReceiptsWidgetState();
+}
+
+class _ReceivedReceiptsWidgetState extends State<ReceivedReceiptsWidget> {
+  final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textController.text =
+        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,15 +151,24 @@ class ReceivedReceiptsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          TextField(
+            decoration: const InputDecoration(
+              hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+              labelText: 'Wallet address',
+            ),
+            controller: _textController,
+          ),
           const ParagraphWidget(
-            'Press the button to get a list of the received receipts.',
+            'Press the button to get a list of the received receipts to the selected address.',
             padding: EdgeInsets.all(5.0),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: ReceivedReceiptsFlatButton(
-                event: () => const CommercioDocsReceivedReceiptsEvent(),
+                event: () => CommercioDocsReceivedReceiptsEvent(
+                  walletAddress: _textController.text,
+                ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(

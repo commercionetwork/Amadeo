@@ -50,8 +50,29 @@ class DocumentListPageBody extends StatelessWidget {
   }
 }
 
-class SentDocumentsWidget extends StatelessWidget {
+class SentDocumentsWidget extends StatefulWidget {
   const SentDocumentsWidget();
+
+  @override
+  _SentDocumentsWidgetState createState() => _SentDocumentsWidgetState();
+}
+
+class _SentDocumentsWidgetState extends State<SentDocumentsWidget> {
+  final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textController.text =
+        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +81,23 @@ class SentDocumentsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          TextField(
+            decoration: const InputDecoration(
+              hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+              labelText: 'Wallet address',
+            ),
+            controller: _textController,
+          ),
           const ParagraphWidget(
-            'Press the button to get a list of the sent documents.',
+            'Press the button to get a list of the sent documents from the selected address.',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: SentDocumentsFlatButton(
-                event: () => const CommercioDocsSentDocumentsEvent(),
+                event: () => CommercioDocsSentDocumentsEvent(
+                  walletAddress: _textController.text,
+                ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(
@@ -90,8 +120,30 @@ class SentDocumentsWidget extends StatelessWidget {
   }
 }
 
-class ReceivedDocumentsWidget extends StatelessWidget {
+class ReceivedDocumentsWidget extends StatefulWidget {
   const ReceivedDocumentsWidget();
+
+  @override
+  _ReceivedDocumentsWidgetState createState() =>
+      _ReceivedDocumentsWidgetState();
+}
+
+class _ReceivedDocumentsWidgetState extends State<ReceivedDocumentsWidget> {
+  final _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _textController.text =
+        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +152,23 @@ class ReceivedDocumentsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          TextField(
+            decoration: const InputDecoration(
+              hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+              labelText: 'Wallet address',
+            ),
+            controller: _textController,
+          ),
           const ParagraphWidget(
-            'Press the button to get a list of the received documents.',
+            'Press the button to get a list of the received documents of the selected wallet address.',
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: ReceivedDocumentsFlatButton(
-                event: () => const CommercioDocsReceivedDocumentsEvent(),
+                event: () => CommercioDocsReceivedDocumentsEvent(
+                  walletAddress: _textController.text,
+                ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(

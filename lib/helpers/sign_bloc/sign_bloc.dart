@@ -181,11 +181,11 @@ class SignBloc extends Bloc<SignEvent, SignState> {
     @required List<CommercioSdnData> sdnData,
     @required crypto.Digest digest,
     @required StdFee fee,
-  }) {
+  }) async {
     final storageUri =
         Uri.http('$dsbUrl:$dsbPort', '${DsbEndpoint.upload.value}/$docId');
 
-    return commercioDocs.shareDocument(
+    final commDoc = await commercioDocs.deriveCommercioDocument(
       docId: docId,
       contentUri: contentUri,
       doSign: CommercioDoSign(
@@ -201,6 +201,10 @@ class SignBloc extends Bloc<SignEvent, SignState> {
         value: digest.toString(),
         algorithm: CommercioDocChecksumAlgorithm.SHA256,
       ),
+    );
+
+    return commercioDocs.shareDocuments(
+      commercioDocs: [commDoc],
       fee: fee,
     );
   }
