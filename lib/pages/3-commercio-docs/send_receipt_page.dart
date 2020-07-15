@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/presenters/tx_result_presenter.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
@@ -14,8 +16,14 @@ class SendReceiptPage extends SectionPageWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffoldWidget(
-      bodyWidget: SendReceiptPageBody(),
+    return BaseScaffoldWidget(
+      bodyWidget: BlocProvider(
+        create: (_) => CommercioDocsDeriveReceiptBloc(
+          commercioDocs: RepositoryProvider.of<StatefulCommercioDocs>(context),
+          commercioId: RepositoryProvider.of<StatefulCommercioId>(context),
+        ),
+        child: const SendReceiptPageBody(),
+      ),
     );
   }
 }
@@ -29,8 +37,9 @@ class SendReceiptPageBody extends StatelessWidget {
       separatorIndent: .0,
       separatorEndIndent: .0,
       children: [
+        const DeriveReceiptWidget(),
         BlocProvider(
-          create: (_) => CommercioDocsSendReceiptBloc(
+          create: (_) => CommercioDocsSendReceiptsBloc(
             commercioDocs:
                 RepositoryProvider.of<StatefulCommercioDocs>(context),
             commercioId: RepositoryProvider.of<StatefulCommercioId>(context),
@@ -42,14 +51,14 @@ class SendReceiptPageBody extends StatelessWidget {
   }
 }
 
-class SendReceiptWidget extends StatefulWidget {
-  const SendReceiptWidget();
+class DeriveReceiptWidget extends StatefulWidget {
+  const DeriveReceiptWidget();
 
   @override
-  _SendReceiptWidgetState createState() => _SendReceiptWidgetState();
+  _DeriveReceiptWidgetState createState() => _DeriveReceiptWidgetState();
 }
 
-class _SendReceiptWidgetState extends State<SendReceiptWidget> {
+class _DeriveReceiptWidgetState extends State<DeriveReceiptWidget> {
   final _recipientTextController = TextEditingController();
   final _txHashController = TextEditingController();
   final _docIdController = TextEditingController();
@@ -90,28 +99,77 @@ class _SendReceiptWidgetState extends State<SendReceiptWidget> {
             maxLines: null,
           ),
           const ParagraphWidget(
-            'Press the button to send a receipt to the inseted hash and docId.',
+            'Press the button derive a receipt to the inseted hash and docId.',
             padding: EdgeInsets.all(5.0),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
-              child: SendReceiptFlatButton(
-                event: () => CommercioDocsSendReceiptEvent(
+              child: DeriveReceiptFlatButton(
+                event: () => CommercioDocsDeriveReceiptEvent(
                   recipient: _recipientTextController.text,
                   txHash: _txHashController.text,
-                  docId: _docIdController.text,
+                  documentId: _docIdController.text,
                 ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(
-                  'Send receipt',
+                  'Derive receipt',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
           ),
-          SendReceiptTextField(
+          DeriveReceiptTextField(
+            loading: (_) => 'Deriving...',
+            text: (_, state) => jsonEncode(state.commercioDocReceipt),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SendReceiptWidget extends StatelessWidget {
+  const SendReceiptWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const ParagraphWidget(
+            'Press the button to send the previously generated receipt.',
+            padding: EdgeInsets.all(5.0),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: BlocBuilder<CommercioDocsDeriveReceiptBloc,
+                  CommercioDocsDeriveReceiptState>(
+                builder: (_, state) {
+                  final fn = (state is CommercioDocsDeriveReceiptStateData)
+                      ? () => CommercioDocsSendReceiptsEvent(
+                            commercioDocReceipts: [state.commercioDocReceipt],
+                          )
+                      : null;
+
+                  return SendReceiptsFlatButton(
+                    event: fn,
+                    color: Theme.of(context).primaryColor,
+                    disabledColor: Theme.of(context).disabledColor,
+                    child: (_) => const Text(
+                      'Send receipt',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          SendReceiptsTextField(
             loading: (_) => 'Sending...',
             text: (_, state) => txResultToString(state.result),
           ),
