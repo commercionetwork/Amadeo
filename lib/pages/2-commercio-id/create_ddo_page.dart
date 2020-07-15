@@ -74,7 +74,7 @@ class CreateDDOPageBody extends StatelessWidget {
           child: const DeriveDidDocumentWidget(),
         ),
         BlocProvider(
-          create: (_) => CommercioIdSetDidDocumentBloc(
+          create: (_) => CommercioIdSetDidDocumentsBloc(
             commercioId: RepositoryProvider.of<StatefulCommercioId>(
               context,
             ),
@@ -288,7 +288,7 @@ class SetDidDocumentWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: SetDidDocumentFlatButton(
-                event: () => const CommercioIdSetDidDocumentEvent(),
+                event: () => const CommercioIdSetDidDocumentsEvent(),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
                 child: (_) => const Text(

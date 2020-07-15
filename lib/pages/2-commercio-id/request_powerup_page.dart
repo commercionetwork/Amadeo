@@ -37,7 +37,7 @@ class RequestPowerupPageBody extends StatelessWidget {
           child: const RechargeGovernmentWidget(),
         ),
         BlocProvider(
-          create: (_) => CommercioIdRequestDidPowerUpBloc(
+          create: (_) => CommercioIdRequestDidPowerUpsBloc(
             commercioId: RepositoryProvider.of<StatefulCommercioId>(
               context,
             ),
@@ -105,10 +105,13 @@ class RequestDidPowerUpWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
               child: RequestDidPowerUpFlatButton(
-                event: () => const CommercioIdRequestDidPowerUpEvent(
-                  amount: [CommercioCoin(amount: '1000')],
-                  pairwiseAddress:
-                      'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+                event: () => const CommercioIdRequestDidPowerUpsEvent(
+                  amounts: [
+                    [CommercioCoin(amount: '1000')],
+                  ],
+                  pairwiseAddresses: [
+                    'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+                  ],
                 ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).primaryColorDark,
