@@ -27,8 +27,8 @@ Amadeo in not a production ready app. You need to fork it and create your own vi
 ## Screenshots
 
 [![Amadeo Screen 1](docs/images/screenshots/Amadeo_App_screen_1_small.jpg)](docs/images/screenshots/Amadeo_App_screen_1.jpg)
-[![Amadeo Screen 2](docs/images/screenshots/Amadeo_App_screen_2_small.jpg)](docs/images/screenshots/Amadeo_App_screen_2.jpg)
-[![Amadeo Screen 3](docs/images/screenshots/Amadeo_App_screen_3_small.jpg)](docs/images/screenshots/Amadeo_App_screen_3.jpg)
+[![Amadeo Screen 2](docs/images/screenshots/Amadeo_App_screen_3_small.jpg)](docs/images/screenshots/Amadeo_App_screen_3.jpg)
+[![Amadeo Screen 5](docs/images/screenshots/Amadeo_App_screen_5_small.jpg)](docs/images/screenshots/Amadeo_App_screen_5.jpg)
 
 ## About
 
