@@ -14,8 +14,13 @@ class BuyMembershipPage extends SectionPageWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffoldWidget(
-      bodyWidget: BuyMembershipPageBody(),
+    return BaseScaffoldWidget(
+      bodyWidget: BlocProvider(
+        create: (_) => CommercioKycDeriveBuyMembershipBloc(
+          commercioKyc: context.repository<StatefulCommercioKyc>(),
+        ),
+        child: const BuyMembershipPageBody(),
+      ),
     );
   }
 }
@@ -29,10 +34,17 @@ class BuyMembershipPageBody extends StatelessWidget {
       separatorIndent: .0,
       separatorEndIndent: .0,
       children: [
-        BlocProvider(
-          create: (_) => CommercioKycBuyMembershipBloc(
-            commercioKyc: RepositoryProvider.of<StatefulCommercioKyc>(context),
-          ),
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => CommercioKycBuyMembershipsBloc(
+                commercioKyc: context.repository<StatefulCommercioKyc>(),
+              ),
+            ),
+            BlocProvider(
+              create: (_) => CommercioKycMembershipTypeChooserBloc(),
+            ),
+          ],
           child: const BuyMembershipWidget(),
         ),
       ],
@@ -47,6 +59,27 @@ class BuyMembershipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final commAccount = context.repository<StatefulCommercioAccount>();
+
+    final button = BuyMembershipsFlatButton(
+      event: commAccount.hasWalletAddress
+          ? () => CommercioKycBuyMembershipsEvent(
+                buyMemberships: [
+                  BuyMembership(
+                    membershipType: MembershipType.BRONZE.value,
+                    buyerDid: commAccount.walletAddress,
+                  ),
+                ],
+              )
+          : null,
+      color: Theme.of(context).primaryColor,
+      disabledColor: Theme.of(context).disabledColor,
+      child: (_) => const Text(
+        'Buy membership',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -55,23 +88,21 @@ class BuyMembershipWidget extends StatelessWidget {
           const ParagraphWidget(
             'Buy a membership for the current account.',
           ),
+          const CommercioMembershipTypeChooser(
+            shrinkWrap: true,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
-              child: BuyMembershipFlatButton(
-                event: () => CommercioKycBuyMembershipEvent(
-                  membershipType: membershipType,
-                ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
-                child: (_) => const Text(
-                  'Buy membership',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              child: (commAccount.hasWalletAddress)
+                  ? button
+                  : Tooltip(
+                      message: 'Must have a wallet',
+                      child: button,
+                    ),
             ),
           ),
-          BuyMembershipTextField(
+          BuyMembershipsTextField(
             loading: (_) => 'Buying...',
             text: (_, state) => txResultToString(state.result),
           ),
