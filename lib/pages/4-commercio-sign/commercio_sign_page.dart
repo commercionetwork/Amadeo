@@ -299,6 +299,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
                 child: Center(
                   child: FlatButton(
                     color: Theme.of(context).primaryColor,
+                    disabledColor: Theme.of(context).disabledColor,
                     onPressed: (state is SignDocumentLoading)
                         ? null
                         : () => _signBloc.add(SignDocumentEvent(
