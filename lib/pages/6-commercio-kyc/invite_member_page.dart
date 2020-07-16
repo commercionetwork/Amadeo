@@ -4,6 +4,7 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
+import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sacco/sacco.dart';
@@ -14,8 +15,13 @@ class InviteMemberPage extends SectionPageWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffoldWidget(
-      bodyWidget: InviteMemberPageBody(),
+    return BaseScaffoldWidget(
+      bodyWidget: BlocProvider(
+        create: (_) => CommercioKycDeriveInviteMemberBloc(
+          commercioKyc: context.repository<StatefulCommercioKyc>(),
+        ),
+        child: const InviteMemberPageBody(),
+      ),
     );
   }
 }
@@ -30,8 +36,8 @@ class InviteMemberPageBody extends StatelessWidget {
       separatorEndIndent: .0,
       children: [
         BlocProvider(
-          create: (_) => CommercioKycInviteMemberBloc(
-            commercioKyc: RepositoryProvider.of<StatefulCommercioKyc>(context),
+          create: (_) => CommercioKycInviteMembersBloc(
+            commercioKyc: context.repository<StatefulCommercioKyc>(),
           ),
           child: const InviteMemberWidget(),
         ),
@@ -57,31 +63,42 @@ class InviteMemberWidget extends StatelessWidget {
           FutureBuilder<Wallet>(
             future: StatelessCommercioAccount.generateNewWallet(
               networkInfo:
-                  RepositoryProvider.of<StatefulCommercioAccount>(context)
-                      .networkInfo,
+                  context.repository<StatefulCommercioAccount>().networkInfo,
             ),
-            builder: (_, snap) {
+            builder: (context, snap) {
+              final fn = (snap.connectionState == ConnectionState.done)
+                  ? () => CommercioKycInviteMembersEvent(
+                        inviteUsers: [
+                          sdk.InviteUser(
+                            recipientDid: snap.data.bech32Address,
+                            senderDid: context
+                                .repository<StatefulCommercioAccount>()
+                                .walletAddress,
+                          )
+                        ],
+                      )
+                  : null;
+              final child = Text(
+                (snap.connectionState == ConnectionState.done)
+                    ? 'Invite new wallet'
+                    : 'Generating random wallet...',
+                style: const TextStyle(color: Colors.white),
+              );
+
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
-                  child: InviteMemberFlatButton(
-                    event: (snap.connectionState == ConnectionState.done)
-                        ? () => CommercioKycInviteMemberEvent(
-                              invitedAddress: snap.data.bech32Address,
-                            )
-                        : null,
+                  child: InviteMembersFlatButton(
+                    event: fn,
                     color: Theme.of(context).primaryColor,
-                    disabledColor: Colors.grey,
-                    child: (_) => const Text(
-                      'Invite new wallet',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    disabledColor: Theme.of(context).disabledColor,
+                    child: (_) => child,
                   ),
                 ),
               );
             },
           ),
-          InviteMemberTextField(
+          InviteMembersTextField(
             loading: (_) => 'Inviting...',
             text: (_, state) => txResultToString(state.result),
           ),
