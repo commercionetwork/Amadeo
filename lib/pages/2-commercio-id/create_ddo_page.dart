@@ -105,7 +105,7 @@ class GenerateKeysWidget extends StatelessWidget {
               child: GenerateKeysFlatButton(
                 event: () => const CommercioIdGenerateKeysEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Generate keys',
                   style: TextStyle(color: Colors.white),
@@ -189,7 +189,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
                     );
                   },
                   color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColorDark,
+                  disabledColor: Theme.of(context).disabledColor,
                   child: const Text(
                     'Generate keys',
                     style: TextStyle(color: Colors.white),
@@ -253,7 +253,7 @@ class DeriveDidDocumentWidget extends StatelessWidget {
               child: DeriveDidDocumentFlatButton(
                 event: () => const CommercioIdDeriveDidDocumentEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Derive document',
                   style: TextStyle(color: Colors.white),
@@ -290,7 +290,7 @@ class SetDidDocumentWidget extends StatelessWidget {
               child: SetDidDocumentFlatButton(
                 event: () => const CommercioIdSetDidDocumentsEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Set document',
                   style: TextStyle(color: Colors.white),
@@ -325,7 +325,7 @@ class RestoreKeysWidget extends StatelessWidget {
               child: RestoreKeysFlatButton(
                 event: () => const CommercioIdRestoreKeysEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Restore keys',
                   style: TextStyle(color: Colors.white),

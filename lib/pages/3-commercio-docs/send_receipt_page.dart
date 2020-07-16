@@ -112,7 +112,7 @@ class _DeriveReceiptWidgetState extends State<DeriveReceiptWidget> {
                   documentId: _docIdController.text,
                 ),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Derive receipt',
                   style: TextStyle(color: Colors.white),

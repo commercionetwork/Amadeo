@@ -107,7 +107,7 @@ class _RestoreWalletFromMnemonicWidgetState
                 child: FlatButton(
                   onPressed: f,
                   color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).primaryColorDark,
+                  disabledColor: Theme.of(context).disabledColor,
                   child: const Text(
                     'Restore Wallet',
                     style: TextStyle(color: Colors.white),

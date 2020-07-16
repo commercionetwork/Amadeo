@@ -79,7 +79,7 @@ class _OpenCdpWidgetState extends State<OpenCdpWidget> {
             child: Center(
               child: OpenCdpFlatButton(
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 event: () => CommercioMintOpenCdpEvent(
                   amount: int.tryParse(_amountTextController.text),
                 ),

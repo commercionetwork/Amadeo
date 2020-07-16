@@ -93,7 +93,7 @@ class _GeneratePairwiseWalletWidgetState
           Center(
             child: GeneratePairwiseWalletFlatButton(
               color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).primaryColorDark,
+              disabledColor: Theme.of(context).disabledColor,
               child: (_) => const Text(
                 'Generate pairwise wallet',
                 style: TextStyle(color: Colors.white),

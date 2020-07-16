@@ -70,7 +70,7 @@ class CheckAccountBalanceWidget extends StatelessWidget {
                   ),
                 ),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
               ),
             ),
           ),

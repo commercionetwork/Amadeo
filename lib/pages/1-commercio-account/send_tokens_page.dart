@@ -125,7 +125,7 @@ class _SendTokensWidgetState extends State<SendTokensWidget> {
                 style: TextStyle(color: Colors.white),
               ),
               color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).primaryColorDark,
+              disabledColor: Theme.of(context).disabledColor,
             ),
           ),
           SendTokensTextField(

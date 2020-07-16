@@ -136,7 +136,7 @@ class _DeriveDocWidgetState extends State<DeriveDocWidget> {
                       .encryptedDataList,
                 ),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Derive a Did document',
                   style: TextStyle(color: Colors.white),

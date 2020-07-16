@@ -66,7 +66,7 @@ class RestoreWalletWidget extends StatelessWidget {
             child: RestoreWalletFlatButton(
               event: () => const CommercioAccountRestoreWalletEvent(),
               color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).primaryColorDark,
+              disabledColor: Theme.of(context).disabledColor,
               child: (_) => const Text(
                 'Restore Wallet',
                 style: TextStyle(color: Colors.white),

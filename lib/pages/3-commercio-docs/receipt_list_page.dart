@@ -99,7 +99,7 @@ class _SentReceiptsWidgetState extends State<SentReceiptsWidget> {
                   walletAddress: _textController.text,
                 ),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Sent Receipts',
                   style: TextStyle(color: Colors.white),
@@ -170,7 +170,7 @@ class _ReceivedReceiptsWidgetState extends State<ReceivedReceiptsWidget> {
                   walletAddress: _textController.text,
                 ),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Received Receipts',
                   style: TextStyle(color: Colors.white),

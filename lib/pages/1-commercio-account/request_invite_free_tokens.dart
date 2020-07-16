@@ -71,7 +71,7 @@ class RequestFaucetInviteWidget extends StatelessWidget {
               child: RequestFaucetInviteFlatButton(
                 event: () => const CommercioKycRequestFaucetInviteEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Request faucet invite',
                   style: TextStyle(color: Colors.white),
@@ -108,7 +108,7 @@ class RequestFreeTokensWidget extends StatelessWidget {
               child: RequestFreeTokensFlatButton(
                 event: () => const CommercioAccountRequestFreeTokensEvent(),
                 color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
+                disabledColor: Theme.of(context).disabledColor,
                 child: (_) => const Text(
                   'Request free tokens',
                   style: TextStyle(color: Colors.white),

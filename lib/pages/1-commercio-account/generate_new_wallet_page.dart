@@ -77,7 +77,7 @@ class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
                 style: TextStyle(color: Colors.white),
               ),
               color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).primaryColorDark,
+              disabledColor: Theme.of(context).disabledColor,
             ),
           ),
           BlocBuilder<CommercioAccountGenerateWalletBloc,
