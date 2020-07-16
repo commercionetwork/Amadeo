@@ -60,13 +60,15 @@ class BuyMembershipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final commAccount = context.repository<StatefulCommercioAccount>();
+    final membershipBloc =
+        context.bloc<CommercioKycMembershipTypeChooserBloc>();
 
     final button = BuyMembershipsFlatButton(
       event: commAccount.hasWalletAddress
           ? () => CommercioKycBuyMembershipsEvent(
                 buyMemberships: [
                   BuyMembership(
-                    membershipType: MembershipType.BRONZE.value,
+                    membershipType: membershipBloc.membershipType.value,
                     buyerDid: commAccount.walletAddress,
                   ),
                 ],
