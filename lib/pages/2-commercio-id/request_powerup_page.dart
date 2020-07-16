@@ -71,7 +71,7 @@ class RechargeGovernmentWidget extends StatelessWidget {
             child: Center(
               child: RechargeTumblerFlatButton(
                 event: () => const CommercioIdRechargeTumblerEvent(
-                  rechargeAmount: [CommercioCoin(amount: '1000')],
+                  amount: [CommercioCoin(amount: '1000')],
                 ),
                 color: Theme.of(context).primaryColor,
                 disabledColor: Theme.of(context).disabledColor,
