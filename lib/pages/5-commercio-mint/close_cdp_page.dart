@@ -4,6 +4,7 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
+import 'package:commerciosdk/export.dart' hide Padding, Key;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +30,7 @@ class CloseCdpPageBody extends StatelessWidget {
       separatorEndIndent: .0,
       children: [
         BlocProvider(
-          create: (_) => CommercioMintCloseCdpBloc(
+          create: (_) => CommercioMintCloseCdpsBloc(
             commercioMint:
                 RepositoryProvider.of<StatefulCommercioMint>(context),
           ),
@@ -58,6 +59,26 @@ class _CloseCdpWidgetState extends State<CloseCdpWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final commAccount = context.repository<StatefulCommercioAccount>();
+    final button = CloseCdpsFlatButton(
+      color: Theme.of(context).primaryColor,
+      disabledColor: Theme.of(context).disabledColor,
+      event: commAccount.hasWalletAddress
+          ? () => CommercioMintCloseCdpsEvent(
+                closeCdps: [
+                  CloseCdp(
+                    signerDid: null,
+                    timeStamp: _blockHeightTextController.text,
+                  ),
+                ],
+              )
+          : null,
+      child: (_) => const Text(
+        'Close Cdp',
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -76,20 +97,15 @@ class _CloseCdpWidgetState extends State<CloseCdpWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
-              child: CloseCdpFlatButton(
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).primaryColorDark,
-                event: () => CommercioMintCloseCdpEvent(
-                  blockHeight: int.tryParse(_blockHeightTextController.text),
-                ),
-                child: (_) => const Text(
-                  'Close Cdp',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              child: commAccount.hasWalletAddress
+                  ? button
+                  : Tooltip(
+                      message: 'Must have a wallet',
+                      child: button,
+                    ),
             ),
           ),
-          CloseCdpTextField(
+          CloseCdpsTextField(
             loading: (_) => 'Closing...',
             text: (_, state) => txResultToString(state.result),
           ),
