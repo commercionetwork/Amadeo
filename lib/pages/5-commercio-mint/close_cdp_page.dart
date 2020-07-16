@@ -67,7 +67,7 @@ class _CloseCdpWidgetState extends State<CloseCdpWidget> {
           ? () => CommercioMintCloseCdpsEvent(
                 closeCdps: [
                   CloseCdp(
-                    signerDid: null,
+                    signerDid: commAccount.walletAddress,
                     timeStamp: _blockHeightTextController.text,
                   ),
                 ],
