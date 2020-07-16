@@ -71,6 +71,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showDeskopbWarningDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Warning'),
+          content: const Text(
+            'Desktop support is highly experimental, your secrets are stored inside a temporary and insecure storage.',
+          ),
+          actions: [
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -89,6 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {
           if (state is ShowWebWarningDialogState) {
             _showWebWarningDialog(context);
+          }
+
+          if (state is ShowDesktopWarningDialogState) {
+            _showDeskopbWarningDialog(context);
           }
         },
         child: ListView.builder(

@@ -18,8 +18,15 @@ class ShowWebWarningDialogState extends WarningDialogState {
   List<Object> get props => [];
 }
 
-class AlreadyShownWebWarningDialogState extends WarningDialogState {
-  const AlreadyShownWebWarningDialogState();
+class ShowDesktopWarningDialogState extends WarningDialogState {
+  const ShowDesktopWarningDialogState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AlreadyShownWarningDialogState extends WarningDialogState {
+  const AlreadyShownWarningDialogState();
 
   @override
   List<Object> get props => [];

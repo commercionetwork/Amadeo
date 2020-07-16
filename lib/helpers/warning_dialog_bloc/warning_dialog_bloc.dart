@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:amadeo/repositories/dialog_warnings_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -30,12 +31,17 @@ class WarningDialogBloc extends Bloc<WarningDialogEvent, WarningDialogState> {
   Stream<WarningDialogState> _mapMaybeShowWebWarningDialogEventToState(
     MaybeShowWebWarningDialogEvent event,
   ) async* {
-    if (kIsWeb && dialogWarningsRepository.webWarningDialogShown == false) {
+    if (kIsWeb && !dialogWarningsRepository.webWarningDialogShown) {
       dialogWarningsRepository.webWarningDialogShown = true;
 
       yield const ShowWebWarningDialogState();
+    } else if (Platform.isLinux &&
+        !dialogWarningsRepository.desktopWarningDialogShown) {
+      dialogWarningsRepository.desktopWarningDialogShown = true;
+
+      yield const ShowDesktopWarningDialogState();
     } else {
-      yield const AlreadyShownWebWarningDialogState();
+      yield const AlreadyShownWarningDialogState();
     }
   }
 
