@@ -214,9 +214,11 @@ packages:
   commercio_ui:
     dependency: "direct main"
     description:
-      path: "../CommercioUI"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: ac4a6f603af6b2a6796e15698dc81aa8d70666de
+      url: "https://github.com/commercionetwork/CommercioUI.git"
+    source: git
     version: "0.2.0"
   commerciosdk:
     dependency: "direct main"

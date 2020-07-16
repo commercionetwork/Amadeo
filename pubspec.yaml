@@ -13,10 +13,9 @@ dependencies:
   basic_utils: ^2.5.5
   bloc: ^6.0.0-dev.1
   commercio_ui:
-    path: ../CommercioUI
-  #  git:
-  #    url: https://github.com/commercionetwork/CommercioUI.git
-  #    ref: 0.2.0
+    git:
+      url: https://github.com/commercionetwork/CommercioUI.git
+      ref: master
   commerciosdk:
     git:
       url: https://github.com/pasqenr/commercio-sdk.dart.git
