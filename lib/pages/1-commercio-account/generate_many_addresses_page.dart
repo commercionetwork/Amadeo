@@ -59,7 +59,7 @@ class _GeneratePairwiseWalletWidgetState
     extends State<GeneratePairwiseWalletWidget> {
   int derivationPathValue = 0;
   static const String baseDerivationPath = "m/44'/118'/0'/0";
-  String derivationPath = "$baseDerivationPath/0";
+  String derivationPath = '$baseDerivationPath/0';
 
   @override
   Widget build(BuildContext context) {
