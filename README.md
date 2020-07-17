@@ -46,30 +46,61 @@ cd Amadeo
 Compile and run the app:
 
 ```bash
-flutter run   # Use --release flag to build in release mode
+flutter run  # Use --release flag to build in release mode
 ```
 
-The app is also avaiable as an experimental web application. To enable web support for Flutter:
-```bash
-flutter channel beta
-flutter upgrade
-flutter config --enable-web
-```
+### The app is also avaiable as an experimental web and linux application
 
-* Debug with:
+* To enable web support for Flutter:
+
   ```bash
-  flutter run -d web-server
+  flutter channel beta
+  flutter upgrade
+  flutter config --enable-web
   ```
-* Compile and deploy (here we use `python`):
+
+  * Debug with:
+
+    ```bash
+    flutter run -d web-server # Use --release flag to build in release mode
+    ```
+
+  * Compile and deploy (here we use `python`):
+
+    ```bash
+    flutter build web
+    cd build/web/
+    python -m SimpleHTTPServer 8000  # Navigate to http://localhost:8000/
+    ```
+  
+  See also: [Build and release a web app](https://flutter.dev/docs/deployment/web).
+
+* To enable linux support for Flutter:
+
   ```bash
-  flutter build web
-  cd build/web/
-  python -m SimpleHTTPServer 8000  # Navigate to http://localhost:8000/
+  sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev
+  flutter channel master
+  flutter upgrade
+  flutter config --enable-linux-desktop
   ```
+
+  * Debug with:
+
+    ```bash
+    flutter run -d linux  # Use --release flag to build in release mode
+    ```
+
+  * Compile with:
+
+    ```bash
+    flutter build linux
+    ```
+  
+  See also: [Desktop support for Flutter](https://flutter.dev/desktop), [Build and release a Linux app](https://flutter.dev/docs/deployment/linux).
 
 ## Licence
 
-```
+```plain
 MIT License
 
 Copyright (c) 2020 Commercio.network
