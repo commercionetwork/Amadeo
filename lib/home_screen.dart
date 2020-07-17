@@ -16,10 +16,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<SectionPage> sections = const [
     SectionPage(
-        sectionPageWidget: CommercioAccountPage(),
-        title: 'Commercio Account',
-        description:
-            'Electronically Sign any PDF e XML digital document so no-one can deny having digitally signed the document'),
+      sectionPageWidget: CommercioAccountPage(),
+      title: 'Commercio Account',
+      description: 'Create a Wallet, Sign and Send a Blockchain Transaction',
+    ),
     SectionPage(
       sectionPageWidget: CommercioIdPage(),
       title: 'Commercio Id',
@@ -33,10 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
           'Send a document and prove its paternity, non repudial and integrity',
     ),
     SectionPage(
-        sectionPageWidget: CommercioSignPage(),
-        title: 'Commercio Sign',
-        description:
-            'Electronically sign any PDF and XML digital document so no-one can deny having digitally signed the document'),
+      sectionPageWidget: CommercioSignPage(),
+      title: 'Commercio Sign',
+      description:
+          'Electronically sign any PDF and XML digital document so no-one can deny having digitally signed the document',
+    ),
     SectionPage(
       sectionPageWidget: CommercioMintPage(),
       title: 'Commercio Mint',
