@@ -8,7 +8,6 @@ import 'package:amadeo/repositories/sdn_selected_repository.dart';
 import 'package:amadeo/simple_bloc_observer.dart';
 import 'package:colorize_lumberdash/colorize_lumberdash.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commercio_ui/core/utils/utils.dart';
 import 'package:commerciosdk/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

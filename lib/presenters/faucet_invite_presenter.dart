@@ -1,4 +1,4 @@
-import 'package:commercio_ui/entities/faucet_invite_response.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 
 String faucetInviteResponseToString(FaucetInviteResponse response) {
   return response.success

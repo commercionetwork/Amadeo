@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:commercio_ui/entities/commercio_id_keys.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 
 String commercioKeysToString(CommercioIdKeys commercioIdKeys) {
   return jsonEncode(commercioIdKeys);

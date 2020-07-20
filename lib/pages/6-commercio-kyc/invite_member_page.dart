@@ -61,7 +61,7 @@ class InviteMemberWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           FutureBuilder<Wallet>(
-            future: StatelessCommercioAccount.generateNewWallet(
+            future: StatelessCommercioAccount().generateNewWallet(
               networkInfo:
                   context.repository<StatefulCommercioAccount>().networkInfo,
             ),

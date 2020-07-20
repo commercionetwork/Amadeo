@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:amadeo/repositories/keys_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:commercio_ui/core/core.dart';
-import 'package:commercio_ui/entities/commercio_id_keys.dart';
+import 'package:commercio_ui/commercio_ui.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

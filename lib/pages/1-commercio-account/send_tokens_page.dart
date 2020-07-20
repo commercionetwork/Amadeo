@@ -5,7 +5,6 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commercio_ui/ui/account/commercio_account_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
