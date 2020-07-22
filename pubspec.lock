@@ -98,7 +98,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
+    version: "6.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -216,7 +216,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "8466665d0003a1a2ffafb34ed1a040784a06c67a"
+      resolved-ref: d5ad022aa6c95b60590954f74cadcb9d1cbec7fb
       url: "https://github.com/commercionetwork/CommercioUI.git"
     source: git
     version: "0.1.0"
@@ -255,13 +255,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
-  cubit:
-    dependency: transitive
-    description:
-      name: cubit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -322,14 +315,7 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
-  flutter_cubit:
-    dependency: transitive
-    description:
-      name: flutter_cubit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
+    version: "6.0.0"
   flutter_secure_storage:
     dependency: transitive
     description:
