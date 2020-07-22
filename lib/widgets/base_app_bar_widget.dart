@@ -16,8 +16,7 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final commercioAccount =
-        RepositoryProvider.of<StatefulCommercioAccount>(context);
+    final commercioAccount = context.repository<StatefulCommercioAccount>();
 
     return AppBar(
       title: Text(
@@ -27,13 +26,6 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       centerTitle: true,
-      leading: IconButton(
-        icon: const Icon(Icons.menu),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-        },
-        tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-      ),
       backgroundColor: Colors.transparent,
       elevation: .0,
       actions: widgets ??
