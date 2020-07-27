@@ -12,12 +12,13 @@ part 'sdn_data_state.dart';
 class SdnDataBloc extends Bloc<SdnDataEvent, SdnDataState> {
   final SdnSelectedDataRepository sdnSelectedDataRepository;
 
-  SdnDataBloc({@required this.sdnSelectedDataRepository});
-
-  @override
-  SdnDataState get initialState => SdnDataInitial(
-        commercioSdnData: sdnSelectedDataRepository.selectedCommercioSdnData,
-      );
+  SdnDataBloc({@required this.sdnSelectedDataRepository})
+      : super(
+          SdnDataInitial(
+            commercioSdnData:
+                sdnSelectedDataRepository.selectedCommercioSdnData,
+          ),
+        );
 
   @override
   Stream<SdnDataState> mapEventToState(

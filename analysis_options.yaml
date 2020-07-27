@@ -1,5 +1,7 @@
-include: package:lint/analysis_options.yaml
+include: package:pedantic/analysis_options.yaml
 
 linter:
   rules:
     avoid_field_initializers_in_const_classes: false
+    # Not reliable enough (https://github.com/flutter/flutter/blob/master/analysis_options.yaml)
+    close_sinks: false 

@@ -1,6 +1,7 @@
-import 'dart:convert';
-
 import 'package:amadeo/pages/section_page.dart';
+import 'package:amadeo/presenters/commercio_doc_presenter.dart';
+import 'package:amadeo/presenters/tx_result_presenter.dart';
+import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/doc_metadata_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
@@ -16,8 +17,14 @@ class ShareDocPage extends SectionPageWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffoldWidget(
-      bodyWidget: ShareDocPageBody(),
+    return BaseScaffoldWidget(
+      bodyWidget: BlocProvider(
+        create: (_) => CommercioDocsDeriveDocumentBloc(
+          commercioDocs: context.repository<StatefulCommercioDocs>(),
+          commercioId: context.repository<StatefulCommercioId>(),
+        ),
+        child: const ShareDocPageBody(),
+      ),
     );
   }
 }
@@ -27,91 +34,119 @@ class ShareDocPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return BaseListWidget(
+      separatorIndent: .0,
+      separatorEndIndent: .0,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              children: [
-                ShareDocWidget(),
-                ShareEncDocWidget(),
-              ],
-            ),
+        BlocProvider(
+          create: (_) => CommercioDocsEncDataBloc(),
+          child: DeriveDocWidget(),
+        ),
+        BlocProvider(
+          create: (_) => CommercioDocsShareDocumentsBloc(
+            commercioDocs: context.repository<StatefulCommercioDocs>(),
+            commercioId: context.repository<StatefulCommercioId>(),
           ),
+          child: const ShareDocsWidget(),
         ),
       ],
     );
   }
 }
 
-class ShareDocWidget extends StatelessWidget {
-  final TextEditingController recipientTextController = TextEditingController();
-  final TextEditingController contentUriController = TextEditingController();
-  final TextEditingController metadataSchemaUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaVersionController =
-      TextEditingController();
-  final TextEditingController metadataContentUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaTypeController =
-      TextEditingController(text: '');
+class DeriveDocWidget extends StatefulWidget {
+  @override
+  _DeriveDocWidgetState createState() => _DeriveDocWidgetState();
+}
+
+class _DeriveDocWidgetState extends State<DeriveDocWidget> {
+  final _recipientTextController = TextEditingController(
+    text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+  );
+  final _contentUriController = TextEditingController(
+    text: 'https://example.com/document',
+  );
+  final _metadataSchemaUriController = TextEditingController(
+    text: 'https://example.com/custom/metadata/schema',
+  );
+  final _metadataSchemaVersionController = TextEditingController(
+    text: '1.0.0',
+  );
+  final _metadataContentUriController = TextEditingController(
+    text: 'https://example.com/document/metadata',
+  );
+  final _metadataSchemaTypeController = TextEditingController(
+    text: '',
+  );
+
+  @override
+  void dispose() {
+    _recipientTextController.dispose();
+    _contentUriController.dispose();
+    _metadataSchemaUriController.dispose();
+    _metadataSchemaVersionController.dispose();
+    _metadataContentUriController.dispose();
+    _metadataSchemaTypeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RecipientAddressTextFieldWidget(
-            recipientTextController: recipientTextController,
+            recipientTextController: _recipientTextController,
           ),
           DocMetadataWidget(
-            contentUriController: contentUriController,
-            metadataSchemaUriController: metadataSchemaUriController,
-            metadataSchemaVersionController: metadataSchemaVersionController,
-            metadataContentUriController: metadataContentUriController,
-            metadataSchemaTypeController: metadataSchemaTypeController,
+            contentUriController: _contentUriController,
+            metadataSchemaUriController: _metadataSchemaUriController,
+            metadataSchemaVersionController: _metadataSchemaVersionController,
+            metadataContentUriController: _metadataContentUriController,
+            metadataSchemaTypeController: _metadataSchemaTypeController,
+          ),
+          ShareDocumentEncryptedDataSwitchListTiles(
+            activeColor: Theme.of(context).primaryColor,
           ),
           const ParagraphWidget(
-            'Press the button to derive and share a Did document.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          ShareDocumentFlatButton(
-            accountEventCallback: () => CommercioDocsShareDocumentEvent(
-              recipients: recipientTextController.text
-                  .split(',')
-                  .map((e) => e.trim())
-                  .toList(),
-              contentUri: contentUriController.text,
-              metadata: sdk.CommercioDocMetadata(
-                contentUri: metadataContentUriController.text,
-                schema: sdk.CommercioDocMetadataSchema(
-                  uri: metadataSchemaUriController.text,
-                  version: metadataSchemaVersionController.text,
-                ),
-                schemaType: metadataSchemaTypeController.text,
-              ),
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
-              'Deriving & sharing...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: () => const Text(
-              'Derive & Share Did document',
-              style: TextStyle(color: Colors.white),
-            ),
+            'Press the button to derive a Did document.',
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: ShareDocumentTextField(
-              readOnly: true,
-              loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: DeriveDocumentFlatButton(
+                event: () => CommercioDocsDeriveDocumentEvent(
+                  recipients: _recipientTextController.text
+                      .split(',')
+                      .map((e) => e.trim())
+                      .toList(),
+                  contentUri: _contentUriController.text,
+                  metadata: sdk.CommercioDocMetadata(
+                    contentUri: _metadataContentUriController.text,
+                    schema: sdk.CommercioDocMetadataSchema(
+                      uri: _metadataSchemaUriController.text,
+                      version: _metadataSchemaVersionController.text,
+                    ),
+                    schemaType: _metadataSchemaTypeController.text,
+                  ),
+                  encryptedData: context
+                      .bloc<CommercioDocsEncDataBloc>()
+                      .encryptedDataList,
+                ),
+                color: Theme.of(context).primaryColor,
+                disabledColor: Theme.of(context).disabledColor,
+                child: (_) => const Text(
+                  'Derive a Did document',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
+          ),
+          DeriveDocumentTextField(
+            loading: (_) => 'Deriving...',
+            text: (_, state) => commercioDocToString(state.commercioDoc),
           ),
         ],
       ),
@@ -119,79 +154,47 @@ class ShareDocWidget extends StatelessWidget {
   }
 }
 
-class ShareEncDocWidget extends StatelessWidget {
-  final TextEditingController recipientTextController = TextEditingController();
-  final TextEditingController contentUriController = TextEditingController();
-  final TextEditingController metadataSchemaUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaVersionController =
-      TextEditingController();
-  final TextEditingController metadataContentUriController =
-      TextEditingController();
-  final TextEditingController metadataSchemaTypeController =
-      TextEditingController(text: '');
+class ShareDocsWidget extends StatelessWidget {
+  const ShareDocsWidget();
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RecipientAddressTextFieldWidget(
-            recipientTextController: recipientTextController,
-          ),
-          DocMetadataWidget(
-            contentUriController: contentUriController,
-            metadataSchemaUriController: metadataSchemaUriController,
-            metadataSchemaVersionController: metadataSchemaVersionController,
-            metadataContentUriController: metadataContentUriController,
-            metadataSchemaTypeController: metadataSchemaTypeController,
-          ),
           const ParagraphWidget(
-            'Press the button to derive and share an encrypted Did document with a random AES key.',
-            padding: EdgeInsets.all(5.0),
-          ),
-          ShareDocumentEncryptedDataSwitchListTiles(
-            activeColor: Theme.of(context).primaryColor,
-          ),
-          ShareEncryptedDocumentFlatButton(
-            accountEventCallback: () =>
-                CommercioDocsShareEncryptedDocumentEvent(
-              recipients: recipientTextController.text
-                  .split(',')
-                  .map((e) => e.trim())
-                  .toList(),
-              contentUri: contentUriController.text,
-              metadata: sdk.CommercioDocMetadata(
-                contentUri: metadataContentUriController.text,
-                schema: sdk.CommercioDocMetadataSchema(
-                  uri: metadataSchemaUriController.text,
-                  version: metadataSchemaVersionController.text,
-                ),
-                schemaType: metadataSchemaTypeController.text,
-              ),
-              encryptedData: BlocProvider.of<CommercioDocsEncDataBloc>(context)
-                  .encryptedDataList,
-            ),
-            color: Theme.of(context).primaryColor,
-            disabledColor: Theme.of(context).primaryColorDark,
-            loadingChild: () => const Text(
-              'Deriving & sharing...',
-              style: TextStyle(color: Colors.white),
-            ),
-            child: () => const Text(
-              'Derive & Share Did document',
-              style: TextStyle(color: Colors.white),
-            ),
+            'Press the button to share the previously generated Did document.',
           ),
           Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: ShareEncryptedDocumentTextField(
-              readOnly: true,
-              loadingTextCallback: () => 'Deriving & sharing...',
-              textCallback: (state) => state.transactionResult.success
-                  ? 'Success! Hash: ${state.transactionResult.hash}'
-                  : 'Error: ${jsonEncode(state.transactionResult.error)}',
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Center(
+              child: BlocBuilder<CommercioDocsDeriveDocumentBloc,
+                  CommercioDocsDeriveDocumentState>(
+                builder: (context, state) {
+                  final fn = (state is CommercioDocsDeriveDocumentStateData)
+                      ? () => CommercioDocsShareDocumentsEvent(
+                            commercioDocs: [state.commercioDoc],
+                          )
+                      : null;
+
+                  return ShareDocumentsFlatButton(
+                    event: fn,
+                    color: Theme.of(context).primaryColor,
+                    disabledColor: Theme.of(context).disabledColor,
+                    child: (_) => const Text(
+                      'Share Did document',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                },
+              ),
             ),
+          ),
+          ShareDocumentsTextField(
+            loading: (_) => 'Sharing...',
+            text: (_, state) => txResultToString(state.result),
           ),
         ],
       ),

@@ -11,8 +11,9 @@ class RecipientAddressTextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: const InputDecoration(
-          hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
-          labelText: 'Recipient address'),
+        hintText: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
+        labelText: 'Recipient address',
+      ),
       controller: recipientTextController,
     );
   }

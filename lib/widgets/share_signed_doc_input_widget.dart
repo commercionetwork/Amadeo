@@ -19,15 +19,17 @@ class ShareSignedDocInputWidget extends StatelessWidget {
       children: [
         TextField(
           decoration: const InputDecoration(
-              hintText: 'https://dsb-devnet.localhost',
-              labelText: 'storage_uri'),
+            hintText: 'https://dsb-devnet.localhost',
+            labelText: 'storage_uri',
+          ),
           controller: storageUriTextController,
           enabled: storageUriTextController.text.isEmpty,
         ),
         TextField(
           decoration: const InputDecoration(
-              hintText: 'did:com:1u70n4eysyuf08wcckwrs2atcaqw5d025w39u33',
-              labelText: 'Signer address'),
+            hintText: 'did:com:1u70n4eysyuf08wcckwrs2atcaqw5d025w39u33',
+            labelText: 'Signer address',
+          ),
           controller: signerIstanceTextController,
           enabled: signerIstanceTextController.text.isEmpty,
         ),

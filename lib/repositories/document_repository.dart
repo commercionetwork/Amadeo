@@ -18,7 +18,7 @@ class DocumentRepository {
 
   bool get hasNotLoadedDocument => !hasLoadedDocument;
 
-  bool get hasDocIdGenerated => docId.isEmpty;
+  bool get hasDocIdGenerated => docId.isNotEmpty;
 
   bool get hasNotDocIdGenerated => !hasDocIdGenerated;
 

@@ -1,6 +1,5 @@
 import 'package:amadeo/helpers/net_helper.dart';
 import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commercio_ui/core/utils/export.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,19 +16,18 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final commercioAccount =
-        RepositoryProvider.of<StatefulCommercioAccount>(context);
+    final commercioAccount = context.repository<StatefulCommercioAccount>();
 
     return AppBar(
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
       title: Text(
         title,
         style: const TextStyle(
-          color: Colors.white,
+          fontSize: 28.0,
         ),
       ),
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      elevation: .0,
       actions: widgets ??
           [
             Padding(
@@ -49,7 +47,8 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          'Switched to ${result.name}. Please restore the wallet.'),
+                        'Switched to ${result.name}. Please restore the wallet.',
+                      ),
                       backgroundColor: Colors.green,
                     ),
                   );

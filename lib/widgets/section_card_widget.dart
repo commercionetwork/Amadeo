@@ -20,21 +20,27 @@ class SectionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TitleWidget(sectionPage.title),
-            ParagraphWidget(sectionPage.description),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SectionButtonWidget(sectionPage: sectionPage),
-              ],
-            ),
-          ],
+        elevation: 2.0,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TitleWidget(
+                sectionPage.title,
+                padding: const EdgeInsets.all(0.0),
+              ),
+              ParagraphWidget(sectionPage.description),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  SectionButtonWidget(sectionPage: sectionPage),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
