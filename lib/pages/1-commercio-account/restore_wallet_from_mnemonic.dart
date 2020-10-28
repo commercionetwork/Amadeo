@@ -99,7 +99,16 @@ class _RestoreWalletFromMnemonicWidgetState
                 (mnemonic, wallet, walletAddress) => null,
                 initial: () => null,
                 loading: () => f = null,
-                error: (_) => null,
+                error: (e) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  });
+                },
               );
 
               return Padding(
