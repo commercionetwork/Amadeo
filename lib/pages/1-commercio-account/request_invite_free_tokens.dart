@@ -4,12 +4,12 @@ import 'package:amadeo/presenters/faucet_invite_presenter.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class RequestInviteFreeTokensPage extends SectionPageWidget {
-  const RequestInviteFreeTokensPage({Key key})
+  const RequestInviteFreeTokensPage({Key? key})
       : super(
           '/1-account/request-invite-free-tokens',
           'RequestInviteFreeTokensPage',
@@ -25,7 +25,7 @@ class RequestInviteFreeTokensPage extends SectionPageWidget {
 }
 
 class RequestInviteFreeTokensPageBody extends StatelessWidget {
-  const RequestInviteFreeTokensPageBody();
+  const RequestInviteFreeTokensPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class RequestInviteFreeTokensPageBody extends StatelessWidget {
 }
 
 class RequestFaucetInviteWidget extends StatelessWidget {
-  const RequestFaucetInviteWidget();
+  const RequestFaucetInviteWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,10 @@ class RequestFaucetInviteWidget extends StatelessWidget {
             child: Center(
               child: RequestFaucetInviteFlatButton(
                 event: () => const CommercioKycRequestFaucetInviteEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Request faucet invite',
                   style: TextStyle(color: Colors.white),
@@ -81,7 +83,10 @@ class RequestFaucetInviteWidget extends StatelessWidget {
           ),
           RequestFaucetInviteTextField(
             loading: (_) => 'Requesting...',
-            text: (_, state) => faucetInviteResponseToString(state.response),
+            text: (_, state) => state.maybeWhen(
+              (response) => faucetInviteResponseToString(response),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -90,7 +95,7 @@ class RequestFaucetInviteWidget extends StatelessWidget {
 }
 
 class RequestFreeTokensWidget extends StatelessWidget {
-  const RequestFreeTokensWidget();
+  const RequestFreeTokensWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +112,10 @@ class RequestFreeTokensWidget extends StatelessWidget {
             child: Center(
               child: RequestFreeTokensFlatButton(
                 event: () => const CommercioAccountRequestFreeTokensEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Request free tokens',
                   style: TextStyle(color: Colors.white),
@@ -118,8 +125,11 @@ class RequestFreeTokensWidget extends StatelessWidget {
           ),
           RequestFreeTokensTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) =>
-                accountRequestResponseToString(state.accountRequestResponse),
+            text: (_, state) => state.maybeWhen(
+              (accountRequestResponse) =>
+                  accountRequestResponseToString(accountRequestResponse),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

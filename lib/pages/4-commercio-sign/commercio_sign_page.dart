@@ -10,22 +10,24 @@ import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
 import 'package:amadeo/widgets/sdn_data_input_switch_widget.dart';
 import 'package:amadeo/widgets/share_signed_doc_input_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class CommercioSignPage extends SectionPageWidget {
-  const CommercioSignPage({Key key})
+  const CommercioSignPage({Key? key})
       : super('/4-sign', 'CommercioSignPage', key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(bodyWidget: CommercioSignBody());
+    return const BaseScaffoldWidget(bodyWidget: CommercioSignBody());
   }
 }
 
 class CommercioSignBody extends StatelessWidget {
+  const CommercioSignBody({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const BaseListWidget(
@@ -41,14 +43,14 @@ class CommercioSignBody extends StatelessWidget {
 }
 
 class GenerateUuidWidget extends StatefulWidget {
-  const GenerateUuidWidget();
+  const GenerateUuidWidget({Key? key}) : super(key: key);
 
   @override
   _GenerateUuidWidgetState createState() => _GenerateUuidWidgetState();
 }
 
 class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
-  SignBloc _signBloc;
+  late final SignBloc _signBloc;
   final _uuidTextController = TextEditingController();
 
   @override
@@ -77,8 +79,11 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Center(
-              child: FlatButton(
-                color: Theme.of(context).primaryColor,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 onPressed: () => _signBloc.add(const SignGenerateNewDocUuid()),
                 child: const Text(
                   'Generate a new document id',
@@ -90,7 +95,7 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
           BlocConsumer<SignBloc, SignState>(
             listener: (context, state) {
               if (state is SignLoadDocumentError) {
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.error),
                     backgroundColor: Colors.red,
@@ -121,14 +126,14 @@ class _GenerateUuidWidgetState extends State<GenerateUuidWidget> {
 }
 
 class LoadDocumentWidget extends StatefulWidget {
-  const LoadDocumentWidget();
+  const LoadDocumentWidget({Key? key}) : super(key: key);
 
   @override
   _LoadDocumentWidgetState createState() => _LoadDocumentWidgetState();
 }
 
 class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
-  DocumentRepository _documentRepository;
+  late final DocumentRepository _documentRepository;
 
   @override
   void initState() {
@@ -142,7 +147,7 @@ class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
     return BlocListener<SignBloc, SignState>(
       listener: (context, state) {
         if (state is SignLoadDocumentError) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.error),
               backgroundColor: Colors.red,
@@ -176,15 +181,15 @@ class _LoadDocumentWidgetState extends State<LoadDocumentWidget> {
 }
 
 class ShareDocDoSignWidget extends StatefulWidget {
-  const ShareDocDoSignWidget();
+  const ShareDocDoSignWidget({Key? key}) : super(key: key);
 
   @override
   _ShareDocDoSignWidgetState createState() => _ShareDocDoSignWidgetState();
 }
 
 class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
-  SignBloc _signBloc;
-  StatefulCommercioAccount _commercioAccount;
+  late final SignBloc _signBloc;
+  late final StatefulCommercioAccount _commercioAccount;
   final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau',
   );
@@ -244,7 +249,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
       child: BlocConsumer<SignBloc, SignState>(
         listener: (context, state) {
           if (state is SignDocumentError) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.error),
                 backgroundColor: Colors.red,
@@ -297,9 +302,11 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Center(
-                  child: FlatButton(
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).disabledColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     onPressed: (state is SignDocumentLoading)
                         ? null
                         : () => _signBloc.add(SignDocumentEvent(
@@ -314,7 +321,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
                               storageUri: _storageUriTextController.text,
                               sdnData: RepositoryProvider.of<
                                       SdnSelectedDataRepository>(context)
-                                  .sdnDataList,
+                                  .sdnDataSet,
                               vcrId: _vcrIdTextController.text,
                               certificateProfile:
                                   _certificateProfileTextController.text,
@@ -328,7 +335,7 @@ class _ShareDocDoSignWidgetState extends State<ShareDocDoSignWidget> {
                                 ),
                                 schemaType: _metadataSchemaTypeController.text,
                               ),
-                              walletAddress: _commercioAccount.walletAddress,
+                              walletAddress: _commercioAccount.walletAddress!,
                             )),
                     child: const Text(
                       'Sign document',

@@ -7,19 +7,19 @@ abstract class SdnDataState extends Equatable {
 abstract class SdnDataStateWithData extends SdnDataState {
   final Map<CommercioSdnData, bool> commercioSdnData;
 
-  const SdnDataStateWithData({@required this.commercioSdnData});
+  const SdnDataStateWithData({required this.commercioSdnData});
 
   @override
   List<Object> get props => [commercioSdnData];
 }
 
 class SdnDataInitial extends SdnDataStateWithData {
-  const SdnDataInitial({@required Map<CommercioSdnData, bool> commercioSdnData})
+  const SdnDataInitial({required Map<CommercioSdnData, bool> commercioSdnData})
       : super(commercioSdnData: commercioSdnData);
 }
 
 class SdnDataChanged extends SdnDataStateWithData {
-  const SdnDataChanged({@required Map<CommercioSdnData, bool> commercioSdnData})
+  const SdnDataChanged({required Map<CommercioSdnData, bool> commercioSdnData})
       : super(commercioSdnData: commercioSdnData);
 }
 

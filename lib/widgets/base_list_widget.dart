@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 class BaseListWidget extends StatelessWidget {
   final List<Widget> children;
-  final double separatorIndent;
-  final double separatorEndIndent;
+  final double? separatorIndent;
+  final double? separatorEndIndent;
   static const _defaultIndent = 16.0;
   static const _defaultEndIntent = 16.0;
 
   const BaseListWidget({
-    @required this.children,
+    required this.children,
     this.separatorIndent,
     this.separatorEndIndent,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

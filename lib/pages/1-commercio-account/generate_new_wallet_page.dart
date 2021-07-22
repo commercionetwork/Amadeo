@@ -2,12 +2,12 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class GenerateNewWalletPage extends SectionPageWidget {
-  const GenerateNewWalletPage({Key key})
+  const GenerateNewWalletPage({Key? key})
       : super(
           '/1-account/generate-new-wallet',
           'GenerateNewWalletPage',
@@ -21,7 +21,7 @@ class GenerateNewWalletPage extends SectionPageWidget {
 }
 
 class GenerateNewWalletPageBody extends StatelessWidget {
-  const GenerateNewWalletPageBody();
+  const GenerateNewWalletPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class GenerateNewWalletPageBody extends StatelessWidget {
 }
 
 class GenerateWalletWidget extends StatefulWidget {
-  const GenerateWalletWidget();
+  const GenerateWalletWidget({Key? key}) : super(key: key);
 
   @override
   _GenerateWalletWidgetState createState() => _GenerateWalletWidgetState();
@@ -76,8 +76,10 @@ class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
                 'Generate Wallet',
                 style: TextStyle(color: Colors.white),
               ),
-              color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).disabledColor,
+              buttonStyle: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           BlocBuilder<CommercioAccountGenerateWalletBloc,
@@ -100,7 +102,10 @@ class _GenerateWalletWidgetState extends State<GenerateWalletWidget> {
           ),
           GenerateWalletTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.walletAddress,
+            text: (_, state) => state.maybeWhen(
+              (mnemonic, wallet, walletAddress) => walletAddress,
+              orElse: () => '',
+            ),
           ),
         ],
       ),

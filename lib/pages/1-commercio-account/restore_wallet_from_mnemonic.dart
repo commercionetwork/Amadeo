@@ -2,12 +2,12 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class RestoreWalletFromMnemonicPage extends SectionPageWidget {
-  const RestoreWalletFromMnemonicPage({Key key})
+  const RestoreWalletFromMnemonicPage({Key? key})
       : super(
           '/1-account/restore-wallet-from-mnemonic',
           'RestoreWalletFromMnemonicPage',
@@ -23,7 +23,7 @@ class RestoreWalletFromMnemonicPage extends SectionPageWidget {
 }
 
 class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
-  const RestoreWalletFromMnemonicPageBody();
+  const RestoreWalletFromMnemonicPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class RestoreWalletFromMnemonicPageBody extends StatelessWidget {
 }
 
 class RestoreWalletFromMnemonicWidget extends StatefulWidget {
-  const RestoreWalletFromMnemonicWidget();
+  const RestoreWalletFromMnemonicWidget({Key? key}) : super(key: key);
 
   @override
   _RestoreWalletFromMnemonicWidgetState createState() =>
@@ -89,7 +89,7 @@ class _RestoreWalletFromMnemonicWidgetState
             builder: (_, snap) {
               final restoreBloc =
                   BlocProvider.of<CommercioAccountRestoreWalletBloc>(context);
-              Function() f = () => restoreBloc.add(
+              Function()? f = () => restoreBloc.add(
                     CommercioAccountRestoreWalletEvent(
                       mnemonic: _mnemonicTextController.text,
                     ),
@@ -100,10 +100,10 @@ class _RestoreWalletFromMnemonicWidgetState
                 initial: () => null,
                 loading: () => f = null,
                 error: (e) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    Scaffold.of(context).showSnackBar(
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(e),
+                        content: Text('Error: $e'),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -113,10 +113,12 @@ class _RestoreWalletFromMnemonicWidgetState
 
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: FlatButton(
+                child: TextButton(
                   onPressed: f,
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).disabledColor,
+                  style: TextButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
                   child: const Text(
                     'Restore Wallet',
                     style: TextStyle(color: Colors.white),
@@ -127,7 +129,10 @@ class _RestoreWalletFromMnemonicWidgetState
           ),
           RestoreWalletTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.walletAddress,
+            text: (_, state) => state.maybeWhen(
+              (mnemonic, wallet, walletAddress) => walletAddress,
+              orElse: () => '',
+            ),
           ),
         ],
       ),

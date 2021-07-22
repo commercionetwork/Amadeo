@@ -7,19 +7,15 @@ extension ChainNetExt on ChainNet {
         return 'Dev-Net';
       case ChainNet.test:
         return 'Test-Net';
-      default:
-        return null;
     }
   }
 
-  String get lcdUrl {
+  Uri get lcdUrl {
     switch (this) {
       case ChainNet.dev:
-        return 'https://lcd-demo.commercio.network';
+        return Uri.https('lcd-demo.commercio.network', '');
       case ChainNet.test:
-        return 'https://lcd-testnet.commercio.network';
-      default:
-        return null;
+        return Uri.https('lcd-testnet.commercio.network', '');
     }
   }
 
@@ -29,8 +25,15 @@ extension ChainNetExt on ChainNet {
         return 'faucet-devnet.commercio.network';
       case ChainNet.test:
         return 'faucet-testnet.commercio.network';
-      default:
-        return null;
+    }
+  }
+
+  String get defaultTsp {
+    switch (this) {
+      case ChainNet.dev:
+        return 'did:com:1359sz8w4k86cuew7jelr9exlvjlurglphz8x9d';
+      case ChainNet.test:
+        return 'did:com:1ejuvfc2ydcq7ym4ks052lu45kg5xk6us0srwdu';
     }
   }
 

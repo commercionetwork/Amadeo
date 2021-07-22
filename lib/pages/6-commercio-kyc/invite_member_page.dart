@@ -3,14 +3,13 @@ import 'package:amadeo/presenters/tx_result_presenter.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commerciosdk/export.dart' as sdk;
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sacco/sacco.dart';
 
 class InviteMemberPage extends SectionPageWidget {
-  const InviteMemberPage({Key key})
+  const InviteMemberPage({Key? key})
       : super('/6-kyc/invite-member', 'InviteMemberPage', key: key);
 
   @override
@@ -18,7 +17,7 @@ class InviteMemberPage extends SectionPageWidget {
     return BaseScaffoldWidget(
       bodyWidget: BlocProvider(
         create: (_) => CommercioKycDeriveInviteMemberBloc(
-          commercioKyc: context.repository<StatefulCommercioKyc>(),
+          commercioKyc: context.read<StatefulCommercioKyc>(),
         ),
         child: const InviteMemberPageBody(),
       ),
@@ -27,7 +26,7 @@ class InviteMemberPage extends SectionPageWidget {
 }
 
 class InviteMemberPageBody extends StatelessWidget {
-  const InviteMemberPageBody();
+  const InviteMemberPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class InviteMemberPageBody extends StatelessWidget {
       children: [
         BlocProvider(
           create: (_) => CommercioKycInviteMembersBloc(
-            commercioKyc: context.repository<StatefulCommercioKyc>(),
+            commercioKyc: context.read<StatefulCommercioKyc>(),
           ),
           child: const InviteMemberWidget(),
         ),
@@ -47,7 +46,7 @@ class InviteMemberPageBody extends StatelessWidget {
 }
 
 class InviteMemberWidget extends StatelessWidget {
-  const InviteMemberWidget();
+  const InviteMemberWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +60,19 @@ class InviteMemberWidget extends StatelessWidget {
             padding: EdgeInsets.all(5.0),
           ),
           FutureBuilder<Wallet>(
-            future: StatelessCommercioAccount().generateNewWallet(
+            future: const StatelessCommercioAccount().generateNewWallet(
               networkInfo:
-                  context.repository<StatefulCommercioAccount>().networkInfo,
+                  context.read<StatefulCommercioAccount>().networkInfo!,
             ),
             builder: (context, snap) {
               final fn = (snap.connectionState == ConnectionState.done)
                   ? () => CommercioKycInviteMembersEvent(
                         inviteUsers: [
-                          sdk.InviteUser(
-                            recipientDid: snap.data.bech32Address,
+                          InviteUser(
+                            recipientDid: snap.data!.bech32Address,
                             senderDid: context
-                                .repository<StatefulCommercioAccount>()
-                                .walletAddress,
+                                .read<StatefulCommercioAccount>()
+                                .walletAddress!,
                           )
                         ],
                       )
@@ -90,8 +89,10 @@ class InviteMemberWidget extends StatelessWidget {
                 child: Center(
                   child: InviteMembersFlatButton(
                     event: fn,
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).disabledColor,
+                    buttonStyle: TextButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     child: (_) => child,
                   ),
                 ),
@@ -100,7 +101,10 @@ class InviteMemberWidget extends StatelessWidget {
           ),
           InviteMembersTextField(
             loading: (_) => 'Inviting...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

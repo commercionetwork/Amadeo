@@ -17,8 +17,6 @@ extension DsbEndpointExt on DsbEndpoint {
         return '/get';
       case DsbEndpoint.upload:
         return '/protected/upload';
-      default:
-        return null;
     }
   }
 }
@@ -35,8 +33,6 @@ extension DsbHeaderExt on DsbHeader {
         return 'X-DID';
       case DsbHeader.xResource:
         return 'X-Resource';
-      default:
-        return null;
     }
   }
 }

@@ -13,9 +13,9 @@ class SignLoadDocumentEvent extends SignEvent {
 
 class SignDocumentEvent extends SignEvent {
   final CommercioDocMetadata metadata;
-  final List<CommercioSdnData> sdnData;
+  final Set<CommercioSdnData>? sdnData;
   final List<String> recipients;
-  final StdFee fee;
+  final StdFee? fee;
   final String certificateProfile;
   final String contentUri;
   final String docId;
@@ -25,21 +25,21 @@ class SignDocumentEvent extends SignEvent {
   final String walletAddress;
 
   const SignDocumentEvent({
-    @required this.certificateProfile,
-    @required this.contentUri,
-    @required this.docId,
-    @required this.metadata,
-    @required this.recipients,
-    @required this.signerIstance,
-    @required this.storageUri,
-    @required this.vcrId,
-    @required this.walletAddress,
+    required this.certificateProfile,
+    required this.contentUri,
+    required this.docId,
+    required this.metadata,
+    required this.recipients,
+    required this.signerIstance,
+    required this.storageUri,
+    required this.vcrId,
+    required this.walletAddress,
     this.sdnData,
     this.fee,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         certificateProfile,
         contentUri,
         docId,

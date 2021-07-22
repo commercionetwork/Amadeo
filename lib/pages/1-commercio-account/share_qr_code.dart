@@ -2,13 +2,13 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ShareQRCodePage extends SectionPageWidget {
-  const ShareQRCodePage({Key key})
+  const ShareQRCodePage({Key? key})
       : super('/1-account/share-qr-code', 'ShareQRCodePage', key: key);
 
   @override
@@ -18,7 +18,7 @@ class ShareQRCodePage extends SectionPageWidget {
 }
 
 class ShareQRCodePageBody extends StatelessWidget {
-  const ShareQRCodePageBody();
+  const ShareQRCodePageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class ShareQRCodePageBody extends StatelessWidget {
 }
 
 class GenerateQrCodeWidget extends StatelessWidget {
-  const GenerateQrCodeWidget();
+  const GenerateQrCodeWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,10 @@ class GenerateQrCodeWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: GenerateQrFlatButton(
-              color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).disabledColor,
+              buttonStyle: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
               child: (_) => const Text(
                 'Generate QR',
                 style: TextStyle(color: Colors.white),

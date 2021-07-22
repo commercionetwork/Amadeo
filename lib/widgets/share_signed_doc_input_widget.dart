@@ -7,11 +7,12 @@ class ShareSignedDocInputWidget extends StatelessWidget {
   final TextEditingController certificateProfileTextController;
 
   const ShareSignedDocInputWidget({
-    @required this.storageUriTextController,
-    @required this.signerIstanceTextController,
-    @required this.vcrIdTextController,
-    @required this.certificateProfileTextController,
-  });
+    required this.storageUriTextController,
+    required this.signerIstanceTextController,
+    required this.vcrIdTextController,
+    required this.certificateProfileTextController,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

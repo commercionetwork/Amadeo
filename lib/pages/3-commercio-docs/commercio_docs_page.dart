@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CommercioDocsPage extends SectionPageWidget {
-  const CommercioDocsPage({Key key})
+  const CommercioDocsPage({Key? key})
       : super('/3-docs', 'CommercioDocsPage', key: key);
 
   @override
@@ -17,7 +17,7 @@ class CommercioDocsPage extends SectionPageWidget {
 }
 
 class CommercioDocsBody extends StatelessWidget {
-  const CommercioDocsBody();
+  const CommercioDocsBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

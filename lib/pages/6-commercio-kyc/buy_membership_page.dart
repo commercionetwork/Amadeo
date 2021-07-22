@@ -1,15 +1,15 @@
+import 'package:amadeo/helpers/net_helper.dart';
 import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/presenters/tx_result_presenter.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commerciosdk/export.dart' hide Key, Padding;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class BuyMembershipPage extends SectionPageWidget {
-  const BuyMembershipPage({Key key})
+  const BuyMembershipPage({Key? key})
       : super('/6-kyc/buy-membership', 'BuyMembershipPage', key: key);
 
   @override
@@ -17,7 +17,7 @@ class BuyMembershipPage extends SectionPageWidget {
     return BaseScaffoldWidget(
       bodyWidget: BlocProvider(
         create: (_) => CommercioKycDeriveBuyMembershipBloc(
-          commercioKyc: context.repository<StatefulCommercioKyc>(),
+          commercioKyc: context.read<StatefulCommercioKyc>(),
         ),
         child: const BuyMembershipPageBody(),
       ),
@@ -26,7 +26,7 @@ class BuyMembershipPage extends SectionPageWidget {
 }
 
 class BuyMembershipPageBody extends StatelessWidget {
-  const BuyMembershipPageBody();
+  const BuyMembershipPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class BuyMembershipPageBody extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (_) => CommercioKycBuyMembershipsBloc(
-                commercioKyc: context.repository<StatefulCommercioKyc>(),
+                commercioKyc: context.read<StatefulCommercioKyc>(),
               ),
             ),
             BlocProvider(
@@ -55,13 +55,14 @@ class BuyMembershipPageBody extends StatelessWidget {
 class BuyMembershipWidget extends StatelessWidget {
   final MembershipType membershipType = MembershipType.BRONZE;
 
-  const BuyMembershipWidget();
+  const BuyMembershipWidget({Key? key}) : super(key: key);
 
   @override
+  @override
   Widget build(BuildContext context) {
-    final commAccount = context.repository<StatefulCommercioAccount>();
+    final commAccount = context.read<StatefulCommercioAccount>();
     final membershipBloc =
-        context.bloc<CommercioKycMembershipTypeChooserBloc>();
+        context.read<CommercioKycMembershipTypeChooserBloc>();
 
     final button = BuyMembershipsFlatButton(
       event: commAccount.hasWalletAddress
@@ -69,13 +70,18 @@ class BuyMembershipWidget extends StatelessWidget {
                 buyMemberships: [
                   BuyMembership(
                     membershipType: membershipBloc.membershipType.value,
-                    buyerDid: commAccount.walletAddress,
+                    buyerDid: commAccount.walletAddress!,
+                    tsp: commAccount.networkInfo?.lcdUrl == ChainNet.dev.lcdUrl
+                        ? ChainNet.dev.defaultTsp
+                        : ChainNet.test.defaultTsp,
                   ),
                 ],
               )
           : null,
-      color: Theme.of(context).primaryColor,
-      disabledColor: Theme.of(context).disabledColor,
+      buttonStyle: TextButton.styleFrom(
+        primary: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       child: (_) => const Text(
         'Buy membership',
         style: TextStyle(color: Colors.white),
@@ -91,7 +97,9 @@ class BuyMembershipWidget extends StatelessWidget {
             'Buy a membership for the current account.',
           ),
           const CommercioMembershipTypeChooser(
-            shrinkWrap: true,
+            listViewStyle: CommercioListViewStyle(
+              shrinkWrap: true,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -106,7 +114,10 @@ class BuyMembershipWidget extends StatelessWidget {
           ),
           BuyMembershipsTextField(
             loading: (_) => 'Buying...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

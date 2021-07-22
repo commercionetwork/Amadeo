@@ -1,3 +1,3 @@
-export 'close_cdp_page.dart';
+export 'burn_ccc_page.dart';
 export 'commercio_mint_page.dart';
-export 'open_cdp_page.dart';
+export 'mint_ccc_page.dart';

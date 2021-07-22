@@ -8,12 +8,12 @@ import 'package:amadeo/widgets/title_widget.dart';
 
 class SectionCardWidget extends StatelessWidget {
   final SectionPage sectionPage;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const SectionCardWidget({
-    Key key,
-    @required this.sectionPage,
+    required this.sectionPage,
     this.onTap,
+    Key? key,
   }) : super(key: key);
 
   @override

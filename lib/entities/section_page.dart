@@ -1,5 +1,4 @@
 import 'package:amadeo/pages/export.dart';
-import 'package:flutter/widgets.dart';
 
 class SectionPage {
   final SectionPageWidget sectionPageWidget;
@@ -8,8 +7,8 @@ class SectionPage {
   final bool enabled;
 
   const SectionPage({
-    @required this.sectionPageWidget,
-    @required this.title,
+    required this.sectionPageWidget,
+    required this.title,
     this.description = '',
     this.enabled = true,
   });

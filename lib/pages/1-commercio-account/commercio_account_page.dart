@@ -7,16 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CommercioAccountPage extends SectionPageWidget {
-  const CommercioAccountPage({Key key})
+  const CommercioAccountPage({Key? key})
       : super('/1-account', 'CommercioAccountPage', key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(bodyWidget: CommercioAccountBody());
+    return const BaseScaffoldWidget(bodyWidget: CommercioAccountBody());
   }
 }
 
 class CommercioAccountBody extends StatelessWidget {
+  const CommercioAccountBody({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const BaseListWidget(

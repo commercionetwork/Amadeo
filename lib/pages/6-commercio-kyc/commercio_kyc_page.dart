@@ -1,21 +1,22 @@
 import 'package:amadeo/pages/export.dart';
-import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
+import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/subsection_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CommercioKYCPage extends SectionPageWidget {
-  const CommercioKYCPage({Key key})
+  const CommercioKYCPage({Key? key})
       : super('/6-kyc', 'CommercioKYCPage', key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(bodyWidget: CommercioKYCPageBody());
+    return const BaseScaffoldWidget(bodyWidget: CommercioKYCPageBody());
   }
 }
 
 class CommercioKYCPageBody extends StatelessWidget {
+  const CommercioKYCPageBody({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const BaseListWidget(

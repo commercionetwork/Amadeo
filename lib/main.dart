@@ -12,6 +12,7 @@ import 'package:commerciosdk/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 import 'package:lumberdash/lumberdash.dart';
 
 void main() {
@@ -27,6 +28,7 @@ void main() {
     Bloc.observer = SimpleBlocObserver();
   }
 
+  final secretStorage = SecretStorage();
   final commercioAccount = StatefulCommercioAccount(
     networkInfo: NetworkInfo(
       bech32Hrp: ChainNet.dev.bech32Hrp,
@@ -36,6 +38,7 @@ void main() {
       faucetDomain: ChainNet.dev.faucetDomain,
       lcdUrl: ChainNet.dev.lcdUrl,
     ),
+    storage: secretStorage,
   );
 
   runApp(
@@ -47,8 +50,10 @@ void main() {
               StatefulCommercioDocs(commercioAccount: commercioAccount),
         ),
         RepositoryProvider(
-          create: (_) =>
-              StatefulCommercioId(commercioAccount: commercioAccount),
+          create: (_) => StatefulCommercioId(
+            commercioAccount: commercioAccount,
+            storage: secretStorage,
+          ),
         ),
         RepositoryProvider(
           create: (_) =>

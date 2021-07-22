@@ -1,4 +1,4 @@
-package network.commercio.amadeo
+package com.example.amadeo
 
 import io.flutter.embedding.android.FlutterActivity
 

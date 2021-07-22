@@ -3,12 +3,12 @@ import 'package:amadeo/presenters/balance_presenter.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class CheckAccountBalancePage extends SectionPageWidget {
-  const CheckAccountBalancePage({Key key})
+  const CheckAccountBalancePage({Key? key})
       : super(
           '/1-account/check-account-balance',
           'CheckAccountBalancePage',
@@ -24,7 +24,7 @@ class CheckAccountBalancePage extends SectionPageWidget {
 }
 
 class CheckAccountBalancePageBody extends StatelessWidget {
-  const CheckAccountBalancePageBody();
+  const CheckAccountBalancePageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class CheckAccountBalancePageBody extends StatelessWidget {
 }
 
 class CheckAccountBalanceWidget extends StatelessWidget {
-  const CheckAccountBalanceWidget();
+  const CheckAccountBalanceWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,14 +69,19 @@ class CheckAccountBalanceWidget extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
               ),
             ),
           ),
           CheckBalanceTextField(
             loading: (_) => 'Checking...',
-            text: (_, state) => balanceToString(state.balance),
+            text: (_, state) => state.maybeWhen(
+              (balance) => balanceToString(balance),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

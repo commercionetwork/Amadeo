@@ -12,7 +12,7 @@ part 'warning_dialog_state.dart';
 class WarningDialogBloc extends Bloc<WarningDialogEvent, WarningDialogState> {
   final DialogWarningsRepository dialogWarningsRepository;
 
-  WarningDialogBloc({@required this.dialogWarningsRepository})
+  WarningDialogBloc({required this.dialogWarningsRepository})
       : super(const WarningDialogInitialState());
 
   @override

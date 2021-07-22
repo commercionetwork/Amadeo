@@ -5,12 +5,12 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class RequestPowerupPage extends SectionPageWidget {
-  const RequestPowerupPage({Key key})
+  const RequestPowerupPage({Key? key})
       : super('/2-id/request-powerup', 'RequestPowerupPage', key: key);
 
   @override
@@ -18,7 +18,7 @@ class RequestPowerupPage extends SectionPageWidget {
     return BaseScaffoldWidget(
       bodyWidget: BlocProvider(
         create: (_) => CommercioIdDeriveDidPowerUpRequestBloc(
-          commercioId: context.repository<StatefulCommercioId>(),
+          commercioId: context.read<StatefulCommercioId>(),
         ),
         child: const RequestPowerupPageBody(),
       ),
@@ -27,7 +27,7 @@ class RequestPowerupPage extends SectionPageWidget {
 }
 
 class RequestPowerupPageBody extends StatelessWidget {
-  const RequestPowerupPageBody();
+  const RequestPowerupPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +37,14 @@ class RequestPowerupPageBody extends StatelessWidget {
       children: [
         BlocProvider(
           create: (_) => CommercioIdRechargeTumblerBloc(
-            commercioId: context.repository<StatefulCommercioId>(),
+            commercioId: context.read<StatefulCommercioId>(),
           ),
           child: const RechargeGovernmentWidget(),
         ),
         const DeriveDidPowerUpWidget(),
         BlocProvider(
           create: (_) => CommercioIdRequestDidPowerUpsBloc(
-            commercioId: context.repository<StatefulCommercioId>(),
+            commercioId: context.read<StatefulCommercioId>(),
           ),
           child: const RequestDidPowerUpWidget(),
         ),
@@ -54,7 +54,7 @@ class RequestPowerupPageBody extends StatelessWidget {
 }
 
 class RechargeGovernmentWidget extends StatelessWidget {
-  const RechargeGovernmentWidget();
+  const RechargeGovernmentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +73,10 @@ class RechargeGovernmentWidget extends StatelessWidget {
                 event: () => const CommercioIdRechargeTumblerEvent(
                   amount: [CommercioCoin(amount: '1000')],
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Send tokens to Tumbler',
                   style: TextStyle(color: Colors.white),
@@ -84,7 +86,10 @@ class RechargeGovernmentWidget extends StatelessWidget {
           ),
           RechargeTumblerTextField(
             loading: (_) => 'Recharging...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -93,7 +98,7 @@ class RechargeGovernmentWidget extends StatelessWidget {
 }
 
 class DeriveDidPowerUpWidget extends StatefulWidget {
-  const DeriveDidPowerUpWidget();
+  const DeriveDidPowerUpWidget({Key? key}) : super(key: key);
 
   @override
   _DeriveDidPowerUpWidgetState createState() => _DeriveDidPowerUpWidgetState();
@@ -142,8 +147,10 @@ class _DeriveDidPowerUpWidgetState extends State<DeriveDidPowerUpWidget> {
                   pairwiseAddress: _pairwiseAddressTextCtrl.text,
                   amount: [CommercioCoin(amount: _amountTextCtrl.text)],
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Derive Did PowerUp request',
                   style: TextStyle(color: Colors.white),
@@ -153,7 +160,10 @@ class _DeriveDidPowerUpWidgetState extends State<DeriveDidPowerUpWidget> {
           ),
           DeriveDidPowerUpRequestTextField(
             loading: (_) => 'Deriving...',
-            text: (_, state) => powerUpRequestToString(state.didPowerUpRequest),
+            text: (_, state) => state.maybeWhen(
+              (didPowerUpRequest) => powerUpRequestToString(didPowerUpRequest),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -162,7 +172,7 @@ class _DeriveDidPowerUpWidgetState extends State<DeriveDidPowerUpWidget> {
 }
 
 class RequestDidPowerUpWidget extends StatelessWidget {
-  const RequestDidPowerUpWidget();
+  const RequestDidPowerUpWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +199,10 @@ class RequestDidPowerUpWidget extends StatelessWidget {
 
                   return RequestDidPowerUpFlatButton(
                     event: fn,
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).disabledColor,
+                    buttonStyle: TextButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     child: (_) => const Text(
                       'Request Did PowerUp',
                       style: TextStyle(color: Colors.white),
@@ -202,7 +214,10 @@ class RequestDidPowerUpWidget extends StatelessWidget {
           ),
           RequestDidPowerUpTextField(
             loading: (_) => 'Powering up...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

@@ -4,13 +4,12 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commerciosdk/export.dart' as sdk;
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendTokensPage extends SectionPageWidget {
-  const SendTokensPage({Key key})
+  const SendTokensPage({Key? key})
       : super('/1-account/send-tokens', 'SendTokensPage', key: key);
 
   @override
@@ -20,7 +19,7 @@ class SendTokensPage extends SectionPageWidget {
 }
 
 class SendTokensPageBody extends StatelessWidget {
-  const SendTokensPageBody();
+  const SendTokensPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,8 @@ class SendTokensWidget extends StatefulWidget {
   const SendTokensWidget({
     this.defaultAmount = '100',
     this.defaultDenom = 'ucommercio',
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String defaultAmount;
   final String defaultDenom;
@@ -58,8 +58,8 @@ class _SendTokensWidgetState extends State<SendTokensWidget> {
   final _recipientTextController = TextEditingController(
     text: 'did:com:14ttg3eyu88jda8udvxpwjl2pwxemh72w0grsau,',
   );
-  TextEditingController _amountTextController;
-  TextEditingController _denomTextController;
+  late final TextEditingController _amountTextController;
+  late final TextEditingController _denomTextController;
 
   @override
   void initState() {
@@ -106,10 +106,11 @@ class _SendTokensWidgetState extends State<SendTokensWidget> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: SendTokensFlatButton(
               event: () => CommercioAccountSendTokensEvent(
-                recipientAddress:
-                    _recipientTextController.text.split(',')[0].trim(),
+                recipientAddresses: [
+                  _recipientTextController.text.split(',')[0].trim()
+                ],
                 amount: [
-                  sdk.StdCoin(
+                  StdCoin(
                     denom: _denomTextController.text,
                     amount: _amountTextController.text,
                   ),
@@ -123,13 +124,18 @@ class _SendTokensWidgetState extends State<SendTokensWidget> {
                 'Sending...',
                 style: TextStyle(color: Colors.white),
               ),
-              color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).disabledColor,
+              buttonStyle: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           SendTokensTextField(
             loading: (_) => 'Sending...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

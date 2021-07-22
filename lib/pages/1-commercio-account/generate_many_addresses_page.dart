@@ -3,12 +3,12 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/derivation_path_chooser_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class GenerateManyAddressesPage extends SectionPageWidget {
-  const GenerateManyAddressesPage({Key key})
+  const GenerateManyAddressesPage({Key? key})
       : super('/1-account/generate-many-addresses', 'GenerateManyAddressesPage',
             key: key);
 
@@ -20,7 +20,7 @@ class GenerateManyAddressesPage extends SectionPageWidget {
 }
 
 class GenerateManyAddressesPageBody extends StatelessWidget {
-  const GenerateManyAddressesPageBody();
+  const GenerateManyAddressesPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class GenerateManyAddressesPageBody extends StatelessWidget {
 }
 
 class GeneratePairwiseWalletWidget extends StatefulWidget {
-  const GeneratePairwiseWalletWidget();
+  const GeneratePairwiseWalletWidget({Key? key}) : super(key: key);
 
   @override
   _GeneratePairwiseWalletWidgetState createState() =>
@@ -82,17 +82,12 @@ class _GeneratePairwiseWalletWidgetState
               },
             ),
           ),
-          Container(
-            width: double.infinity,
-            child: Text('Derivation path: $derivationPath'),
-          ),
+          Text('Derivation path: $derivationPath'),
           const ParagraphWidget(
             'Press the button to generate a pairwise wallet.',
           ),
           Center(
             child: GeneratePairwiseWalletFlatButton(
-              color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).disabledColor,
               child: (_) => const Text(
                 'Generate pairwise wallet',
                 style: TextStyle(color: Colors.white),
@@ -100,11 +95,18 @@ class _GeneratePairwiseWalletWidgetState
               event: () => CommercioAccountGeneratePairwiseWalletEvent(
                 lastDerivationPath: derivationPathValue.toString(),
               ),
+              buttonStyle: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           GeneratePairwiseWalletTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.wallet.bech32Address,
+            text: (_, state) => state.maybeWhen(
+              (wallet, walletAddress) => walletAddress,
+              orElse: () => '',
+            ),
           ),
         ],
       ),
