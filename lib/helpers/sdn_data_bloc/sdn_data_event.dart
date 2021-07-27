@@ -9,8 +9,8 @@ class ChangeSdnDataEvent extends SdnDataEvent {
   final bool newValue;
 
   const ChangeSdnDataEvent({
-    @required this.sdnDataKey,
-    @required this.newValue,
+    required this.sdnDataKey,
+    required this.newValue,
   });
 
   @override

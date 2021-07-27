@@ -7,10 +7,11 @@ class SubSectionWidget extends StatelessWidget {
   final String subtitle;
 
   const SubSectionWidget({
-    @required this.sectionPage,
-    @required this.title,
-    this.subtitle,
-  });
+    required this.sectionPage,
+    required this.title,
+    required this.subtitle,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

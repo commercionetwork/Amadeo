@@ -6,28 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CommercioMintPage extends SectionPageWidget {
-  const CommercioMintPage({Key key})
+  const CommercioMintPage({Key? key})
       : super('/5-mint', 'CommercioMintPage', key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldWidget(bodyWidget: CommercioMintBody());
+    return const BaseScaffoldWidget(bodyWidget: CommercioMintBody());
   }
 }
 
 class CommercioMintBody extends StatelessWidget {
+  const CommercioMintBody({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const BaseListWidget(
       children: [
         SubSectionWidget(
-          sectionPage: OpenCdpPage(),
+          sectionPage: MintCccPage(),
           title: '5.1 Opening a Collateral Debt Position',
           subtitle:
               'Opens a new CDP depositing the given Commercio Token amount.',
         ),
         SubSectionWidget(
-          sectionPage: CloseCdpPage(),
+          sectionPage: BurnCccPage(),
           title: '5.2 Closing a Collateral Debt Position',
           subtitle: 'Closes the CDP having the given timestamp (height).',
         ),

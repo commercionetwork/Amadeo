@@ -31,7 +31,7 @@ class DemoKeysError extends DemoKeysState {
 class DemoKeysData extends DemoKeysState {
   final CommercioIdKeys commercioIdKeys;
 
-  const DemoKeysData({@required this.commercioIdKeys});
+  const DemoKeysData({required this.commercioIdKeys});
 
   @override
   List<Object> get props => [commercioIdKeys];

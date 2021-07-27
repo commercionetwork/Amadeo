@@ -14,8 +14,8 @@ class DemoKeysBloc extends Bloc<DemoKeysEvent, DemoKeysState> {
   final StatefulCommercioId commercioIdKeys;
 
   DemoKeysBloc({
-    @required this.keysRepository,
-    @required this.commercioIdKeys,
+    required this.keysRepository,
+    required this.commercioIdKeys,
   }) : super(const DemoKeysInitial());
 
   @override

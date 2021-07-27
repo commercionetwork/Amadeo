@@ -2,12 +2,12 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class RestoreWalletFromSecureStoragePage extends SectionPageWidget {
-  const RestoreWalletFromSecureStoragePage({Key key})
+  const RestoreWalletFromSecureStoragePage({Key? key})
       : super(
           '/1-account/restore-wallet-from-secure-storage',
           'RestoreWalletFromSecureStoragePage',
@@ -23,7 +23,7 @@ class RestoreWalletFromSecureStoragePage extends SectionPageWidget {
 }
 
 class RestoreWalletFromSecureStoragePageBody extends StatelessWidget {
-  const RestoreWalletFromSecureStoragePageBody();
+  const RestoreWalletFromSecureStoragePageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class RestoreWalletFromSecureStoragePageBody extends StatelessWidget {
 }
 
 class RestoreWalletWidget extends StatelessWidget {
-  const RestoreWalletWidget();
+  const RestoreWalletWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +65,10 @@ class RestoreWalletWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: RestoreWalletFlatButton(
               event: () => const CommercioAccountRestoreWalletEvent(),
-              color: Theme.of(context).primaryColor,
-              disabledColor: Theme.of(context).disabledColor,
+              buttonStyle: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
               child: (_) => const Text(
                 'Restore Wallet',
                 style: TextStyle(color: Colors.white),
@@ -75,7 +77,10 @@ class RestoreWalletWidget extends StatelessWidget {
           ),
           RestoreWalletTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.walletAddress,
+            text: (_, state) => state.maybeWhen(
+              (mnemonic, wallet, walletAddress) => walletAddress,
+              orElse: () => '',
+            ),
           ),
         ],
       ),

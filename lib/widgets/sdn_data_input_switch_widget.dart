@@ -4,22 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 
 class SdnDataInputSwitchWidget extends StatelessWidget {
-  final Color activeColor;
-  final Color activeTrackColor;
-  final Color inactiveThumbColor;
-  final Color inactiveTrackColor;
-  final ImageProvider activeThumbImage;
-  final ImageProvider inactiveThumbImage;
-  final Widget Function(MapEntry<dynamic, bool> entry) title;
-  final Widget subtitle;
-  final Widget secondary;
+  final Color? activeColor;
+  final Color? activeTrackColor;
+  final Color? inactiveThumbColor;
+  final Color? inactiveTrackColor;
+  final ImageProvider? activeThumbImage;
+  final ImageProvider? inactiveThumbImage;
+  final Widget Function(MapEntry<dynamic, bool> entry)? title;
+  final Widget? subtitle;
+  final Widget? secondary;
   final bool isThreeLine;
-  final bool dense;
-  final EdgeInsetsGeometry contentPadding;
+  final bool? dense;
+  final EdgeInsetsGeometry? contentPadding;
   final bool selected;
 
   const SdnDataInputSwitchWidget({
-    Key key,
     this.activeColor,
     this.activeTrackColor,
     this.inactiveThumbColor,
@@ -33,6 +32,7 @@ class SdnDataInputSwitchWidget extends StatelessWidget {
     this.contentPadding,
     this.secondary,
     this.selected = false,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class SdnDataInputSwitchWidget extends StatelessWidget {
                   activeThumbImage: activeThumbImage,
                   inactiveThumbImage: inactiveThumbImage,
                   title: title != null
-                      ? title(entry)
+                      ? title!(entry)
                       : Text(entry.key.toString().split('.')[1].toLowerCase()),
                   subtitle: subtitle,
                   isThreeLine: isThreeLine,

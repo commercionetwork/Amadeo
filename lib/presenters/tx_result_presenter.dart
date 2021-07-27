@@ -5,5 +5,5 @@ String txResultToString(TransactionResult txResult) {
     return 'Success! Hash: ${txResult.hash}';
   }
 
-  return 'Error ${txResult.error.errorCode}: ${txResult.error.errorMessage}';
+  return 'Error ${txResult.error?.errorCode}: ${txResult.error?.errorMessage}';
 }

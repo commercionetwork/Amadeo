@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 class KeysRepository {
   final String _demoKeysPath;
 
-  const KeysRepository({String demoKeysPath})
+  const KeysRepository({String? demoKeysPath})
       : _demoKeysPath = demoKeysPath ?? 'assets/id_keys.json';
 
   Future<CommercioIdKeys> fetchDemoKeys() async {

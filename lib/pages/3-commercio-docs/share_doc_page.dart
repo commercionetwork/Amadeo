@@ -6,13 +6,13 @@ import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/doc_metadata_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class ShareDocPage extends SectionPageWidget {
-  const ShareDocPage({Key key})
+  const ShareDocPage({Key? key})
       : super('/3-docs/share-doc', 'ShareDocPage', key: key);
 
   @override
@@ -20,8 +20,8 @@ class ShareDocPage extends SectionPageWidget {
     return BaseScaffoldWidget(
       bodyWidget: BlocProvider(
         create: (_) => CommercioDocsDeriveDocumentBloc(
-          commercioDocs: context.repository<StatefulCommercioDocs>(),
-          commercioId: context.repository<StatefulCommercioId>(),
+          commercioDocs: context.read<StatefulCommercioDocs>(),
+          commercioId: context.read<StatefulCommercioId>(),
         ),
         child: const ShareDocPageBody(),
       ),
@@ -30,7 +30,7 @@ class ShareDocPage extends SectionPageWidget {
 }
 
 class ShareDocPageBody extends StatelessWidget {
-  const ShareDocPageBody();
+  const ShareDocPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +40,12 @@ class ShareDocPageBody extends StatelessWidget {
       children: [
         BlocProvider(
           create: (_) => CommercioDocsEncDataBloc(),
-          child: DeriveDocWidget(),
+          child: const DeriveDocWidget(),
         ),
         BlocProvider(
           create: (_) => CommercioDocsShareDocumentsBloc(
-            commercioDocs: context.repository<StatefulCommercioDocs>(),
-            commercioId: context.repository<StatefulCommercioId>(),
+            commercioDocs: context.read<StatefulCommercioDocs>(),
+            commercioId: context.read<StatefulCommercioId>(),
           ),
           child: const ShareDocsWidget(),
         ),
@@ -55,6 +55,8 @@ class ShareDocPageBody extends StatelessWidget {
 }
 
 class DeriveDocWidget extends StatefulWidget {
+  const DeriveDocWidget({Key? key}) : super(key: key);
+
   @override
   _DeriveDocWidgetState createState() => _DeriveDocWidgetState();
 }
@@ -108,7 +110,9 @@ class _DeriveDocWidgetState extends State<DeriveDocWidget> {
             metadataSchemaTypeController: _metadataSchemaTypeController,
           ),
           ShareDocumentEncryptedDataSwitchListTiles(
-            activeColor: Theme.of(context).primaryColor,
+            style: CommercioSwitchListTileStyle(
+              activeColor: Theme.of(context).primaryColor,
+            ),
           ),
           const ParagraphWidget(
             'Press the button to derive a Did document.',
@@ -131,12 +135,13 @@ class _DeriveDocWidgetState extends State<DeriveDocWidget> {
                     ),
                     schemaType: _metadataSchemaTypeController.text,
                   ),
-                  encryptedData: context
-                      .bloc<CommercioDocsEncDataBloc>()
-                      .encryptedDataList,
+                  encryptedData:
+                      context.read<CommercioDocsEncDataBloc>().encryptedDataSet,
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Derive a Did document',
                   style: TextStyle(color: Colors.white),
@@ -146,7 +151,10 @@ class _DeriveDocWidgetState extends State<DeriveDocWidget> {
           ),
           DeriveDocumentTextField(
             loading: (_) => 'Deriving...',
-            text: (_, state) => commercioDocToString(state.commercioDoc),
+            text: (_, state) => state.maybeWhen(
+              (commercioDoc) => commercioDocToString(commercioDoc),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -155,7 +163,7 @@ class _DeriveDocWidgetState extends State<DeriveDocWidget> {
 }
 
 class ShareDocsWidget extends StatelessWidget {
-  const ShareDocsWidget();
+  const ShareDocsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +189,10 @@ class ShareDocsWidget extends StatelessWidget {
 
                   return ShareDocumentsFlatButton(
                     event: fn,
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).disabledColor,
+                    buttonStyle: TextButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     child: (_) => const Text(
                       'Share Did document',
                       style: TextStyle(color: Colors.white),
@@ -194,7 +204,10 @@ class ShareDocsWidget extends StatelessWidget {
           ),
           ShareDocumentsTextField(
             loading: (_) => 'Sharing...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

@@ -13,8 +13,6 @@ import 'package:commercio_ui/commercio_ui.dart';
 import 'package:crypto/crypto.dart' as crypto;
 //import 'package:encrypt/encrypt.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:commerciosdk/export.dart' hide RSAPrivateKey, RSAPublicKey;
 import 'package:http/http.dart';
 //import 'package:pointycastle/pointycastle.dart' show RSAPublicKey hide Digest;
 
@@ -31,13 +29,13 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   final DocumentRepository documentRepository;
 
   SignBloc({
-    @required this.dsbSignerAddress,
-    @required this.commercioDocs,
-    @required this.commercioId,
-    @required this.documentRepository,
-    Client client,
-    String dsbUrl,
-    String dsbPort,
+    required this.dsbSignerAddress,
+    required this.commercioDocs,
+    required this.commercioId,
+    required this.documentRepository,
+    Client? client,
+    String? dsbUrl,
+    String? dsbPort,
   })  : client = client ?? Client(),
         dsbUrl = dsbUrl ?? 'localhost',
         dsbPort = dsbPort ?? '9999',
@@ -98,10 +96,6 @@ class SignBloc extends Bloc<SignEvent, SignState> {
     yield const SignDocumentLoading();
 
     try {
-      if (event.walletAddress == null) {
-        throw const WalletNotFoundException();
-      }
-
       if (documentRepository.hasNotDocIdGenerated) {
         throw Exception(
           'Error: a document id should be generated before share a document.',
@@ -114,7 +108,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
 
       await _addDocument(docId: event.docId);
 
-      final digest = sha256Digest(documentRepository.documentContent);
+      final digest = sha256Digest(documentRepository.documentContent!);
 
       final shareDocResult = await _shareDocument(
         recipients: event.recipients,
@@ -128,7 +122,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
 
       if (!shareDocResult.success) {
         throw Exception(
-          'Error while sharing the document (${shareDocResult.error.errorCode}): ${shareDocResult.error.errorMessage}',
+          'Error while sharing the document (${shareDocResult.error?.errorCode}): ${shareDocResult.error?.errorMessage}',
         );
       }
 
@@ -157,7 +151,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   }
 
   Future<Response> _addDocument({
-    @required String docId,
+    required String docId,
   }) async {
     final uri = Uri.http('$dsbUrl:$dsbPort', DsbEndpoint.add.value);
     final result = await client.post(uri, headers: {
@@ -174,13 +168,13 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   }
 
   Future<TransactionResult> _shareDocument({
-    @required List<String> recipients,
-    @required String docId,
-    @required String contentUri,
-    @required CommercioDocMetadata metadata,
-    @required List<CommercioSdnData> sdnData,
-    @required crypto.Digest digest,
-    @required StdFee fee,
+    required List<String> recipients,
+    required String docId,
+    required String contentUri,
+    required CommercioDocMetadata metadata,
+    required Set<CommercioSdnData>? sdnData,
+    required crypto.Digest digest,
+    required StdFee? fee,
   }) async {
     final storageUri =
         Uri.http('$dsbUrl:$dsbPort', '${DsbEndpoint.upload.value}/$docId');
@@ -210,7 +204,7 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   }
 
   /*Future<DsbResult> _retrieveDocument({
-    @required String docId,
+    required String docId,
   }) async {
     final uri = Uri.http('$dsbUrl:$dsbPort', '${DsbEndpoint.get.value}/$docId');
     Response result;
@@ -228,8 +222,8 @@ class SignBloc extends Bloc<SignEvent, SignState> {
   }
 
   bool _verifySignature({
-    @required DsbResult dsbResult,
-    @required crypto.Digest digest,
+    required DsbResult dsbResult,
+    required crypto.Digest digest,
   }) {
     final decodedCert = base64Decode(dsbResult.cert);
     final certPem = utf8.decode(decodedCert);

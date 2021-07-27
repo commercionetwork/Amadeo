@@ -12,7 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp();
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +68,8 @@ class MyApp extends StatelessWidget {
               child: const CommercioSignPage(),
             ),
         '/5-mint': (_) => const CommercioMintPage(),
-        '/5-mint/open-cdp': (_) => const OpenCdpPage(),
-        '/5-mint/close-cdp': (_) => const CloseCdpPage(),
+        '/5-mint/mint-ccc': (_) => const MintCccPage(),
+        '/5-mint/burn-ccc': (_) => const BurnCccPage(),
         '/6-kyc': (_) => const CommercioKYCPage(),
         '/6-kyc/buy-membership': (_) => const BuyMembershipPage(),
         '/6-kyc/invite-member': (_) => const InviteMemberPage(),

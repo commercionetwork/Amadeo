@@ -6,12 +6,12 @@ import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
 import 'package:amadeo/widgets/recipient_address_text_field_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SendReceiptPage extends SectionPageWidget {
-  const SendReceiptPage({Key key})
+  const SendReceiptPage({Key? key})
       : super('/3-docs/send-receipt', 'SendReceiptPage', key: key);
 
   @override
@@ -29,7 +29,7 @@ class SendReceiptPage extends SectionPageWidget {
 }
 
 class SendReceiptPageBody extends StatelessWidget {
-  const SendReceiptPageBody();
+  const SendReceiptPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class SendReceiptPageBody extends StatelessWidget {
 }
 
 class DeriveReceiptWidget extends StatefulWidget {
-  const DeriveReceiptWidget();
+  const DeriveReceiptWidget({Key? key}) : super(key: key);
 
   @override
   _DeriveReceiptWidgetState createState() => _DeriveReceiptWidgetState();
@@ -111,8 +111,10 @@ class _DeriveReceiptWidgetState extends State<DeriveReceiptWidget> {
                   txHash: _txHashController.text,
                   documentId: _docIdController.text,
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Derive receipt',
                   style: TextStyle(color: Colors.white),
@@ -122,7 +124,10 @@ class _DeriveReceiptWidgetState extends State<DeriveReceiptWidget> {
           ),
           DeriveReceiptTextField(
             loading: (_) => 'Deriving...',
-            text: (_, state) => jsonEncode(state.commercioDocReceipt),
+            text: (_, state) => state.maybeWhen(
+              (commercioDocReceipt) => jsonEncode(commercioDocReceipt),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -131,7 +136,7 @@ class _DeriveReceiptWidgetState extends State<DeriveReceiptWidget> {
 }
 
 class SendReceiptWidget extends StatelessWidget {
-  const SendReceiptWidget();
+  const SendReceiptWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +163,10 @@ class SendReceiptWidget extends StatelessWidget {
 
                   return SendReceiptsFlatButton(
                     event: fn,
-                    color: Theme.of(context).primaryColor,
-                    disabledColor: Theme.of(context).disabledColor,
+                    buttonStyle: TextButton.styleFrom(
+                      primary: Theme.of(context).primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                     child: (_) => const Text(
                       'Send receipt',
                       style: TextStyle(color: Colors.white),
@@ -171,7 +178,10 @@ class SendReceiptWidget extends StatelessWidget {
           ),
           SendReceiptsTextField(
             loading: (_) => 'Sending...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

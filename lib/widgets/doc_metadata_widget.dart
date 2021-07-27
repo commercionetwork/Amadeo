@@ -8,12 +8,13 @@ class DocMetadataWidget extends StatelessWidget {
   final TextEditingController metadataSchemaTypeController;
 
   const DocMetadataWidget({
-    @required this.contentUriController,
-    @required this.metadataSchemaUriController,
-    @required this.metadataSchemaVersionController,
-    @required this.metadataContentUriController,
-    @required this.metadataSchemaTypeController,
-  });
+    required this.contentUriController,
+    required this.metadataSchemaUriController,
+    required this.metadataSchemaVersionController,
+    required this.metadataContentUriController,
+    required this.metadataSchemaTypeController,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

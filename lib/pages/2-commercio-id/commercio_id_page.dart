@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CommercioIdPage extends SectionPageWidget {
-  const CommercioIdPage({Key key})
+  const CommercioIdPage({Key? key})
       : super('/2-id', 'CommercioIdPage', key: key);
 
   @override
@@ -17,7 +17,7 @@ class CommercioIdPage extends SectionPageWidget {
 }
 
 class CommercioIdBody extends StatelessWidget {
-  const CommercioIdBody();
+  const CommercioIdBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

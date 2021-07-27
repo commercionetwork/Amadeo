@@ -4,12 +4,12 @@ import 'package:uuid/uuid.dart';
 class DocumentRepository {
   final AssetBundle assetBundle;
   final String documentPath;
-  String documentContent;
+  String? documentContent;
   String docId;
 
   DocumentRepository({
-    AssetBundle assetBundle,
-    String documentPath,
+    AssetBundle? assetBundle,
+    String? documentPath,
   })  : assetBundle = assetBundle ?? rootBundle,
         documentPath = documentPath ?? './assets/document.txt',
         docId = '';
@@ -27,5 +27,5 @@ class DocumentRepository {
   Future<String> fetchContent() async =>
       documentContent = await assetBundle.loadString(documentPath);
 
-  String generateNewDocId() => docId = Uuid().v4();
+  String generateNewDocId() => docId = const Uuid().v4();
 }

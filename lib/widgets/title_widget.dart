@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
 
-  const TitleWidget(this.title, {this.padding});
+  const TitleWidget(
+    this.title, {
+    this.padding,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

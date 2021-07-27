@@ -9,13 +9,13 @@ import 'package:amadeo/repositories/keys_repository.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class CreateDDOPage extends SectionPageWidget {
-  const CreateDDOPage({Key key})
+  const CreateDDOPage({Key? key})
       : super('/2-id/create-ddo', 'CreateDDOPage', key: key);
 
   @override
@@ -27,7 +27,7 @@ class CreateDDOPage extends SectionPageWidget {
 }
 
 class CreateDDOPageBody extends StatelessWidget {
-  const CreateDDOPageBody();
+  const CreateDDOPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class CreateDDOPageBody extends StatelessWidget {
 }
 
 class GenerateKeysWidget extends StatelessWidget {
-  const GenerateKeysWidget();
+  const GenerateKeysWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +104,10 @@ class GenerateKeysWidget extends StatelessWidget {
             child: Center(
               child: GenerateKeysFlatButton(
                 event: () => const CommercioIdGenerateKeysEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Generate keys',
                   style: TextStyle(color: Colors.white),
@@ -115,7 +117,10 @@ class GenerateKeysWidget extends StatelessWidget {
           ),
           GenerateKeysTextField(
             loading: (_) => 'Generating...',
-            text: (_, state) => commercioKeysToString(state.commercioIdKeys),
+            text: (_, state) => state.maybeWhen(
+              (commercioIdKeys) => commercioKeysToString(commercioIdKeys),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -124,7 +129,7 @@ class GenerateKeysWidget extends StatelessWidget {
 }
 
 class GenerateKeysWebWidget extends StatefulWidget {
-  const GenerateKeysWebWidget();
+  const GenerateKeysWebWidget({Key? key}) : super(key: key);
 
   @override
   _GenerateKeysWebWidgetState createState() => _GenerateKeysWebWidgetState();
@@ -149,7 +154,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
             'Web support is highly experimental, demo key pairs are given.\n\nDO NOT USE THESE KEYS OUTSIDE THIS DEMO!',
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),
             ),
@@ -178,7 +183,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Center(
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     BlocProvider.of<WarningDialogBloc>(context).add(
                       const MaybeShowKeysWarningDialogEvent(),
@@ -188,8 +193,10 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
                       const LoadDemoKeysEvent(),
                     );
                   },
-                  color: Theme.of(context).primaryColor,
-                  disabledColor: Theme.of(context).disabledColor,
+                  style: TextButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
                   child: const Text(
                     'Generate keys',
                     style: TextStyle(color: Colors.white),
@@ -200,7 +207,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
             BlocConsumer<DemoKeysBloc, DemoKeysState>(
               listener: (context, state) {
                 if (state is DemoKeysError) {
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.message),
                       backgroundColor: Colors.red,
@@ -237,7 +244,7 @@ class _GenerateKeysWebWidgetState extends State<GenerateKeysWebWidget> {
 }
 
 class DeriveDidDocumentWidget extends StatelessWidget {
-  const DeriveDidDocumentWidget();
+  const DeriveDidDocumentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -252,8 +259,10 @@ class DeriveDidDocumentWidget extends StatelessWidget {
             child: Center(
               child: DeriveDidDocumentFlatButton(
                 event: () => const CommercioIdDeriveDidDocumentEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Derive document',
                   style: TextStyle(color: Colors.white),
@@ -263,7 +272,10 @@ class DeriveDidDocumentWidget extends StatelessWidget {
           ),
           DeriveDidDocumentTextField(
             loading: (_) => 'Deriving...',
-            text: (_, state) => didDocumentToString(state.didDocument),
+            text: (_, state) => state.maybeWhen(
+              (didDocument) => didDocumentToString(didDocument),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -272,7 +284,7 @@ class DeriveDidDocumentWidget extends StatelessWidget {
 }
 
 class SetDidDocumentWidget extends StatelessWidget {
-  const SetDidDocumentWidget();
+  const SetDidDocumentWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -289,8 +301,10 @@ class SetDidDocumentWidget extends StatelessWidget {
             child: Center(
               child: SetDidDocumentFlatButton(
                 event: () => const CommercioIdSetDidDocumentsEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Set document',
                   style: TextStyle(color: Colors.white),
@@ -300,7 +314,10 @@ class SetDidDocumentWidget extends StatelessWidget {
           ),
           SetDidDocumentTextField(
             loading: (_) => 'Setting...',
-            text: (_, state) => txResultToString(state.result),
+            text: (_, state) => state.maybeWhen(
+              (result) => txResultToString(result),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -309,7 +326,7 @@ class SetDidDocumentWidget extends StatelessWidget {
 }
 
 class RestoreKeysWidget extends StatelessWidget {
-  const RestoreKeysWidget();
+  const RestoreKeysWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -324,8 +341,10 @@ class RestoreKeysWidget extends StatelessWidget {
             child: Center(
               child: RestoreKeysFlatButton(
                 event: () => const CommercioIdRestoreKeysEvent(),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Restore keys',
                   style: TextStyle(color: Colors.white),
@@ -335,7 +354,10 @@ class RestoreKeysWidget extends StatelessWidget {
           ),
           RestoreKeysTextField(
             loading: (_) => 'Restoring...',
-            text: (_, state) => commercioKeysToString(state.commercioIdKeys),
+            text: (_, state) => state.maybeWhen(
+              (commercioIdKeys) => commercioKeysToString(commercioIdKeys),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

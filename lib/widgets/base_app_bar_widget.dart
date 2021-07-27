@@ -1,22 +1,21 @@
 import 'package:amadeo/helpers/net_helper.dart';
-import 'package:commercio_ui/commercio_ui.dart';
-import 'package:commerciosdk/export.dart' as sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final List<Widget> widgets;
+  final List<Widget>? widgets;
 
   const BaseAppBarWidget({
-    Key key,
-    this.title,
+    required this.title,
     this.widgets,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final commercioAccount = context.repository<StatefulCommercioAccount>();
+    final commercioAccount = context.read<StatefulCommercioAccount>();
 
     return AppBar(
       title: Text(
@@ -34,7 +33,7 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(right: 12.0),
               child: PopupMenuButton<ChainNet>(
                 onSelected: (ChainNet result) {
-                  commercioAccount.networkInfo = sdk.NetworkInfo(
+                  commercioAccount.networkInfo = NetworkInfo(
                     bech32Hrp: result.bech32Hrp,
                     lcdUrl: result.lcdUrl,
                   );
@@ -44,7 +43,7 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     lcdUrl: result.lcdUrl,
                   );
 
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         'Switched to ${result.name}. Please restore the wallet.',
@@ -56,13 +55,13 @@ class BaseAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem<ChainNet>(
-                      enabled: commercioAccount.networkInfo.lcdUrl !=
+                      enabled: commercioAccount.networkInfo?.lcdUrl !=
                           ChainNet.test.lcdUrl,
                       value: ChainNet.test,
                       child: Text(ChainNet.test.name),
                     ),
                     PopupMenuItem<ChainNet>(
-                      enabled: commercioAccount.networkInfo.lcdUrl !=
+                      enabled: commercioAccount.networkInfo?.lcdUrl !=
                           ChainNet.dev.lcdUrl,
                       value: ChainNet.dev,
                       child: Text(ChainNet.dev.name),

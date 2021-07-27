@@ -4,8 +4,9 @@ class RecipientAddressTextFieldWidget extends StatelessWidget {
   final TextEditingController recipientTextController;
 
   const RecipientAddressTextFieldWidget({
-    @required this.recipientTextController,
-  });
+    required this.recipientTextController,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

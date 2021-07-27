@@ -4,8 +4,8 @@ class DerivationPathChooserWidget extends StatefulWidget {
   final void Function(int) onChanged;
 
   const DerivationPathChooserWidget({
-    Key key,
-    @required this.onChanged,
+    required this.onChanged,
+    Key? key,
   }) : super(key: key);
 
   @override

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen();
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             'Web support is highly experimental, your secrets are stored inside the browser.',
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),
             ),
@@ -82,9 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
             'Desktop support is highly experimental, your secrets are stored inside a temporary and insecure storage.',
           ),
           actions: [
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: const Text('Close'),
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             ),
           ],
         );
@@ -96,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback(
+    WidgetsBinding.instance?.addPostFrameCallback(
       (_) => BlocProvider.of<WarningDialogBloc>(context).add(
         const MaybeShowWebWarningDialogEvent(),
       ),

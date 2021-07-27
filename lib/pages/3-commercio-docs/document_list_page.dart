@@ -4,12 +4,12 @@ import 'package:amadeo/pages/section_page.dart';
 import 'package:amadeo/widgets/base_list_widget.dart';
 import 'package:amadeo/widgets/base_scaffold_widget.dart';
 import 'package:amadeo/widgets/paragraph_widget.dart';
-import 'package:commercio_ui/commercio_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_commercio_ui/flutter_commercio_ui.dart';
 
 class DocumentListPage extends SectionPageWidget {
-  const DocumentListPage({Key key})
+  const DocumentListPage({Key? key})
       : super('/3-docs/document-list', 'DocumentListPage', key: key);
 
   @override
@@ -21,7 +21,7 @@ class DocumentListPage extends SectionPageWidget {
 }
 
 class DocumentListPageBody extends StatelessWidget {
-  const DocumentListPageBody();
+  const DocumentListPageBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class DocumentListPageBody extends StatelessWidget {
 }
 
 class SentDocumentsWidget extends StatefulWidget {
-  const SentDocumentsWidget();
+  const SentDocumentsWidget({Key? key}) : super(key: key);
 
   @override
   _SentDocumentsWidgetState createState() => _SentDocumentsWidgetState();
@@ -65,7 +65,7 @@ class _SentDocumentsWidgetState extends State<SentDocumentsWidget> {
     super.initState();
 
     _textController.text =
-        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+        context.read<StatefulCommercioAccount>().walletAddress ?? '';
   }
 
   @override
@@ -98,8 +98,10 @@ class _SentDocumentsWidgetState extends State<SentDocumentsWidget> {
                 event: () => CommercioDocsSentDocumentsEvent(
                   walletAddress: _textController.text,
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Sent documents',
                   style: TextStyle(color: Colors.white),
@@ -109,10 +111,13 @@ class _SentDocumentsWidgetState extends State<SentDocumentsWidget> {
           ),
           SentDocumentsTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.sentDocuments.fold(
-                '',
-                (prev, curr) =>
-                    '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            text: (_, state) => state.maybeWhen(
+              (sentDocuments) => sentDocuments.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+              orElse: () => '',
+            ),
           ),
         ],
       ),
@@ -121,7 +126,7 @@ class _SentDocumentsWidgetState extends State<SentDocumentsWidget> {
 }
 
 class ReceivedDocumentsWidget extends StatefulWidget {
-  const ReceivedDocumentsWidget();
+  const ReceivedDocumentsWidget({Key? key}) : super(key: key);
 
   @override
   _ReceivedDocumentsWidgetState createState() =>
@@ -136,7 +141,7 @@ class _ReceivedDocumentsWidgetState extends State<ReceivedDocumentsWidget> {
     super.initState();
 
     _textController.text =
-        context.repository<StatefulCommercioAccount>()?.walletAddress ?? '';
+        context.read<StatefulCommercioAccount>().walletAddress ?? '';
   }
 
   @override
@@ -169,8 +174,10 @@ class _ReceivedDocumentsWidgetState extends State<ReceivedDocumentsWidget> {
                 event: () => CommercioDocsReceivedDocumentsEvent(
                   walletAddress: _textController.text,
                 ),
-                color: Theme.of(context).primaryColor,
-                disabledColor: Theme.of(context).disabledColor,
+                buttonStyle: TextButton.styleFrom(
+                  primary: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
                 child: (_) => const Text(
                   'Received documents',
                   style: TextStyle(color: Colors.white),
@@ -180,10 +187,13 @@ class _ReceivedDocumentsWidgetState extends State<ReceivedDocumentsWidget> {
           ),
           ReceivedDocumentsTextField(
             loading: (_) => 'Loading...',
-            text: (_, state) => state.receivedDocuments.fold(
-                '',
-                (prev, curr) =>
-                    '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+            text: (_, state) => state.maybeWhen(
+              (receivedDocuments) => receivedDocuments.fold(
+                  '',
+                  (prev, curr) =>
+                      '$prev ${prev.isEmpty ? '' : '\n\n'} ${jsonEncode(curr)}, '),
+              orElse: () => '',
+            ),
           ),
         ],
       ),

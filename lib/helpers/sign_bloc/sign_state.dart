@@ -15,7 +15,7 @@ class SignDocumentLoaded extends SignState {
   final String content;
   final String hash;
 
-  const SignDocumentLoaded({@required this.content, @required this.hash});
+  const SignDocumentLoaded({required this.content, required this.hash});
 
   @override
   List<Object> get props => [content, hash];
@@ -44,7 +44,7 @@ class SignLoadDocumentError extends SignState {
 class SignedDocument extends SignState {
   final String result;
 
-  const SignedDocument({@required this.result});
+  const SignedDocument({required this.result});
 
   @override
   List<Object> get props => [result];
@@ -71,7 +71,7 @@ class SignDocumentError extends SignState {
 class NewDocUuid extends SignState {
   final String docId;
 
-  const NewDocUuid({@required this.docId});
+  const NewDocUuid({required this.docId});
 
   @override
   List<Object> get props => [docId];

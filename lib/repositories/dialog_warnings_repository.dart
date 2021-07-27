@@ -4,9 +4,9 @@ class DialogWarningsRepository {
   bool keysWarningDialogShown;
 
   DialogWarningsRepository({
-    bool webWarningDialogShown,
-    bool keysWarningDialogShown,
-    bool desktopWarningDialogShown,
+    bool? webWarningDialogShown,
+    bool? keysWarningDialogShown,
+    bool? desktopWarningDialogShown,
   })  : webWarningDialogShown = webWarningDialogShown ?? false,
         keysWarningDialogShown = keysWarningDialogShown ?? false,
         desktopWarningDialogShown = desktopWarningDialogShown ?? false;

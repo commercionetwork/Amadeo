@@ -4,7 +4,7 @@ class SdnSelectedDataRepository {
   Map<CommercioSdnData, bool> selectedCommercioSdnData;
 
   SdnSelectedDataRepository({
-    Map<CommercioSdnData, bool> selectedCommercioSdnData,
+    Map<CommercioSdnData, bool>? selectedCommercioSdnData,
   }) : selectedCommercioSdnData = selectedCommercioSdnData ??
             {for (var k in CommercioSdnData.values) k: false};
 
@@ -12,4 +12,9 @@ class SdnSelectedDataRepository {
       .where((element) => element.value)
       .map((e) => e.key)
       .toList();
+
+  Set<CommercioSdnData> get sdnDataSet => selectedCommercioSdnData.entries
+      .where((element) => element.value)
+      .map((e) => e.key)
+      .toSet();
 }
